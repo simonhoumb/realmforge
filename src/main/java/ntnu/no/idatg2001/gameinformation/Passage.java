@@ -1,4 +1,4 @@
-package ntnu.no.idatg2001;
+package ntnu.no.idatg2001.gameinformation;
 
 import java.util.List;
 import java.util.Objects;

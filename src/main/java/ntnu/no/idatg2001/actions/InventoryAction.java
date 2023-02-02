@@ -1,6 +1,7 @@
 package ntnu.no.idatg2001.actions;
 
-import ntnu.no.idatg2001.Player;
+
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class InventoryAction implements Action {
   String item;

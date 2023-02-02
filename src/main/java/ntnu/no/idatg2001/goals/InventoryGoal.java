@@ -1,7 +1,7 @@
 package ntnu.no.idatg2001.goals;
 
 import java.util.List;
-import ntnu.no.idatg2001.Player;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class InventoryGoal {
   private List<String> mandatoryItems;
@@ -11,6 +11,6 @@ public class InventoryGoal {
   }
 
   public boolean isFulfilled(Player player) {
-    return player.getInventory().equals(mandatoryItems);
+    return player.getPlayerInventory().equals(mandatoryItems);
   }
 }

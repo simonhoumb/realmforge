@@ -1,24 +1,23 @@
-package ntnu.no.idatg2001;
+package ntnu.no.idatg2001.gameinformation;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class Story {
   private String title;
   private Map<Link, Passage> passages;
-  private Passage openPassage;
+  private Passage openingPassage;
 
-  public Story(String title, Passage openPassage) {
+  public Story(String title, Passage openingPassage) {
     this.title = title;
-    this.openPassage = openPassage;
+    this.openingPassage = openingPassage;
   }
 
   public String getTitle() {
     return title;
   }
 
-  public Passage getOpenPassage() {
-    return openPassage;
+  public Passage getOpeningPassage() {
+    return openingPassage;
   }
 
   public void addPassage(Passage passage) {

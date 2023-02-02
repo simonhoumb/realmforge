@@ -1,7 +1,11 @@
 package ntnu.no.idatg2001;
 
 import java.util.List;
+import ntnu.no.idatg2001.gameinformation.Link;
+import ntnu.no.idatg2001.gameinformation.Passage;
+import ntnu.no.idatg2001.gameinformation.Story;
 import ntnu.no.idatg2001.goals.Goal;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class Game {
   private Player player;
@@ -39,7 +43,7 @@ public class Game {
   }
 
   public Passage begin() {
-    return story.getOpenPassage();
+    return story.getOpeningPassage();
   }
 
   public Passage go(Link link) {
