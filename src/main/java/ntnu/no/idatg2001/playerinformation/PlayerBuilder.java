@@ -19,28 +19,28 @@ public class PlayerBuilder {
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
   /**
-   * Sets name.
+   * Sets player name.
    *
    * @param playerName the player name
    * @return the name
    */
-  public PlayerBuilder setName(String playerName) {
+  public PlayerBuilder setPlayerName(String playerName) {
     this.playerName = playerName;
     return this;
   }
 
   /**
-   * Sets health points and checks if player health is not lower than Zero.
+   * Sets player health points and checks if player health is not lower than Zero.
    *
    * @param playerHealthPoints the player health points
    * @return the health points
    */
-  public PlayerBuilder setHealthPoints(int playerHealthPoints) {
+  public PlayerBuilder setPlayerHealthPoints(int playerHealthPoints) {
     if (checkIfValid.checkIfNumberIsNotLowerThanZero(playerHealthPoints)) {
       this.playerHealthPoints = playerHealthPoints;
       return this;
     }
-    return setHealthPoints(0);
+    return setPlayerHealthPoints(0);
   }
 
   /**
@@ -68,10 +68,10 @@ public class PlayerBuilder {
   /**
    * Sets player inventory.
    *
-   * @param inventory the inventory
+   * @param playerInventory the inventory
    * @return the player inventory
    */
-  public PlayerBuilder setPlayerInventory(List<String> inventory) {
+  public PlayerBuilder setPlayerInventory(List<String> playerInventory) {
     this.playerInventory = playerInventory;
     return this;
   }
