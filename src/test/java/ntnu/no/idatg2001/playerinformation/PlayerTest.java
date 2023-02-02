@@ -1,4 +1,4 @@
-package ntnu.no.idatg2001.player;
+package ntnu.no.idatg2001.playerinformation;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.goals;
 
-import ntnu.no.idatg2001.Player;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class ScoreGoal implements Goal {
   private int minimumPoints;
@@ -10,6 +10,6 @@ public class ScoreGoal implements Goal {
   }
 
   public boolean isFulfilled(Player player) {
-    return player.getScore() >= minimumPoints;
+    return player.getPlayerScore() >= minimumPoints;
   }
 }

@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.actions;
 
-import ntnu.no.idatg2001.Player;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class ScoreAction implements Action {
   int points;
@@ -10,6 +10,6 @@ public class ScoreAction implements Action {
   }
 
   public void execute(Player player) {
-    player.setScore(player.getScore() + points);
+    player.setPlayerScore(player.getPlayerScore() + points);
   }
 }

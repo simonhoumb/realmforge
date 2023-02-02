@@ -1,7 +1,7 @@
 package ntnu.no.idatg2001;
 
-import ntnu.no.idatg2001.player.Player;
-import ntnu.no.idatg2001.player.PlayerBuilder;
+import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.playerinformation.PlayerBuilder;
 
 public class Main {
 

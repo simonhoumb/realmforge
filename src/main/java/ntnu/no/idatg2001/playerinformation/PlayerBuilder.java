@@ -1,11 +1,12 @@
-package ntnu.no.idatg2001.player;
-import ntnu.no.idatg2001.utilities.CheckIfValid;
+package ntnu.no.idatg2001.playerinformation;
+
 import java.util.List;
+import ntnu.no.idatg2001.utilities.CheckIfValid;
 
 /**
  * Represents A Item Class.
 
- * @author Eskil Alstad
+ * @author Eskil Alstad & Simon Husås Houmb
  * @version 2022-12-07
  */
 public class PlayerBuilder {

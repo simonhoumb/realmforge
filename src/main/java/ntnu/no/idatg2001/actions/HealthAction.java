@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.actions;
 
-import ntnu.no.idatg2001.Player;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class HealthAction implements Action {
   int health;
@@ -10,6 +10,6 @@ public class HealthAction implements Action {
   }
 
   public void execute(Player player) {
-    player.setHealth(player.getHealth() + health);
+    player.setPlayerHealthPoints(player.getPlayerHealthPoints() + health);
   }
 }

@@ -1,11 +1,11 @@
-package ntnu.no.idatg2001.player;
+package ntnu.no.idatg2001.playerinformation;
 
 import java.util.List;
 
 /**
  * Represents A Item Class.
 
- * @author Eskil Alstad
+ * @author Eskil Alstad & Simon Husås Houmb
  * @version 2022-12-07
  */
 public class Player {
@@ -24,10 +24,10 @@ public class Player {
    * @param playerHealthPoints the player health points
    * @param playerScore        the player score
    * @param playerGold         the player gold
-   * @param playerInventory          the inventory
+   * @param playerInventory    the inventory
    */
   public Player(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      List<String> playerInventory) {
+      List<String> playerInventory) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
     this.playerName = playerName;
     this.playerHealthPoints = playerHealthPoints;
     this.playerScore = playerScore;
@@ -90,38 +90,49 @@ public class Player {
   }
 
   /**
-   * Gets gold.
+   * Gets player gold.
    *
    * @return the gold
    */
-  public int getGold() {
+  public int getPlayerGold() {
     return playerGold;
   }
 
   /**
-   * Sets gold.
+   * Sets player gold.
    *
    * @param playerGold the player gold
    */
-  public void setGold(int playerGold) {
+  public void setPlayerGold(int playerGold) {
     this.playerGold = playerGold;
   }
 
   /**
-   * Gets inventory.
+   * Gets the player inventory.
    *
    * @return the inventory
    */
-  public List<String> getInventory() {
+  public List<String> getPlayerInventory() {
     return playerInventory;
   }
 
   /**
-   * Sets inventory.
+   * Sets the player inventory.
    *
    * @param playerInventory the player inventory
    */
-  public void setInventory(List<String> playerInventory) {
+  public void setPlayerInventory(List<String> playerInventory) {
     this.playerInventory = playerInventory;
   }
+
+  /**
+   * Adds an item to the player inventory.
+   *
+   * @param item the item to be added to the inventory
+   */
+  public void addToInventory(String item) {
+    playerInventory.add(item);
+  }
 }
+
+

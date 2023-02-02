@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.goals;
 
-import ntnu.no.idatg2001.Player;
+import ntnu.no.idatg2001.playerinformation.Player;
 
 public class HealthGoal {
   private int minimumHealth;
@@ -10,6 +10,6 @@ public class HealthGoal {
   }
 
   public boolean isFulfilled(Player player) {
-    return player.getHealth() >= minimumHealth;
+    return player.getPlayerHealthPoints() >= minimumHealth;
   }
 }
