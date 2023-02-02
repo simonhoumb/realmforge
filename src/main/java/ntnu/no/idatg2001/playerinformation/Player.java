@@ -1,5 +1,6 @@
 package ntnu.no.idatg2001.playerinformation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,8 @@ public class Player {
     this.playerHealthPoints = playerHealthPoints;
     this.playerScore = playerScore;
     this.playerGold = playerGold;
-    this.playerInventory = playerInventory;
+    this.playerInventory = new ArrayList<>() {
+    };
   }
 
   /**
@@ -132,6 +134,17 @@ public class Player {
    */
   public void addToInventory(String item) {
     playerInventory.add(item);
+  }
+
+  @Override
+  public String toString() {
+    return "Player{"
+        + "playerName='" + playerName + '\''
+        + ", playerHealthPoints=" + playerHealthPoints
+        + ", playerScore=" + playerScore
+        + ", playerGold=" + playerGold
+        + ", playerInventory=" + playerInventory
+        + '}';
   }
 }
 
