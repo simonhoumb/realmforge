@@ -12,6 +12,7 @@ import java.util.List;
 public class Player {
 
   private String playerName; //Name of the Player.
+  private String playerClass;
   private int playerHealthPoints; //The Health points of the Player.
   private int playerScore; //The score of the player.
   private int playerGold; //The gold of the player
@@ -25,14 +26,15 @@ public class Player {
    * @param playerHealthPoints the player health points
    * @param playerScore        the player score
    * @param playerGold         the player gold
-   * @param playerInventory    the inventory
+   * @param playerClass        the player Class
    */
   public Player(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      List<String> playerInventory) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
+      String playerClass) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
     this.playerName = playerName;
     this.playerHealthPoints = playerHealthPoints;
     this.playerScore = playerScore;
     this.playerGold = playerGold;
+    this.playerClass = playerClass;
     this.playerInventory = new ArrayList<>() {
     };
   }
@@ -128,6 +130,26 @@ public class Player {
   }
 
   /**
+   * Gets player class.
+   *
+   * @return the player class
+   */
+  public String getPlayerClass() {
+    return playerClass;
+  }
+
+  /**
+   * Sets player class.
+   *
+   * @param playerClass the player class
+   * @return the player class
+   */
+  public Player setPlayerClass(String playerClass) {
+    this.playerClass = playerClass;
+    return this;
+  }
+
+  /**
    * Adds an item to the player inventory.
    *
    * @param item the item to be added to the inventory
@@ -139,11 +161,12 @@ public class Player {
   @Override
   public String toString() {
     return "Player{"
-        + "playerName='" + playerName + '\''
-        + ", playerHealthPoints=" + playerHealthPoints
-        + ", playerScore=" + playerScore
-        + ", playerGold=" + playerGold
-        + ", playerInventory=" + playerInventory
+        + "playerName= '" + playerName + '\''
+        + ", playerHealthPoints= " + playerHealthPoints
+        + ", playerScore= " + playerScore
+        + ", playerGold= " + playerGold
+        + ", playerClass= " + playerClass
+        + ", playerInventory= " + playerInventory
         + '}';
   }
 }
