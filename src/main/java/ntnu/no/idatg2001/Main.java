@@ -2,7 +2,6 @@ package ntnu.no.idatg2001;
 
 import ntnu.no.idatg2001.playerinformation.Player;
 import ntnu.no.idatg2001.playerinformation.PlayerBuilder;
-import ntnu.no.idatg2001.playerinformation.PlayerClass;
 
 public class Main {
 
@@ -12,16 +11,12 @@ public class Main {
         .setPlayerGold(500)
         .setPlayerHealthPoints(-10)
         .setPlayerScore(0)
-        .setPlayerClass(PlayerClass.Mage)
+        .setPlayerClass("Mage")
         .getPlayer();
     player.addToInventory("Health Potion");
     player.addToInventory("Sword");
     player.addToInventory("Shield");
 
     System.out.println(player);
-
-    System.out.println(player.getPlayerClass());
-    player.setPlayerClass(PlayerClass.valueOfClassNumber(2));
-    System.out.println(player.getPlayerClass());
   }
 }
