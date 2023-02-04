@@ -9,8 +9,9 @@ public class Main {
     Player player = new PlayerBuilder()
         .setPlayerName("Jonas")
         .setPlayerGold(500)
-        .setPlayerHealthPoints(150)
+        .setPlayerHealthPoints(-10)
         .setPlayerScore(0)
+        .setPlayerClass("Mage")
         .getPlayer();
     player.addToInventory("Health Potion");
     player.addToInventory("Sword");
