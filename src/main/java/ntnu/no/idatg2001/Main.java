@@ -2,17 +2,30 @@ package ntnu.no.idatg2001;
 
 import ntnu.no.idatg2001.playerinformation.Mage;
 import ntnu.no.idatg2001.playerinformation.Player;
-import ntnu.no.idatg2001.playerinformation.Rogue;
-import ntnu.no.idatg2001.playerinformation.Warrior;
+import ntnu.no.idatg2001.playerinformation.PlayerBuilder;
+import ntnu.no.idatg2001.playerinformation.PlayerClass;
 
 public class Main {
 
   public static void main(String[] args) {
-    Player player1 = new Mage("Harry Potter");
-    Player player2 = new Warrior("Aragorn");
-    Player player3 = new Rogue("Bilbo");
-    System.out.println(player1);
-    System.out.println(player2);
-    System.out.println(player3);
+    Player player = new PlayerBuilder()
+        .setPlayerName("Jonas")
+        .setPlayerGold(500)
+        .setPlayerHealthPoints(-10)
+        .setPlayerScore(0)
+        .setPlayerClass(PlayerClass.MAGE)
+        .getPlayer();
+    player.addToInventory("Health Potion");
+    player.addToInventory("Sword");
+    player.addToInventory("Shield");
+
+    System.out.println(player);
+
+    System.out.println(player.getPlayerClass());
+    player.setPlayerClass(PlayerClass.valueOfClassNumber(3));
+    System.out.println(player.getPlayerClass());
+
+   Mage mage = new Mage(20);
+    System.out.println(mage);
   }
 }
