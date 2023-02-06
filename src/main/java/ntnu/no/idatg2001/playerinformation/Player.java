@@ -19,7 +19,7 @@ public class Player {
   private int playerGold; //The gold of the player
   private List<String> playerInventory; // The players inventory
 
-  private CheckIfValid checkIfValid = new CheckIfValid();
+  private CheckIfValid checkIfValid = new CheckIfValid();;
 
   /**
    * Instantiates a new Player.
@@ -32,6 +32,7 @@ public class Player {
     this.playerGold = 10;
     this.playerInventory = new ArrayList<>();
   }
+
 
   /**
    * Gets player name.
