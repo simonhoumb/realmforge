@@ -1,5 +1,6 @@
 package ntnu.no.idatg2001.gameinformation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import ntnu.no.idatg2001.actions.Action;
@@ -12,6 +13,7 @@ public class Link {
   public Link(String text, String reference) {
     this.text = text;
     this.reference = reference;
+    actions = new ArrayList<>(); //vet ikke om denne skal være her
   }
 
   public String getText() {

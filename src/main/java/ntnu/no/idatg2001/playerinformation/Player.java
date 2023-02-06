@@ -2,6 +2,7 @@ package ntnu.no.idatg2001.playerinformation;
 
 import java.util.ArrayList;
 import java.util.List;
+import ntnu.no.idatg2001.utilities.CheckIfValid;
 
 /**
  * Represents A Item Class.
@@ -18,6 +19,7 @@ public class Player {
   private int playerGold; //The gold of the player
   private List<String> playerInventory; // The players inventory
 
+  private final CheckIfValid checkIfValid = new CheckIfValid();
 
   /**
    * Instantiates a new Player.
@@ -72,8 +74,14 @@ public class Player {
    * @param playerHealthPoints the player health points
    */
   public void setPlayerHealthPoints(int playerHealthPoints) {
-    this.playerHealthPoints = playerHealthPoints;
+    if (checkIfValid.checkIfNumberIsNotLowerThanZero(playerHealthPoints)) {
+      this.playerHealthPoints = playerHealthPoints;
+    }
+    else {
+      this.playerHealthPoints = 0;
+    }
   }
+
 
   /**
    * Gets player score.

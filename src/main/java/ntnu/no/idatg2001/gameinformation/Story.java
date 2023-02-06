@@ -1,5 +1,6 @@
 package ntnu.no.idatg2001.gameinformation;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Story {
@@ -10,6 +11,7 @@ public class Story {
   public Story(String title, Passage openingPassage) {
     this.title = title;
     this.openingPassage = openingPassage;
+    this.passages = new HashMap<>();
   }
 
   public String getTitle() {
