@@ -15,7 +15,7 @@ public class PlayerBuilder {
   private int playerHealthPoints; //The Health points of the Player.
   private int playerScore; //The score of the player.
   private int playerGold; //The gold of the player
-  private String playerClass;
+  private PlayerClass playerClass;
   private List<String> playerInventory; // The players inventory
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
@@ -83,7 +83,7 @@ public class PlayerBuilder {
    * @param playerClass the player class
    * @return the player class
    */
-  public PlayerBuilder setPlayerClass(String playerClass) {
+  public PlayerBuilder setPlayerClass(PlayerClass playerClass) {
     this.playerClass = playerClass;
     return this;
   }

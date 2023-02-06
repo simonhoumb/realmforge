@@ -16,6 +16,7 @@ public class Player {
   private int playerHealthPoints; //The Health points of the Player.
   private int playerScore; //The score of the player.
   private int playerGold; //The gold of the player
+  private  PlayerClass classOfPlayer;
   private List<String> playerInventory; // The players inventory
 
 
@@ -29,12 +30,12 @@ public class Player {
    * @param playerClass        the player Class
    */
   public Player(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      String playerClass) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
-    this.playerName = playerName;
-    this.playerHealthPoints = playerHealthPoints;
-    this.playerScore = playerScore;
-    this.playerGold = playerGold;
-    this.playerClass = playerClass;
+      PlayerClass playerClass) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
+    setPlayerName(playerName);
+    setPlayerHealthPoints(playerHealthPoints);
+    setPlayerScore(playerScore);
+    setPlayerGold(playerGold);
+    setPlayerClass(playerClass);
     this.playerInventory = new ArrayList<>() {
     };
   }
@@ -144,9 +145,8 @@ public class Player {
    * @param playerClass the player class
    * @return the player class
    */
-  public Player setPlayerClass(String playerClass) {
-    this.playerClass = playerClass;
-    return this;
+  public void setPlayerClass(PlayerClass playerClass) {
+    this.playerClass = playerClass.getClassName();
   }
 
   /**
