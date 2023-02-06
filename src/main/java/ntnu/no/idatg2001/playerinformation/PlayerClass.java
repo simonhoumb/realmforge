@@ -16,10 +16,10 @@ public enum PlayerClass {
   RANGER("Priest", 4);
 
   private static final HashMap<String, PlayerClass> BY_CLASSNAME = new HashMap<>();
-  private static final HashMap<Integer, PlayerClass > BY_CLASS_NUMBER = new HashMap<>();
+  private static final HashMap<Integer, PlayerClass> BY_CLASS_NUMBER = new HashMap<>();
 
   static {
-    for(PlayerClass playerClass : values()) {
+    for (PlayerClass playerClass : values()) {
       BY_CLASSNAME.put(playerClass.className, playerClass);
       BY_CLASS_NUMBER.put(playerClass.classNumber, playerClass);
     }
@@ -35,7 +35,7 @@ public enum PlayerClass {
    * @param className the class of the enum as a String.
    * @param classNumber the number to the enum as an int.
    */
-   PlayerClass(String className, int classNumber) {
+  PlayerClass(String className, int classNumber) {
     this.className = className;
     this.classNumber = classNumber;
   }

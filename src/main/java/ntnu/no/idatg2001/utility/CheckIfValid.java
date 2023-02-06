@@ -1,4 +1,4 @@
-package ntnu.no.idatg2001.utilities;
+package ntnu.no.idatg2001.utility;
 
 /**
  * This class is used to handle all the Valid checks for the application.

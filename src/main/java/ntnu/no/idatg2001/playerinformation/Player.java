@@ -2,7 +2,7 @@ package ntnu.no.idatg2001.playerinformation;
 
 import java.util.ArrayList;
 import java.util.List;
-import ntnu.no.idatg2001.utilities.CheckIfValid;
+import ntnu.no.idatg2001.utility.CheckIfValid;
 
 /**
  * Represents A Item Class.
@@ -13,13 +13,13 @@ import ntnu.no.idatg2001.utilities.CheckIfValid;
 public class Player {
 
   private String playerName; //Name of the Player.
-  private String playerClass;
+  private PlayerClass playerClass;
   private int playerHealthPoints; //The Health points of the Player.
   private int playerScore; //The score of the player.
   private int playerGold; //The gold of the player
   private List<String> playerInventory; // The players inventory
 
-  private final CheckIfValid checkIfValid = new CheckIfValid();
+  private CheckIfValid checkIfValid;
 
   /**
    * Instantiates a new Player.
@@ -31,15 +31,16 @@ public class Player {
    * @param playerClass        the player Class
    */
   public Player(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      PlayerClass playerClass) { //playerInventory ikke i konstruktør ifølge oppgavetekst.
-    setPlayerName(playerName);
-    setPlayerHealthPoints(playerHealthPoints);
-    setPlayerScore(playerScore);
-    setPlayerGold(playerGold);
-    setPlayerClass(playerClass);
-    this.playerInventory = new ArrayList<>() {
-    };
+      PlayerClass playerClass) {
+    this.playerName = playerName;
+    this.playerHealthPoints = playerHealthPoints;
+    this.playerScore = playerScore;
+    this.playerGold = playerGold;
+    this.playerClass = playerClass;
+    this.playerInventory = new ArrayList<>();
+    checkIfValid = new CheckIfValid();
   }
+
 
   /**
    * Gets player name.
@@ -76,8 +77,7 @@ public class Player {
   public void setPlayerHealthPoints(int playerHealthPoints) {
     if (checkIfValid.checkIfNumberIsNotLowerThanZero(playerHealthPoints)) {
       this.playerHealthPoints = playerHealthPoints;
-    }
-    else {
+    } else {
       this.playerHealthPoints = 0;
     }
   }
@@ -142,7 +142,7 @@ public class Player {
    *
    * @return the player class
    */
-  public String getPlayerClass() {
+  public PlayerClass getPlayerClass() {
     return playerClass;
   }
 
@@ -153,7 +153,7 @@ public class Player {
    * @return the player class
    */
   public void setPlayerClass(PlayerClass playerClass) {
-    this.playerClass = playerClass.getClassName();
+    this.playerClass = playerClass;
   }
 
   /**
@@ -163,6 +163,30 @@ public class Player {
    */
   public void addToInventory(String item) {
     playerInventory.add(item);
+  }
+
+  /**
+   * Adds multiple items to the player inventory.
+   *
+   * @param itemsToAdd the items to be added to the inventory
+   */
+  public void addToInventory(List<String> itemsToAdd) {
+    playerInventory.addAll(itemsToAdd);
+  }
+
+  /**
+   * Adds an item to the player inventory.
+   *
+   * @param item the item to be added to the inventory
+   */
+  public boolean removeFromInventory(String item) {
+    boolean itemRemoved = true;
+    try {
+      playerInventory.remove(item);
+    } catch (Exception exception) {
+      itemRemoved = false;
+    }
+    return itemRemoved;
   }
 
   @Override
