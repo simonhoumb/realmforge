@@ -2,7 +2,7 @@ package ntnu.no.idatg2001.goals;
 
 import ntnu.no.idatg2001.playerinformation.Player;
 
-public class GoldGoal {
+public class GoldGoal implements Goal  {
   private int minimumGold;
 
   public GoldGoal(int goldMinimum) {

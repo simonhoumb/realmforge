@@ -2,7 +2,7 @@ package ntnu.no.idatg2001.goals;
 
 import ntnu.no.idatg2001.playerinformation.Player;
 
-public class HealthGoal {
+public class HealthGoal implements Goal  {
   private int minimumHealth;
 
   public HealthGoal(int minimumHealth) {

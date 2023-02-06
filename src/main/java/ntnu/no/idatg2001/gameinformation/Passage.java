@@ -1,5 +1,6 @@
 package ntnu.no.idatg2001.gameinformation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ public class Passage {
   public Passage(String title, String content) {
     this.title = title;
     this.content = content;
+    this.links = new ArrayList<>();
   }
 
   public String getTitle() {
