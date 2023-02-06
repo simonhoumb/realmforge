@@ -13,7 +13,4 @@ public class Mage extends Player {
     super.addToInventory("Mana Potion");
     super.addToInventory("Mage Robe");
   }
-
-
-
 }
