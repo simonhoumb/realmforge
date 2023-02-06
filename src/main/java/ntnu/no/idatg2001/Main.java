@@ -13,7 +13,7 @@ public class Main {
         .setPlayerGold(500)
         .setPlayerHealthPoints(-10)
         .setPlayerScore(0)
-        .setPlayerClass(PlayerClass.Mage)
+        .setPlayerClass(PlayerClass.MAGE)
         .getPlayer();
     player.addToInventory("Health Potion");
     player.addToInventory("Sword");
