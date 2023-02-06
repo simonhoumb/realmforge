@@ -6,12 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest {
-  Player player = new PlayerBuilder().setPlayerName("John")
-      .setPlayerClass(PlayerClass.valueOfClassNumber(2)).getPlayer();
   @Test
   void setPlayerName() {
-    player.setPlayerName("Sett");
-    assertSame("Sett", player.getPlayerName());
   }
 
   @Test

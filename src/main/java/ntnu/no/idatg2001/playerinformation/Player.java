@@ -19,26 +19,18 @@ public class Player {
   private int playerGold; //The gold of the player
   private List<String> playerInventory; // The players inventory
 
-  private CheckIfValid checkIfValid;
+  private CheckIfValid checkIfValid = new CheckIfValid();;
 
   /**
    * Instantiates a new Player.
    *
    * @param playerName         the player name
-   * @param playerHealthPoints the player health points
-   * @param playerScore        the player score
-   * @param playerGold         the player gold
-   * @param playerClass        the player Class
    */
-  public Player(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      PlayerClass playerClass) {
+  public Player(String playerName) {
     this.playerName = playerName;
-    this.playerHealthPoints = playerHealthPoints;
-    this.playerScore = playerScore;
-    this.playerGold = playerGold;
-    this.playerClass = playerClass;
+    this.playerScore = 0;
+    this.playerGold = 10;
     this.playerInventory = new ArrayList<>();
-    checkIfValid = new CheckIfValid();
   }
 
 
