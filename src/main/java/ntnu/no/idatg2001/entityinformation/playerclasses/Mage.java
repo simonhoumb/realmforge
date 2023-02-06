@@ -1,9 +1,11 @@
-package ntnu.no.idatg2001.entityinformation;
+package ntnu.no.idatg2001.entityinformation.playerclasses;
+
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class Mage extends Entity {
   public Mage(String entityName) {
 
-    super(100,100,entityName,0, 100);
+    super(100, 100, entityName, 0, 100);
     super.addToInventory("Staff");
     super.addToInventory("Mana Potion");
     super.addToInventory("Mage Robe");
