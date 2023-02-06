@@ -17,6 +17,7 @@ class PlayerTest {
   @Test
   void setPlayerHealthPoints() {
     player.setPlayerHealthPoints(-10);
+    assertSame( 0, player.getPlayerHealthPoints());
   }
 
   @Test

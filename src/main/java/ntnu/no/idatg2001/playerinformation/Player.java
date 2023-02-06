@@ -16,7 +16,6 @@ public class Player {
   private int playerHealthPoints; //The Health points of the Player.
   private int playerScore; //The score of the player.
   private int playerGold; //The gold of the player
-  private  PlayerClass classOfPlayer;
   private List<String> playerInventory; // The players inventory
 
 
