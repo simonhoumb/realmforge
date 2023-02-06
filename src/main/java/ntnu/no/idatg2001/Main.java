@@ -21,7 +21,7 @@ public class Main {
     System.out.println(player);
 
     System.out.println(player.getPlayerClass());
-    player.setPlayerClass(PlayerClass.valueOfClassNumber(2));
+    player.setPlayerClass(PlayerClass.valueOfClassNumber(3));
     System.out.println(player.getPlayerClass());
   }
 }
