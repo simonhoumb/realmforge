@@ -10,10 +10,10 @@ import java.util.HashMap;
  */
 public enum PlayerClass {
 
-  Mage("Mage", 1),
-  Rouge("Rouge", 2),
-  Warrior("Warrior", 3),
-  Priest("Priest", 4);
+  MAGE("Mage", 1),
+  ROGUE("Rouge", 2),
+  WARRIOR("Warrior", 3),
+  RANGER("Priest", 4);
 
   private static final HashMap<String, PlayerClass> BY_CLASSNAME = new HashMap<>();
   private static final HashMap<Integer, PlayerClass > BY_CLASS_NUMBER = new HashMap<>();
