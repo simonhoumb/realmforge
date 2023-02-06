@@ -1,16 +1,14 @@
 package ntnu.no.idatg2001.playerinformation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Mage extends Player {
   private int mana;
 
-  public Mage(String playerName, int playerHealthPoints, int playerScore, int playerGold,
-      PlayerClass playerClass, int mana) {
+  public Mage(String playerName) {
 
-    super(playerName, playerHealthPoints, playerScore, playerGold, playerClass);
-    this.mana = mana;
+    super(playerName);
+    this.setPlayerHealthPoints(100);
+    this.mana = 100;
+    this.setPlayerClass(PlayerClass.MAGE);
     super.addToInventory("Staff");
     super.addToInventory("Mana Potion");
     super.addToInventory("Mage Robe");
