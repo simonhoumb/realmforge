@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.actions;
 
-import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class GoldAction implements Action {
   int gold;
@@ -9,7 +9,7 @@ public class GoldAction implements Action {
     this.gold = gold;
   }
 
-  public void execute(Player player) {
-    player.setPlayerGold(player.getPlayerGold() + gold);
+  public void execute(Entity entity) {
+    entity.setGold(entity.getGold() + gold);
   }
 }
