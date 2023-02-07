@@ -1,6 +1,5 @@
 package ntnu.no.idatg2001;
 
-import java.util.ArrayList;
 import java.util.List;
 import ntnu.no.idatg2001.gameinformation.Link;
 import ntnu.no.idatg2001.gameinformation.Passage;
