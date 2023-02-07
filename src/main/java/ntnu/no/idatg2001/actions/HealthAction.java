@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.actions;
 
-import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class HealthAction implements Action {
   int health;
@@ -9,7 +9,7 @@ public class HealthAction implements Action {
     this.health = health;
   }
 
-  public void execute(Player player) {
-    player.setPlayerHealthPoints(player.getPlayerHealthPoints() + health);
+  public void execute(Entity entity) {
+    entity.setEntityHealth(entity.getEntityHealth() + health);
   }
 }
