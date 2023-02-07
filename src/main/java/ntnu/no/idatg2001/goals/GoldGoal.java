@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.goals;
 
-import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class GoldGoal implements Goal  {
   private int minimumGold;
@@ -9,7 +9,7 @@ public class GoldGoal implements Goal  {
     this.minimumGold = goldMinimum;
   }
 
-  public boolean isFulfilled(Player player) {
-    return player.getPlayerGold() >= minimumGold;
+  public boolean isFulfilled(Entity entity) {
+    return entity.getGold() >= minimumGold;
   }
 }

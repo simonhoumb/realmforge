@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.goals;
 
-import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class HealthGoal implements Goal  {
   private int minimumHealth;
@@ -9,7 +9,7 @@ public class HealthGoal implements Goal  {
     this.minimumHealth = minimumHealth;
   }
 
-  public boolean isFulfilled(Player player) {
-    return player.getPlayerHealthPoints() >= minimumHealth;
+  public boolean isFulfilled(Entity entity) {
+    return entity.getEntityHealth() >= minimumHealth;
   }
 }
