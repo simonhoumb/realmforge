@@ -1,4 +1,4 @@
-package ntnu.no.idatg2001.playerinformation;
+package ntnu.no.idatg2001.entityinformation;
 
 import java.util.HashMap;
 

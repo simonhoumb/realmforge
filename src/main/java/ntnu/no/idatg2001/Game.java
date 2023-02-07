@@ -1,30 +1,29 @@
 package ntnu.no.idatg2001;
 
-import java.util.ArrayList;
 import java.util.List;
 import ntnu.no.idatg2001.gameinformation.Link;
 import ntnu.no.idatg2001.gameinformation.Passage;
 import ntnu.no.idatg2001.gameinformation.Story;
 import ntnu.no.idatg2001.goals.Goal;
-import ntnu.no.idatg2001.playerinformation.Player;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class Game {
-  private Player player;
+  private Entity entity;
   private Story story;
   private List<Goal> goals;
 
-  public Game(Player player, Story story, List<Goal> goals) {
-    this.player = player;
+  public Game(Entity entity, Story story, List<Goal> goals) {
+    this.entity = entity;
     this.story = story;
     this.goals = goals;
   }
 
-  public Player getPlayer() {
-    return player;
+  public Entity getPlayer() {
+    return entity;
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
+  public void setPlayer(Entity entity) {
+    this.entity = entity;
   }
 
   public Story getStory() {
