@@ -6,7 +6,7 @@ import ntnu.no.idatg2001.entityinformation.PlayerClass;
 public class Ranger extends Entity {
 
   public Ranger(String entityName) {
-    super(100,100, entityName,0,50);
+    super(100, 100, entityName, 0, 50);
     this.setEntityHealth(150);
     super.addToInventory("Bow");
     super.addToInventory("HealthPotion");

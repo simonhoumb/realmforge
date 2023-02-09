@@ -27,14 +27,14 @@ public abstract class Entity {
   private int luck; //Luck stat of the Entity.
   private int gold; //Gold for the Entity.
   private double damage = 30; //Damage the Entity starts with.
-  private double critChance = 0.0; //Entity CritChance.
+  private double criticalChance = 0.0; //Entity CriticalChance.
   private int armour; //Armor stat to the Entity.
   private String weapon = "hands"; //Weapon Entity Starts With.
   private List<String> playerInventory; // The players inventory
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
   public Entity() {
-    this(100,100,"default",0, 100);
+    this(100, 100, "default", 0, 100);
   }
 
   /**
@@ -45,7 +45,8 @@ public abstract class Entity {
    * @param entityName      the entity name
    * @param gold            the gold
    */
-  public Entity(int entityHealthMax, int entityHealth, String entityName, int gold, int entityMana) {
+  protected Entity(int entityHealthMax, int entityHealth, String entityName, int gold,
+      int entityMana) {
     this.entityHealthMax = entityHealthMax;
     this.entityHealth = entityHealth;
     this.entityName = entityName;
@@ -63,14 +64,14 @@ public abstract class Entity {
   }
 
   /**
-   * Sets entity health. if Health iss bigger than max health, health
+   * Sets entity health. if Health is bigger than max health, health
    * is set to maxHealth.
    *
    * @param entityHealth the entity health
    */
   public void setEntityHealth(int entityHealth) {
-    if (entityHealth > entityHealthMax) {
-      entityHealth = entityHealthMax;
+    if (entityHealth > this.entityHealthMax) {
+      this.entityHealth = this.entityHealthMax;
     }
     this.entityHealth = entityHealth;
   }
@@ -102,8 +103,8 @@ public abstract class Entity {
    * @param entityMana the entity mana
    */
   public void setEntityMana(int entityMana) {
-    if (entityMana > entityManaMax) {
-      entityMana = entityManaMax;
+    if (entityMana > this.entityManaMax) {
+      this.entityMana = this.entityManaMax;
     }
     this.entityMana = entityMana;
   }
@@ -149,17 +150,17 @@ public abstract class Entity {
    *
    * @return the crit chance
    */
-  public double getCritChance() {
-    return critChance;
+  public double getCriticalChance() {
+    return criticalChance;
   }
 
   /**
    * Sets crit chance.
    *
-   * @param critChance the crit chance
+   * @param criticalChance the crit chance
    */
-  public void setCritChance(double critChance) {
-    this.critChance = critChance;
+  public void setCriticalChance(double criticalChance) {
+    this.criticalChance = criticalChance;
   }
 
   /**
@@ -346,10 +347,6 @@ public abstract class Entity {
     playerInventory.add(item);
   }
 
-  public List<String> getPlayerInventory() {
-    return playerInventory;
-  }
-
   /**
    * Adds multiple items to the player inventory.
    *
@@ -357,6 +354,10 @@ public abstract class Entity {
    */
   public void addToInventory(List<String> itemsToAdd) {
     playerInventory.addAll(itemsToAdd);
+  }
+
+  public List<String> getPlayerInventory() {
+    return playerInventory;
   }
 
   /**
@@ -387,8 +388,8 @@ public abstract class Entity {
         + ", player Stats §§ "
         + " STR " + strength + ", "
         + " INT " + intelligence + ", "
-        + " DEX " +dexterity + ", "
-        + " LUCK " +luck + ", "
+        + " DEX " + dexterity + ", "
+        + " LUCK " + luck + ", "
         + " §§ "
         + '}';
   }
