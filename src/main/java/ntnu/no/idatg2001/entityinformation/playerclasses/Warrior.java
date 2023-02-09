@@ -6,7 +6,7 @@ import ntnu.no.idatg2001.entityinformation.PlayerClass;
 public class Warrior extends Entity {
 
   public Warrior(String playerName) {
-    super(200,200,playerName,0,50);
+    super(200, 200, playerName, 0, 50);
     super.addToInventory("GreatSword");
     super.addToInventory("HealthPotion");
     super.addToInventory("Shield");

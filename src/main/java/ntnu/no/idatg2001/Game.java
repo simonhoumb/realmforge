@@ -1,11 +1,12 @@
 package ntnu.no.idatg2001;
 
 import java.util.List;
+import ntnu.no.idatg2001.entityinformation.Entity;
 import ntnu.no.idatg2001.gameinformation.Link;
 import ntnu.no.idatg2001.gameinformation.Passage;
 import ntnu.no.idatg2001.gameinformation.Story;
 import ntnu.no.idatg2001.goals.Goal;
-import ntnu.no.idatg2001.entityinformation.Entity;
+
 
 public class Game {
   private Entity entity;
