@@ -1,4 +1,5 @@
-package ntnu.no.idatg2001.entityinformation;
+package ntnu.no.idatg2001.entityinformation.playerclasses;
+import ntnu.no.idatg2001.entityinformation.Entity;
 
 public class Mage extends Entity {
   public Mage(String entityName) {
