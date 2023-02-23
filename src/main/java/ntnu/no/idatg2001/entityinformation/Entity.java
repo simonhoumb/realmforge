@@ -72,8 +72,11 @@ public abstract class Entity {
   public void setEntityHealth(int entityHealth) {
     if (entityHealth > this.entityHealthMax) {
       this.entityHealth = this.entityHealthMax;
+    } else if (entityHealth < 0) {
+      this.entityHealth = 0;
+    } else {
+      this.entityHealth = entityHealth;
     }
-    this.entityHealth = entityHealth;
   }
 
   public int getEntityManaMax() {
@@ -105,8 +108,11 @@ public abstract class Entity {
   public void setEntityMana(int entityMana) {
     if (entityMana > this.entityManaMax) {
       this.entityMana = this.entityManaMax;
+    } else if (entityMana < 0) {
+      this.entityHealth = 0;
+    } else {
+      this.entityMana = entityMana;
     }
-    this.entityMana = entityMana;
   }
 
   /**
