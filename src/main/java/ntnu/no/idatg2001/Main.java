@@ -6,7 +6,7 @@ import ntnu.no.idatg2001.entityinformation.playerclasses.Ranger;
 public class Main {
 
   public static void main(String[] args) {
-    Entity ranger = new Ranger("Max");
-    System.out.println(ranger);
+    Entity player1 = new Ranger("Legolas");
+    System.out.println(player1);
   }
 }

@@ -11,9 +11,9 @@ import java.util.HashMap;
 public enum PlayerClass {
 
   MAGE("Mage", 1),
-  ROGUE("Rouge", 2),
+  ROGUE("Rogue", 2),
   WARRIOR("Warrior", 3),
-  RANGER("Priest", 4);
+  RANGER("Ranger", 4);
 
   private static final HashMap<String, PlayerClass> BY_CLASSNAME = new HashMap<>();
   private static final HashMap<Integer, PlayerClass> BY_CLASS_NUMBER = new HashMap<>();

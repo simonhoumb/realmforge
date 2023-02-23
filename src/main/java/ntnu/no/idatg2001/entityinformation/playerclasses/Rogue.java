@@ -6,7 +6,7 @@ import ntnu.no.idatg2001.entityinformation.PlayerClass;
 public class Rogue extends Entity {
 
   public Rogue(String playerName) {
-    super(75,75,playerName,0,75);
+    super(75, 75, playerName, 0, 75);
     super.addToInventory("Dagger");
     super.addToInventory("HealthPotion");
     super.addToInventory("PoisonBottle");
