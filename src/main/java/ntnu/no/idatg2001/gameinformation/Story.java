@@ -61,5 +61,12 @@ public class Story {
     return passages;
   }
 
-
+  @Override
+  public String toString() {
+    return "Story{" +
+        "title='" + title + '\'' +
+        ", passages=" + passages +
+        ", openingPassage=" + openingPassage +
+        '}';
+  }
 }
