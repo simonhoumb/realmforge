@@ -7,6 +7,6 @@ public class Main {
 
   public static void main(String[] args) throws IOException {
     StoryFileReader storyReader = new StoryFileReader();
-    storyReader.readFile("src/main/resources/story.Paths");
+    System.out.println((storyReader.readFile("src/main/resources/story.Paths")));
   }
 }
