@@ -37,6 +37,10 @@ public class Passage {
     return links;
   }
 
+  public boolean hasLinks() {
+    return (!this.links.isEmpty());
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

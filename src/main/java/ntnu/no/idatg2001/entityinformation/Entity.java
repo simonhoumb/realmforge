@@ -30,7 +30,7 @@ public abstract class Entity {
   private double criticalChance = 0.0; //Entity CriticalChance.
   private int armour; //Armor stat to the Entity.
   private String weapon = "hands"; //Weapon Entity Starts With.
-  private List<String> playerInventory; // The players inventory
+  private List<String> entityInventory; // The entity's inventory
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
   public Entity() {
@@ -51,7 +51,7 @@ public abstract class Entity {
     this.entityHealth = entityHealth;
     this.entityName = entityName;
     this.entityMana = entityMana;
-    this.playerInventory = new ArrayList<>();
+    this.entityInventory = new ArrayList<>();
   }
 
   /**
@@ -338,60 +338,65 @@ public abstract class Entity {
    * Sets player class.
    *
    * @param playerClass the player class
-   * @return the player class
    */
   public void setPlayerClass(PlayerClass playerClass) {
     this.playerClass = playerClass;
   }
 
   /**
-   * Adds an item to the player inventory.
+   * Adds an item to the entity's inventory.
    *
    * @param item the item to be added to the inventory
    */
   public void addToInventory(String item) {
-    playerInventory.add(item);
+    entityInventory.add(item);
   }
 
   /**
-   * Adds multiple items to the player inventory.
+   * Adds multiple items to the entity's inventory.
    *
    * @param itemsToAdd the items to be added to the inventory
    */
   public void addToInventory(List<String> itemsToAdd) {
-    playerInventory.addAll(itemsToAdd);
-  }
-
-  public List<String> getPlayerInventory() {
-    return playerInventory;
+    entityInventory.addAll(itemsToAdd);
   }
 
   /**
-   * Adds an item to the player inventory.
+   * Removes an item from the entity's inventory.
    *
-   * @param item the item to be added to the inventory
+   * @param item the item to be removed from the inventory
+   * @throws IllegalArgumentException ("Item not in entity's inventory.") if the item is not in the
+   *     entity's inventory.
    */
-  public boolean removeFromInventory(String item) {
-    boolean itemRemoved = true;
-    try {
-      playerInventory.remove(item);
-    } catch (Exception exception) {
-      itemRemoved = false;
+  public void removeFromInventory(String item) throws IllegalArgumentException {
+    if (!entityInventory.contains(item)) {
+      throw new IllegalArgumentException("Item not in entity's inventory.");
+    } else {
+      entityInventory.remove(item);
     }
-    return itemRemoved;
   }
+
+  /**
+   * Returns the entity's inventory.
+   *
+   * @return the inventory to be returned as a List.
+   */
+  public List<String> getEntityInventory() {
+    return entityInventory;
+  }
+
 
   @Override
   public String toString() {
-    return "Player{"
-        + "playerName= '" + entityName + '\''
-        + ", playerHealthPoints= " + entityHealth
-        + ", playerMana= " + entityMana
-        + ", playerScore= " + entityLevel
-        + ", playerGold= " + gold
+    return "Entity{"
+        + "entityName= '" + entityName + '\''
+        + ", entityHealthPoints= " + entityHealth
+        + ", entityMana= " + entityMana
+        + ", entityScore= " + entityLevel
+        + ", entityGold= " + gold
         + ", playerClass= " + playerClass
-        + ", playerInventory= " + playerInventory
-        + ", player Stats §§ "
+        + ", entityInventory= " + entityInventory
+        + ", entity Stats §§ "
         + " STR " + strength + ", "
         + " INT " + intelligence + ", "
         + " DEX " + dexterity + ", "

@@ -11,6 +11,6 @@ public class InventoryGoal implements Goal  {
   }
 
   public boolean isFulfilled(Entity entity) {
-    return entity.getPlayerInventory().equals(mandatoryItems);
+    return entity.getEntityInventory().equals(mandatoryItems);
   }
 }
