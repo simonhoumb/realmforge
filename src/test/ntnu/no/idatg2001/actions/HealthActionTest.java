@@ -1,6 +1,6 @@
 package ntnu.no.idatg2001.actions;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ntnu.no.idatg2001.entityinformation.Entity;
 import ntnu.no.idatg2001.entityinformation.playerclasses.Ranger;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class HealthActionTest {
 
   @Test
-  void settingEntityHealthAsLessThanZero() {
+   void settingEntityHealthAsLessThanZero() {
     Entity player = new Ranger("TestRanger");
     int expectedHealth = 0;
     player.setEntityHealth(-100);
