@@ -63,10 +63,10 @@ public class Story {
 
   @Override
   public String toString() {
-    return "Story{" +
-        "title='" + title + '\'' +
-        ", passages=" + passages +
-        ", openingPassage=" + openingPassage +
-        '}';
+    return "Story{"
+        + "title='" + title + '\''
+        + ", openingPassage=" + openingPassage
+        + ", passages=" + passages +
+        + '}';
   }
 }
