@@ -30,6 +30,7 @@ public class StoryFileReader{
           String linkReference = "";
           passageToAdd = new Passage(passageTitle, passageContent);
           while ((currentLine = reader.readLine()) != null && !currentLine.trim().isEmpty()) {
+            //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
             scanner = new Scanner(currentLine);
             for (String s; (s = scanner.findWithinHorizon("(?<=\\[).*?(?=\\])", 0)) != null;) {
                linkText = s;
