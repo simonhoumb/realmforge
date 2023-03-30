@@ -5,7 +5,7 @@ import ntnu.no.idatg2001.gameinformation.StoryFileReader;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     StoryFileReader storyReader = new StoryFileReader();
     System.out.println((storyReader.readFile("src/main/resources/story.Paths")));
   }
