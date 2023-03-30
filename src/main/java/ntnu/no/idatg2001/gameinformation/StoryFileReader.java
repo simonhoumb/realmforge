@@ -47,9 +47,8 @@ public class StoryFileReader{
         story = new Story(storyTitle, passagesToAdd.get(0));
       for (Passage passage : passagesToAdd) {
         story.addPassage(passage);
-        stories.add(story);
-
       }
+      stories.add(story);
     } catch (IOException e) {
       e.printStackTrace();
     }
