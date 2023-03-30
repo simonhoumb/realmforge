@@ -1,8 +1,12 @@
 package ntnu.no.idatg2001;
 
+import ntnu.no.idatg2001.entityinformation.Entity;
+import ntnu.no.idatg2001.entityinformation.playerclasses.Ranger;
+
 public class Main {
 
   public static void main(String[] args) {
-    System.out.println("Hello world!");
+    Entity player1 = new Ranger("Legolas");
+    System.out.println(player1);
   }
 }
