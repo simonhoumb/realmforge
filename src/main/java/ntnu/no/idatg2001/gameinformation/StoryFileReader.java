@@ -13,7 +13,8 @@ public class StoryFileReader {
   public StoryFileReader() {
 
   }
-
+  //Bare å slette dette når du har immplimentert den andre FileReaderen om den fungerer
+  //som den skal.
   public ArrayList<Story> storyArrayList(String filename) throws IOException {
     ArrayList<Story> story = new ArrayList<>();
     BufferedReader reader = Files.newBufferedReader(Path.of(filename));
