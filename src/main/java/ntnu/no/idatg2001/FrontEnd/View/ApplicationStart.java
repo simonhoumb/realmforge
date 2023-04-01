@@ -1,0 +1,45 @@
+package ntnu.no.idatg2001.FrontEnd.View;
+
+import java.io.IOException;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+public class ApplicationStart extends Application {
+  private static final double SCREEN_WIDTH = 800;
+  private static final double SCREEN_HEIGHT = 700;
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    Platform.runLater(() -> {
+      MainMenuView menuView = null;
+      try {
+        menuView = new MainMenuView(SCREEN_HEIGHT, SCREEN_WIDTH);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      Scene scene = new Scene(menuView, SCREEN_HEIGHT, SCREEN_WIDTH);
+      primaryStage.setScene(scene);
+
+      Screen screen = Screen.getPrimary();
+      Rectangle2D bounds = screen.getVisualBounds();
+
+      primaryStage.setWidth(bounds.getWidth());
+      primaryStage.setHeight(bounds.getHeight());
+      primaryStage.setFullScreen(true);
+      primaryStage.setFullScreenExitKeyCombination(KeyCombination.valueOf("Ctrl+Alt+F"));
+      primaryStage.setFullScreenExitHint("");
+      primaryStage.setResizable(false);
+      primaryStage.setTitle("StoryGameWIP");
+      primaryStage.show();
+    });
+  }
+
+  public static void startApplication(String[] args) {
+    launch();
+  }
+}
