@@ -1,15 +1,21 @@
 package ntnu.no.idatg2001.FrontEnd.View;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class ApplicationStart extends Application {
+
   private static final double SCREEN_WIDTH = 800;
   private static final double SCREEN_HEIGHT = 700;
 
@@ -23,6 +29,7 @@ public class ApplicationStart extends Application {
         throw new RuntimeException(e);
       }
       Scene scene = new Scene(menuView, SCREEN_HEIGHT, SCREEN_WIDTH);
+      Image icon = new Image(getClass().getResource("/images/fantasy.png").toExternalForm());
       primaryStage.setScene(scene);
 
       Screen screen = Screen.getPrimary();
@@ -33,7 +40,8 @@ public class ApplicationStart extends Application {
       primaryStage.setFullScreen(true);
       primaryStage.setFullScreenExitKeyCombination(KeyCombination.valueOf("Ctrl+Alt+F"));
       primaryStage.setFullScreenExitHint("");
-      primaryStage.setResizable(false);
+      primaryStage.getIcons().add(icon);
+      primaryStage.setResizable(true);
       primaryStage.setTitle("StoryGameWIP");
       primaryStage.show();
     });
