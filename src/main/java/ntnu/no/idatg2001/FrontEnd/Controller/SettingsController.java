@@ -33,7 +33,6 @@ public class SettingsController {
     this.mediaPlayer = mediaPlayer;
     this.exitDialog = exitDialog;
 
-    settingsView.getDialogPane().getStylesheets().add(("css/ExitConfirmationDialogStyleSheet.css"));
     settingsView.getDialogPane().setContent(settingsView.layout());
     settingsView.getDialogPane().getButtonTypes().addAll(settingsView.getSaveButton(), settingsView.getCancelButton());
     initHandlers();

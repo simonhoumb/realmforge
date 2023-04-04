@@ -1,7 +1,5 @@
-
 .dialog-pane {
-  "-fx-background-color: rgba(255, 255, 255, 0.9);"
-  -fx-background-radius: 20px;
+  -fx-background-radius: 22px;
   -fx-border-width: 3px;
   -fx-border-radius: 20px;
   -fx-border-color: #d4af37;
@@ -11,6 +9,7 @@
   -fx-text-fill: #7F5539;
   -fx-font-family: "Times New Roman";
   -fx-text-alignment: center;
+  -fx-background-radius: 20px;
 }
 
 .dialog-pane .button {
@@ -46,6 +45,7 @@
   -fx-background-color: #FFC799;
   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 1);
 }
+
 .dialog-pane .button:default:focused {
   -fx-border-color: black;
 }

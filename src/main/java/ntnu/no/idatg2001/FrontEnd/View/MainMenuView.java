@@ -103,10 +103,12 @@ public class MainMenuView extends BorderPane {
 
 
       StackPane stackPane = new StackPane();
+      stackPane.setBorder(getBorder());
       stackPane.getChildren().add(imageView);
 
       VBox contentBox = new VBox(20, stackPane, buttonBox);
       contentBox.setAlignment(Pos.CENTER);
+      contentBox.setMinSize(200,200);
       contentBox.setPadding(new Insets(10, 0, 0, 0));
       setCenter(contentBox);
       contentBox.widthProperty().addListener(((observableValue, oldValue, newValue) -> {
@@ -115,8 +117,7 @@ public class MainMenuView extends BorderPane {
       contentBox.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
         imageView.setFitHeight(newValue.doubleValue() *0.9);
       } ));
-      System.out.println(imageView.getFitHeight());
-      System.out.println(imageView.getFitWidth());
+
       return contentBox;
     }
 

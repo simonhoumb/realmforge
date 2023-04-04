@@ -48,6 +48,8 @@ public class ApplicationStart extends Application {
       primaryStage.setFullScreenExitHint("");
       primaryStage.getIcons().add(icon);
       primaryStage.setResizable(true);
+      primaryStage.setMinHeight(200);
+      primaryStage.setMinWidth(200);
       primaryStage.setTitle("StoryGameWIP");
       primaryStage.show();
     });

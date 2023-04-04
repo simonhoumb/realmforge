@@ -4,8 +4,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -20,6 +20,7 @@ import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
 
 public class ExitDialog extends Dialog<ButtonType> {
   private ResourceBundle resourceBundle;
+  private Dialog<ButtonType> exitDialog;
   private SettingsModel settings = new SettingsModel();
   private Label titleLabel;
   private Label messageLabel;
@@ -27,6 +28,7 @@ public class ExitDialog extends Dialog<ButtonType> {
   private ButtonType cancelButtonType;
 
   public ExitDialog() {
+    exitDialog = new Dialog<>();
     initStyle(StageStyle.TRANSPARENT);
     createDialogContent();
     setResultConverter(buttonType -> {
@@ -38,8 +40,10 @@ public class ExitDialog extends Dialog<ButtonType> {
       }
       return buttonType;
     });
+    getDialogPane().getScene().setFill(Color.TRANSPARENT);
+    getDialogPane().getStylesheets().add(("css/exitDialog.css"));
   }
-  private void createDialogContent() {
+  private StackPane createDialogContent() {
     Locale locale = new Locale(settings.getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     titleLabel = new Label(resourceBundle.getString("exit.title"));
@@ -48,32 +52,41 @@ public class ExitDialog extends Dialog<ButtonType> {
     messageLabel = new Label(resourceBundle.getString("exit.message"));
     messageLabel.setFont(Font.font(14));
 
-    yesButtonType = new ButtonType(resourceBundle.getString("yesButton"));
-    cancelButtonType = new ButtonType(resourceBundle.getString("cancelButton"));
-
-    getDialogPane().getButtonTypes().addAll(yesButtonType, cancelButtonType);
-
     VBox vbox = new VBox(titleLabel, messageLabel);
     vbox.setAlignment(Pos.CENTER);
     vbox.setSpacing(20);
 
-    StackPane stackPane = new StackPane();
-    stackPane.getChildren().add(vbox);
-    stackPane.setAlignment(Pos.CENTER);
-    stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
+    StackPane layout = new StackPane();
+    layout.getChildren().add(vbox);
+    layout.setAlignment(Pos.CENTER);
+    layout.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
 
-    getDialogPane().setContent(stackPane);
-    getDialogPane().getStylesheets().add(("css/ExitConfirmationDialogStyleSheet.css"));
+    getDialogPane().setContent(layout);
+    createConfirmButton();
+    createCancelButton();
+    getDialogPane().getButtonTypes().addAll(yesButtonType, cancelButtonType);
+    getDialogPane().setPrefHeight(140);
+    return layout;
   }
 
   public void updateLanguage(Locale locale) {
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     titleLabel.setText(resourceBundle.getString("exit.title"));
     messageLabel.setText(resourceBundle.getString("exit.message"));
-    titleLabel.setText(resourceBundle.getString("exit.title"));
-    messageLabel.setText(resourceBundle.getString("exit.message"));
     ((Button) getDialogPane().lookupButton(yesButtonType)).setText(resourceBundle.getString("yesButton"));
     ((Button) getDialogPane().lookupButton(cancelButtonType)).setText(resourceBundle.getString("cancelButton"));
+  }
+
+  private void createConfirmButton(){
+    ButtonType confirmButton = new ButtonType(resourceBundle.getString("yesButton"));
+    exitDialog.getDialogPane().getButtonTypes().add(confirmButton);
+    yesButtonType = confirmButton;
+
+  }
+  private void createCancelButton() {
+    ButtonType cancelButton = new ButtonType(resourceBundle.getString("cancelButton"));
+    exitDialog.getDialogPane().getButtonTypes().add(cancelButton);
+    cancelButtonType = cancelButton;
   }
 }
 

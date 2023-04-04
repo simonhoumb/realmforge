@@ -7,15 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.*;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
 
 public class SettingsView extends Dialog<ButtonType> {
 
-  private SettingsController settingsController;
-
-  private Dialog<ButtonType> dialog;
+  private Dialog<ButtonType> settingsDialog;
   private ChoiceBox<String> languageSelection;
   private Slider volumeSlider;
   private CheckBox muteCheckBox;
@@ -26,22 +25,23 @@ public class SettingsView extends Dialog<ButtonType> {
   private SettingsModel settings = new SettingsModel();
 
   public SettingsView(SettingsModel model) {
-    dialog = new Dialog<>();
-    initStyle(StageStyle.UNDECORATED);
-    dialog.getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
+    settingsDialog = new Dialog<>();
+    initStyle(StageStyle.TRANSPARENT);
     layout();
+    getDialogPane().getScene().setFill(Color.TRANSPARENT);
+    getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
 
   }
 
   private void createSaveButton() {
     ButtonType saveButton = new ButtonType(resourceBundle.getString("settings.save"), ButtonData.OK_DONE);
-    dialog.getDialogPane().getButtonTypes().add(saveButton);
+    settingsDialog.getDialogPane().getButtonTypes().add(saveButton);
     saveButtonType = saveButton;
   }
 
   private void createCancelButton() {
     ButtonType cancelButton = new ButtonType(resourceBundle.getString("settings.cancel"), ButtonData.CANCEL_CLOSE);
-    dialog.getDialogPane().getButtonTypes().add(cancelButton);
+    settingsDialog.getDialogPane().getButtonTypes().add(cancelButton);
     cancelButtonType = cancelButton;
   }
 
@@ -81,15 +81,15 @@ public class SettingsView extends Dialog<ButtonType> {
   }
 
   public Stage getDialogStage() {
-    return (Stage)dialog.getDialogPane().getScene().getWindow();
+    return (Stage)settingsDialog.getDialogPane().getScene().getWindow();
   }
 
   public Scene getDialogScene() {
-    return dialog.getDialogPane().getScene();
+    return settingsDialog.getDialogPane().getScene();
   }
 
   public Dialog<ButtonType> getDialog() {
-    return dialog;
+    return settingsDialog;
 
   }
   public ButtonType getSaveButton() {
@@ -126,12 +126,12 @@ public class SettingsView extends Dialog<ButtonType> {
     layout.addRow(0, new Label(resourceBundle.getString("settings.language")), languageSelection);
     layout.addRow(1, new Label(resourceBundle.getString("settings.volume")), volumeSlider);
     layout.addRow(2, new Label(resourceBundle.getString("settings.mute")), muteCheckBox);
-    dialog.getDialogPane().setContent(layout);
+    settingsDialog.getDialogPane().setContent(layout);
 
     // Add buttons to dialog
     createSaveButton();
     createCancelButton();
-    dialog.getDialogPane().getButtonTypes().addAll(saveButtonType,cancelButtonType);
+    settingsDialog.getDialogPane().getButtonTypes().addAll(saveButtonType,cancelButtonType);
     return layout;
   }
 }
