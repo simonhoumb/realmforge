@@ -110,10 +110,10 @@ public class MainMenuView extends BorderPane {
       contentBox.setPadding(new Insets(10, 0, 0, 0));
       setCenter(contentBox);
       contentBox.widthProperty().addListener(((observableValue, oldValue, newValue) -> {
-        imageView.setFitWidth(newValue.doubleValue() *0.8);
+        imageView.setFitWidth(newValue.doubleValue() *0.9);
       } ));
       contentBox.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
-        imageView.setFitHeight(newValue.doubleValue() *0.8);
+        imageView.setFitHeight(newValue.doubleValue() *0.9);
       } ));
       System.out.println(imageView.getFitHeight());
       System.out.println(imageView.getFitWidth());
