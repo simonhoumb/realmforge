@@ -1,15 +1,13 @@
 package ntnu.no.idatg2001.FrontEnd.View;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -23,12 +21,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import ntnu.no.idatg2001.FrontEnd.Controller.MainMenuController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsController;
-import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModule;
+import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
 
 
 public class MainMenuView extends BorderPane {
@@ -39,52 +35,50 @@ public class MainMenuView extends BorderPane {
   private JFXButton settingsButton;
   private JFXButton exitGameButton;
   private MediaPlayer mediaPlayer;
-  private StackPane settingsPane;
-  private SettingsController settings;
+  private SettingsController settingsController;
   private SettingsView settingsView;
+  private SettingsModel settings = new SettingsModel();
+  private ExitDialog exitDialog;
+  private ResourceBundle resourceBundle;
+
 
 
   public MainMenuView(double width, double height) throws IOException {
     setPrefSize(width, height);
     setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
     getStylesheets().add(cssFile);
-    MainMenuController menuController = new MainMenuController();
+    menuView();
+    settingsView();
+    playMusic();
+  }
 
-    Image logoImage = new Image(getClass().getResource("/images/Menutwo.jpg").openStream());
-    ImageView logoImageView = new ImageView(logoImage);
-    logoImageView.setPreserveRatio(true);
-    logoImageView.preserveRatioProperty().set(true);
-    setTop(logoImageView);
+    public VBox menuView() throws IOException {
+      Locale locale = new Locale(settings.getLocale().toString());
+      resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+      //Buttons for the menu
+      newGameButton = new JFXButton(resourceBundle.getString("menu.newGame"));
+      newGameButton.setId("newGameButton");
 
-    String musicFile = "/music/One-Bard-Band.mp3";
-    Media music = new Media(getClass().getResource(musicFile).toExternalForm());
-    mediaPlayer = new MediaPlayer(music);
-    mediaPlayer.setAutoPlay(true);
-    mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+      loadGameButton = new JFXButton(resourceBundle.getString("menu.loadGame"));
+      loadGameButton.setId("loadGameButton");
 
-    //Buttons for the menu
-    newGameButton = new JFXButton("New Game");
-    newGameButton.setId("newGameButton");
+      settingsButton = new JFXButton(resourceBundle.getString("menu.settings"));
+      settingsButton.setId("settingsButton");
 
-    loadGameButton = new JFXButton("Load Game");
-    loadGameButton.setId("loadGameButton");
+      settingsButton.setOnAction(event -> {
+        settingsView();
+        settingsView.initOwner(getScene().getWindow());
+        settingsController.showAndWait();
+        updateButtonLabels();
+      });
 
-    settingsButton = new JFXButton("settings");
-    settingsButton.setId("settingsButton");
-
-    settingsButton.setOnAction(event -> {
-      settingsView = new SettingsView();
-      settingsView.initOwner(getScene().getWindow());
-      settingsView.showAndWait();
-    });
-
-      exitGameButton = new JFXButton("Exit Game");
+      exitGameButton = new JFXButton(resourceBundle.getString("menu.exitGame"));
       exitGameButton.setId("exitButton");
 
       exitGameButton.setOnAction(event1 -> {
-        ExitDialog dialog = new ExitDialog();
-        dialog.initOwner(getScene().getWindow());
-        dialog.showAndWait();
+        settingsView();
+        exitDialog.initOwner(getScene().getWindow());
+        exitDialog.showAndWait();
       });
 
       addEventFilter(KeyEvent.KEY_PRESSED, event1 -> {
@@ -95,7 +89,6 @@ public class MainMenuView extends BorderPane {
           dialog.showAndWait();
         }
       });
-
       //Add button action
 
       //a box to hold the buttons
@@ -103,9 +96,44 @@ public class MainMenuView extends BorderPane {
       buttonBox.setAlignment(Pos.CENTER);
 
       //a box to hold the buttons and the Title
+      Image logoImage = new Image(getClass().getResource("/images/Menutwo.jpg").openStream());
+      ImageView logoImageView = new ImageView(logoImage);
+      logoImageView.setPreserveRatio(true);
+      logoImageView.preserveRatioProperty().set(true);
+      setTop(logoImageView);
       VBox contentBox = new VBox(40, logoImageView, buttonBox);
       contentBox.setAlignment(Pos.CENTER);
       contentBox.setPadding(new Insets(10, 0, 0, 0));
       setCenter(contentBox);
+      return contentBox;
+    }
+
+  private void playMusic() {
+    String musicFile = "/music/One-Bard-Band.mp3";
+    Media music = new Media(getClass().getResource(musicFile).toExternalForm());
+    mediaPlayer = new MediaPlayer(music);
+    mediaPlayer.setVolume(settings.getVolumeSliderValue() / 100);
+    mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+    mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+    if (!settings.isMuted()){
+      mediaPlayer.play();
+    }
+  }
+  private void settingsView() {
+    settingsView = new SettingsView(settings);
+    exitDialog = new ExitDialog();
+    try {
+      settingsController = new SettingsController(settings, settingsView, mediaPlayer,exitDialog);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+  public void updateButtonLabels() {
+    Locale locale = new Locale(settings.getLocale().toString());
+    resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+    newGameButton.setText(resourceBundle.getString("menu.newGame"));
+    loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
+    settingsButton.setText(resourceBundle.getString("menu.settings"));
+    exitGameButton.setText(resourceBundle.getString("menu.exitGame"));
   }
 }
