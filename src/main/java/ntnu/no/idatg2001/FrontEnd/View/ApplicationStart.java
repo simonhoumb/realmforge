@@ -22,26 +22,27 @@ public class ApplicationStart extends Application {
   private static final double SCREEN_WIDTH = 800;
   private static final double SCREEN_HEIGHT = 700;
 
-  private MediaPlayer mediaPlayer;
-
   @Override
   public void start(Stage primaryStage) throws Exception {
     Platform.runLater(() -> {
+      Screen screen = Screen.getPrimary();
+      double screenWidth = screen.getBounds().getWidth();
+      double screenHeight = screen.getBounds().getWidth();
       MainMenuView menuView = null;
       try {
-        menuView = new MainMenuView(SCREEN_HEIGHT, SCREEN_WIDTH);
+        menuView = new MainMenuView(screenHeight, screenWidth);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-      Scene scene = new Scene(menuView, SCREEN_HEIGHT, SCREEN_WIDTH);
+      Scene scene = new Scene(menuView, screenHeight, screenWidth);
       Image icon = new Image(getClass().getResource("/images/fantasy.png").toExternalForm());
       primaryStage.setScene(scene);
 
-      Screen screen = Screen.getPrimary();
-      Rectangle2D bounds = screen.getVisualBounds();
+      primaryStage.setX((screenWidth - primaryStage.getWidth()) / 2);
+      primaryStage.setY((screenHeight - primaryStage.getHeight()) / 2);
 
-      primaryStage.setWidth(bounds.getWidth());
-      primaryStage.setHeight(bounds.getHeight());
+      primaryStage.setWidth(screenWidth * 0.8);
+      primaryStage.setHeight(screenHeight * 0.8);
       primaryStage.setFullScreen(true);
       primaryStage.setFullScreenExitKeyCombination(KeyCombination.valueOf("Ctrl+Alt+F"));
       primaryStage.setFullScreenExitHint("");

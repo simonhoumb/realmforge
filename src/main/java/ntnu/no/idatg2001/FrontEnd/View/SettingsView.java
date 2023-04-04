@@ -28,7 +28,7 @@ public class SettingsView extends Dialog<ButtonType> {
   public SettingsView(SettingsModel model) {
     dialog = new Dialog<>();
     initStyle(StageStyle.UNDECORATED);
-    dialog.getDialogPane().getStylesheets().add(("css/ExitConfirmationDialogStyleSheet.css"));
+    dialog.getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
     layout();
 
   }
@@ -100,7 +100,7 @@ public class SettingsView extends Dialog<ButtonType> {
   }
   public GridPane layout() {
     Locale locale = new Locale(settings.getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     // Create language selection box
     languageSelection = new ChoiceBox<>();
     languageSelection.getItems().addAll(

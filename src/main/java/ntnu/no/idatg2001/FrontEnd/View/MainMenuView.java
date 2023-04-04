@@ -54,7 +54,7 @@ public class MainMenuView extends BorderPane {
 
     public VBox menuView() throws IOException {
       Locale locale = new Locale(settings.getLocale().toString());
-      resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+      resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
       //Buttons for the menu
       newGameButton = new JFXButton(resourceBundle.getString("menu.newGame"));
       newGameButton.setId("newGameButton");
@@ -97,14 +97,26 @@ public class MainMenuView extends BorderPane {
 
       //a box to hold the buttons and the Title
       Image logoImage = new Image(getClass().getResource("/images/Menutwo.jpg").openStream());
-      ImageView logoImageView = new ImageView(logoImage);
-      logoImageView.setPreserveRatio(true);
-      logoImageView.preserveRatioProperty().set(true);
-      setTop(logoImageView);
-      VBox contentBox = new VBox(40, logoImageView, buttonBox);
+      ImageView imageView = new ImageView(logoImage);
+      imageView.setPreserveRatio(true);
+      imageView.autosize();
+
+
+      StackPane stackPane = new StackPane();
+      stackPane.getChildren().add(imageView);
+
+      VBox contentBox = new VBox(20, stackPane, buttonBox);
       contentBox.setAlignment(Pos.CENTER);
       contentBox.setPadding(new Insets(10, 0, 0, 0));
       setCenter(contentBox);
+      contentBox.widthProperty().addListener(((observableValue, oldValue, newValue) -> {
+        imageView.setFitWidth(newValue.doubleValue() *0.8);
+      } ));
+      contentBox.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
+        imageView.setFitHeight(newValue.doubleValue() *0.8);
+      } ));
+      System.out.println(imageView.getFitHeight());
+      System.out.println(imageView.getFitWidth());
       return contentBox;
     }
 
@@ -130,7 +142,7 @@ public class MainMenuView extends BorderPane {
   }
   public void updateButtonLabels() {
     Locale locale = new Locale(settings.getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));

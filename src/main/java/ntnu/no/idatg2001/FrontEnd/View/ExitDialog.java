@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -40,7 +41,7 @@ public class ExitDialog extends Dialog<ButtonType> {
   }
   private void createDialogContent() {
     Locale locale = new Locale(settings.getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     titleLabel = new Label(resourceBundle.getString("exit.title"));
     titleLabel.setFont(Font.font(18));
 
@@ -54,10 +55,11 @@ public class ExitDialog extends Dialog<ButtonType> {
 
     VBox vbox = new VBox(titleLabel, messageLabel);
     vbox.setAlignment(Pos.CENTER);
-    vbox.setSpacing(10);
+    vbox.setSpacing(20);
 
     StackPane stackPane = new StackPane();
     stackPane.getChildren().add(vbox);
+    stackPane.setAlignment(Pos.CENTER);
     stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
 
     getDialogPane().setContent(stackPane);
@@ -65,7 +67,7 @@ public class ExitDialog extends Dialog<ButtonType> {
   }
 
   public void updateLanguage(Locale locale) {
-    resourceBundle = ResourceBundle.getBundle("exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     titleLabel.setText(resourceBundle.getString("exit.title"));
     messageLabel.setText(resourceBundle.getString("exit.message"));
     titleLabel.setText(resourceBundle.getString("exit.title"));
