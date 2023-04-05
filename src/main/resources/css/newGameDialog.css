@@ -8,6 +8,7 @@
 
 .dialog-pane .label {
   -fx-text-fill: #7F5539;
+  -fx-font-size: 20px;
   -fx-font-family: "Times New Roman";
   -fx-text-alignment: center;
   -fx-background-radius: 20px;

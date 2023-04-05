@@ -69,19 +69,10 @@ public class ExitDialog extends Dialog<ButtonType> {
     return layout;
   }
 
-  public void updateLanguage(Locale locale) {
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
-    titleLabel.setText(resourceBundle.getString("exit.title"));
-    messageLabel.setText(resourceBundle.getString("exit.message"));
-    ((Button) getDialogPane().lookupButton(yesButtonType)).setText(resourceBundle.getString("yesButton"));
-    ((Button) getDialogPane().lookupButton(cancelButtonType)).setText(resourceBundle.getString("cancelButton"));
-  }
-
   private void createConfirmButton(){
     ButtonType confirmButton = new ButtonType(resourceBundle.getString("yesButton"));
     exitDialog.getDialogPane().getButtonTypes().add(confirmButton);
     yesButtonType = confirmButton;
-
   }
   private void createCancelButton() {
     ButtonType cancelButton = new ButtonType(resourceBundle.getString("cancelButton"));
