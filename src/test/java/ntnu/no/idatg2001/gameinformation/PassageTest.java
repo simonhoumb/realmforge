@@ -26,11 +26,13 @@ class PassageTest {
     void validLinkAddedDoesNotThrowException() {
       Link testLink = new Link("testText", "testReference");
       assertTrue(passage.addLink(testLink));
+      assertTrue(passage.getLinks().contains(testLink));
     }
 
     @Test
     void notValidLinkAddedThrowsException() {
       assertFalse(passage.addLink(null));
+      assertTrue(passage.getLinks().isEmpty());
     }
   }
 
