@@ -1,0 +1,79 @@
+.dialog-pane {
+  -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.vbox {
+  -fx-background-color: rgba(255, 255, 255, 0.8);
+  -fx-background-radius: 15px;
+}
+.table-cell {
+  -fx-text-fill: black;
+}
+
+.table-row-cell {
+  -fx-background-color: transparent;
+}
+
+.table-row-cell:odd {
+  -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+.table-row-cell:selected {
+  -fx-background-color: rgba(129, 129, 129, 0.5);
+  -fx-text-fill: Black;
+}
+
+.table-view {
+  -fx-background-color: transparent;
+  -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+  -fx-background-color: #d4af37;
+}
+
+.table-view .column-header-background .label {
+  -fx-font-weight: bold;
+}
+
+.table-view .column-header, .table-view .filler {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+.table-view:focused .table-row-cell:selected {
+  -fx-background-color: rgba(234, 194, 65, 0.71);
+  -fx-text-fill: Black;
+}
+
+.button {
+  -fx-background-color: #FFE0BD;
+  -fx-background-radius: 50px;
+  -fx-text-fill: #7F5539;
+  -fx-font-family: "Times New Roman";
+  -fx-font-size: 16px;
+  -fx-border-radius: 50px;
+  -fx-padding: 8px 16px;
+  -fx-alignment: center;
+}
+
+.button:hover {
+  -fx-background-color: #FFC799;
+}
+
+.button:pressed {
+  -fx-background-color: rgba(255, 255, 255, 1.0);
+}
+
+.button:default {
+  -fx-background-color: #FFE0BD;
+  -fx-text-fill: #7F5539;
+  -fx-font-weight: bold;
+}
+
+.button:default:hover {
+  -fx-background-color: rgba(255, 199, 153, 0.87);
+}
+
+.button:default:pressed {
+  -fx-background-color: #FFA940;
+}

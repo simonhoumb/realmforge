@@ -2,8 +2,8 @@ package ntnu.no.idatg2001.actions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ntnu.no.idatg2001.entityinformation.Entity;
-import ntnu.no.idatg2001.entityinformation.playerclasses.Ranger;
+import ntnu.no.idatg2001.BackEnd.entityinformation.Entity;
+import ntnu.no.idatg2001.BackEnd.entityinformation.playerclasses.Ranger;
 import org.junit.jupiter.api.Test;
 
 class HealthActionTest {

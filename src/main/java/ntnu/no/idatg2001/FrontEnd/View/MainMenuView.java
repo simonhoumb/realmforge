@@ -1,30 +1,27 @@
 package ntnu.no.idatg2001.FrontEnd.View;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import ntnu.no.idatg2001.FrontEnd.Controller.MainMenuController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
 
@@ -38,11 +35,12 @@ public class MainMenuView extends BorderPane {
   private JFXButton exitGameButton;
   private MediaPlayer mediaPlayer;
   private SettingsController settingsController;
-  private SettingsView settingsView;
+  private SettingsDialog settingsDialog;
   private NewGameDialog newGameDialog;
   private SettingsModel settings = new SettingsModel();
-  private ExitDialog exitDialog;
   private ResourceBundle resourceBundle;
+  private LoadGameDialog loadGameDialog;
+
 
 
   public MainMenuView(double width, double height) throws IOException {
@@ -53,7 +51,7 @@ public class MainMenuView extends BorderPane {
     playMusic();
   }
 
-  public VBox menuView() throws IOException {
+  public void menuView() throws IOException {
     Locale locale = new Locale(settings.getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     //Buttons for the menu
@@ -61,46 +59,39 @@ public class MainMenuView extends BorderPane {
     newGameButton = new JFXButton(resourceBundle.getString("menu.newGame"));
     newGameButton.setId("newGameButton");
     newGameButton.setOnAction(actionEvent -> {
-      newGameView(resourceBundle);
+      newGameView();
       newGameDialog.initOwner(getScene().getWindow());
       Optional<ButtonType> result = newGameDialog.showAndWait();
       if (result.isPresent()) {
         ButtonType choice = result.get();
       }
+
     });
-
-
     loadGameButton = new JFXButton(resourceBundle.getString("menu.loadGame"));
     loadGameButton.setId("loadGameButton");
+
+    loadGameButton.setOnAction(actionEvent -> {
+      loadGameView();
+      loadGameDialog.initOwner(getScene().getWindow());
+      loadGameDialog.showAndWait();
+    } );
 
     settingsButton = new JFXButton(resourceBundle.getString("menu.settings"));
     settingsButton.setId("settingsButton");
 
     settingsButton.setOnAction(event -> {
       settingsView();
-      settingsView.initOwner(getScene().getWindow());
+      settingsDialog.initOwner(getScene().getWindow());
       settingsController.showAndWait();
       updateButtonLabels();
     });
 
     exitGameButton = new JFXButton(resourceBundle.getString("menu.exitGame"));
-    exitGameButton.setId("exitButton");
-
     exitGameButton.setOnAction(event1 -> {
-      exitView();
-      exitDialog.initOwner(getScene().getWindow());
-      exitDialog.showAndWait();
+      ExitDialogView exitDialogView = new ExitDialogView(settings);
+      exitDialogView.initOwner(getScene().getWindow());
+      exitDialogView.showAndWait();
     });
-
-    addEventFilter(KeyEvent.KEY_PRESSED, event1 -> {
-      if (event1.getCode() == KeyCode.ESCAPE) {
-        event1.consume(); // consume the event to prevent it from propagating
-        ExitDialog dialog = new ExitDialog();
-        dialog.initOwner(getScene().getWindow());
-        dialog.showAndWait();
-      }
-    });
-    //Add button action
 
     //a box to hold the buttons
     HBox buttonBox = new HBox(10, newGameButton, loadGameButton, settingsButton, exitGameButton);
@@ -127,8 +118,7 @@ public class MainMenuView extends BorderPane {
     contentBox.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
       imageView.setFitHeight(newValue.doubleValue() * 0.9);
     }));
-
-    return contentBox;
+    //return contentBox;
   }
 
   private void playMusic() {
@@ -144,20 +134,18 @@ public class MainMenuView extends BorderPane {
   }
 
   private void settingsView() {
-    settingsView = new SettingsView(settings);
+    settingsDialog = new SettingsDialog(settings);
     try {
-      settingsController = new SettingsController(settings, settingsView, mediaPlayer, exitDialog);
+      settingsController = new SettingsController(settings, settingsDialog, mediaPlayer);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
-
-  private void exitView() {
-    exitDialog = new ExitDialog();
+  private void newGameView() {
+    newGameDialog = new NewGameDialog(settings, getScene());
   }
-
-  private void newGameView(ResourceBundle bundle) {
-    newGameDialog = new NewGameDialog(bundle);
+  private void loadGameView() {
+    loadGameDialog = new LoadGameDialog(settings);
   }
 
   public void updateButtonLabels() {
@@ -167,5 +155,24 @@ public class MainMenuView extends BorderPane {
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));
     exitGameButton.setText(resourceBundle.getString("menu.exitGame"));
+  }
+
+  public JFXButton getExitGameButton() {
+    return exitGameButton;
+  }
+
+  public JFXButton getNewGameButton() {
+    return newGameButton;
+  }
+
+  public JFXButton getLoadGameButton() {
+    return loadGameButton;
+  }
+
+  public JFXButton getSettingsButton() {
+    return settingsButton;
+  }
+  public Scene getMainScene() {
+    return getScene();
   }
 }

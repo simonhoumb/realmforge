@@ -1,78 +1,65 @@
 package ntnu.no.idatg2001.FrontEnd.Controller;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonBase;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.media.MediaPlayer;
-import ntnu.no.idatg2001.FrontEnd.View.ExitDialog;
-import ntnu.no.idatg2001.FrontEnd.View.MainMenuView;
-import ntnu.no.idatg2001.FrontEnd.View.SettingsView;
+import ntnu.no.idatg2001.FrontEnd.View.ExitDialogView;
+import ntnu.no.idatg2001.FrontEnd.View.SettingsDialog;
 
 public class SettingsController {
 
   private SettingsModel settingsModel;
-  private SettingsView settingsView;
+  private SettingsDialog settingsDialog;
   private MediaPlayer mediaPlayer;
   private ResourceBundle resources;
-  private ExitDialog exitDialog;
+  private ExitDialogView exitDialogView;
 
-  public SettingsController(SettingsModel settingsModel, SettingsView settingsView, MediaPlayer mediaPlayer, ExitDialog exitDialog) throws Exception {
+  public SettingsController(SettingsModel settingsModel, SettingsDialog settingsDialog, MediaPlayer mediaPlayer) throws Exception {
     this.settingsModel = settingsModel;
-    this.settingsView = settingsView;
+    this.settingsDialog = settingsDialog;
     this.mediaPlayer = mediaPlayer;
-    this.exitDialog = exitDialog;
 
-    settingsView.getDialogPane().setContent(settingsView.layout());
-    settingsView.getDialogPane().getButtonTypes().addAll(settingsView.getSaveButton(), settingsView.getCancelButton());
+    settingsDialog.getDialogPane().setContent(settingsDialog.layout());
+    settingsDialog.getDialogPane().getButtonTypes().addAll(settingsDialog.getSaveButton(), settingsDialog.getCancelButton());
     initHandlers();
   }
 
   private void initHandlers() throws Exception {
     // Handle save button
-    ButtonBase saveButton = (ButtonBase) settingsView.getDialogPane().lookupButton(settingsView.getSaveButton());
+    ButtonBase saveButton = (ButtonBase) settingsDialog.getDialogPane().lookupButton(settingsDialog.getSaveButton());
     saveButton.addEventHandler(ActionEvent.ACTION, event -> {
       // Update the model with new settings data
-      settingsModel.setLanguageSelection(settingsView.getLanguageSelection());
-      settingsModel.setVolumeSliderValue(settingsView.getVolumeSliderValue());
-      settingsModel.setMuted(settingsView.isMuteCheckBoxSelected());
+      settingsModel.setLanguageSelection(settingsDialog.getLanguageSelection());
+      settingsModel.setVolumeSliderValue(settingsDialog.getVolumeSliderValue());
+      settingsModel.setMuted(settingsDialog.isMuteCheckBoxSelected());
 
 
       // Save the settings data to a file
       settingsModel.saveSettings();
 
       // Close the settings dialog
-      settingsView.close();
+      settingsDialog.close();
     });
 
-    settingsView.getMuteCheckBox().selectedProperty().addListener((observable, oldValue, newValue)-> {
+    settingsDialog.getMuteCheckBox().selectedProperty().addListener((observable, oldValue, newValue)-> {
       if (newValue) {
         mediaPlayer.pause();
       } else {
         mediaPlayer.play();
     }});
 
-    settingsView.getVolumeSlider().valueProperty().addListener((observable, oldValue, newValue) -> {
-      double volume = settingsView.getVolumeSliderValue() / 100;
+    settingsDialog.getVolumeSlider().valueProperty().addListener((observable, oldValue, newValue) -> {
+      double volume = settingsDialog.getVolumeSliderValue() / 100;
       mediaPlayer.setVolume(volume);
     });
 
 
     // Handle cancel button
-    settingsView.getDialog().getDialogPane().lookupButton(settingsView.getCancelButton())
+    settingsDialog.getDialog().getDialogPane().lookupButton(settingsDialog.getCancelButton())
         .addEventHandler(ActionEvent.ACTION, event -> {
           // Close the settings dialog
-          settingsView.close();
+          settingsDialog.close();
         });
   }
 
@@ -81,40 +68,40 @@ public class SettingsController {
     settingsModel.loadSettings();
 
     // Update the view with the settings data from the model
-    settingsView.setLanguageSelection(settingsModel.getLanguageSelection());
-    settingsView.setVolumeSliderValue(settingsModel.getVolumeSliderValue());
-    settingsView.setMuteCheckBoxSelected(settingsModel.isMuted());
+    settingsDialog.setLanguageSelection(settingsModel.getLanguageSelection());
+    settingsDialog.setVolumeSliderValue(settingsModel.getVolumeSliderValue());
+    settingsDialog.setMuteCheckBoxSelected(settingsModel.isMuted());
 
     // Show the settings dialog
-    settingsView.showAndWait();
+    settingsDialog.showAndWait();
   }
 
   public void close() {
-    settingsView.close();
+    settingsDialog.close();
   }
 
   public void setLanguageSelection(String language) {
-    settingsView.setLanguageSelection(language);
+    settingsDialog.setLanguageSelection(language);
   }
 
   public String getLanguageSelection() {
-    return settingsView.getLanguageSelection();
+    return settingsDialog.getLanguageSelection();
   }
 
   public void setVolumeSliderValue(double volumeSliderValue) {
-    settingsView.setVolumeSliderValue(volumeSliderValue);
+    settingsDialog.setVolumeSliderValue(volumeSliderValue);
   }
 
   public double getVolumeSliderValue() {
-    return settingsView.getVolumeSliderValue();
+    return settingsDialog.getVolumeSliderValue();
   }
 
   public void setMuteCheckBoxSelected(boolean isMuted) {
-    settingsView.setMuteCheckBoxSelected(isMuted);
+    settingsDialog.setMuteCheckBoxSelected(isMuted);
   }
 
   public boolean isMuteCheckBoxSelected() {
-    return settingsView.isMuteCheckBoxSelected();
+    return settingsDialog.isMuteCheckBoxSelected();
   }
   public void changeLanguage(String language) {
 

@@ -1,9 +1,11 @@
 package ntnu.no.idatg2001.FrontEnd.View;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -17,38 +19,37 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ntnu.no.idatg2001.FrontEnd.Controller.NewGameController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
+import ntnu.no.idatg2001.FrontEnd.View.CreateStoryView;
 
 public class NewGameDialog extends Dialog<ButtonType> {
-
-  private Dialog<ButtonType> newGameDialog;
   private NewGameController newGameController;
-  private SettingsModel settings = new SettingsModel();
+  private CreateStoryView createStoryView;
   private Button newStoryButton;
   private Button createStoryButton;
   private Button backToMainMenuButton;
   private ResourceBundle resourceBundle;
-  private Label newGameLable;
+  private Label newGameLabel;
+  private SettingsModel settings;
+  private MainMenuView mainMenuView;
 
-
-  public NewGameDialog(ResourceBundle bundle) {
-    newGameDialog = new Dialog<>();
-    getDialogPane().setContent(layout());
+  public NewGameDialog(SettingsModel settings, Scene mainMenuScene) {
+    getDialogPane().setContent(layout(settings, mainMenuScene));
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add("css/newGameDialog.css");
   }
 
-  private GridPane layout() {
+  private GridPane layout(SettingsModel settings, Scene mainMenuScene) {
     Locale locale = new Locale(settings.getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
 
-    newGameLable = new Label();
-    newGameLable.setText(resourceBundle.getString("newGameHeaderText"));
-    newGameLable.setWrapText(true);
-    newGameLable.setMaxWidth(Double.MAX_VALUE);
+    newGameLabel = new Label();
+    newGameLabel.setText(resourceBundle.getString("newGameHeaderText"));
+    newGameLabel.setWrapText(true);
+    newGameLabel.setMaxWidth(Double.MAX_VALUE);
 
     GridPane layout = new GridPane();
-    layout.setHgap(10);
+    layout.setHgap(30);
     layout.setVgap(10);
     layout.setMaxWidth(Double.MAX_VALUE);
     layout.setMaxHeight(Double.MAX_VALUE);
@@ -58,7 +59,7 @@ public class NewGameDialog extends Dialog<ButtonType> {
     VBox vBox = new VBox();
 
     createPlayNewStoryButton(resourceBundle);
-    createCreateStoryButton(resourceBundle);
+    createCreateStoryButton(resourceBundle, mainMenuScene, mainMenuView);
     createBackToMainMenuButton(resourceBundle);
     vBox.fillWidthProperty();
     vBox.getContentBias();
@@ -67,9 +68,10 @@ public class NewGameDialog extends Dialog<ButtonType> {
     newStoryButton.setPrefSize(150,30);
     backToMainMenuButton.setPrefSize(100,30);
 
-    layout.add(newGameLable,1,0);
+    layout.add(newGameLabel,0,0);
     layout.add(vBox,0,1);
-    layout.add(backToMainMenuButton,2,2);
+    layout.add(backToMainMenuButton,1,2);
+    getDialogPane().setPrefHeight(200);
     return layout;
   }
 
@@ -83,7 +85,7 @@ public class NewGameDialog extends Dialog<ButtonType> {
     return newStoryButton;
   }
 
-  public Button createCreateStoryButton(ResourceBundle bundle) {
+  public Button createCreateStoryButton(ResourceBundle bundle, Scene mainMenuScene, MainMenuView mainMenuView) {
     createStoryButton = new Button(bundle.getString("createStoryButton"));
     ButtonType createStoryType = new ButtonType(bundle.getString("createStoryButton"),
         ButtonData.OK_DONE);
@@ -91,6 +93,20 @@ public class NewGameDialog extends Dialog<ButtonType> {
     createStoryButton.setAlignment(Pos.CENTER);
     createStoryButton.setWrapText(true);
     createStoryButton.setMaxWidth(Double.MAX_VALUE);
+    createStoryButton.setOnAction(event -> {
+      Node source = (Node) event.getSource();
+      Stage stage = (Stage) source.getScene().getWindow();
+      stage.close();
+      Stage currentStage = (Stage) mainMenuScene.getWindow();
+      try {
+        createStoryView = new CreateStoryView(currentStage, mainMenuView);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      Scene createStoryScene = new Scene(createStoryView,600,800);
+      currentStage.setScene(createStoryScene);
+      currentStage.setFullScreen(true);
+    });
 
     return createStoryButton;
   }

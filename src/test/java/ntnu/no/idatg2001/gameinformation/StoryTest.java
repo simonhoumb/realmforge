@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import ntnu.no.idatg2001.BackEnd.gameinformation.Link;
+import ntnu.no.idatg2001.BackEnd.gameinformation.Passage;
+import ntnu.no.idatg2001.BackEnd.gameinformation.Story;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

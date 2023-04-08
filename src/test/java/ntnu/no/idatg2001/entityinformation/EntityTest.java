@@ -3,7 +3,8 @@ package ntnu.no.idatg2001.entityinformation;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import ntnu.no.idatg2001.entityinformation.playerclasses.Ranger;
+import ntnu.no.idatg2001.BackEnd.entityinformation.Entity;
+import ntnu.no.idatg2001.BackEnd.entityinformation.playerclasses.Ranger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

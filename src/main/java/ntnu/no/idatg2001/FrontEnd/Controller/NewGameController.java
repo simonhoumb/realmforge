@@ -1,8 +1,6 @@
 package ntnu.no.idatg2001.FrontEnd.Controller;
 
 import javafx.event.ActionEvent;
-import ntnu.no.idatg2001.actions.Action;
-import org.w3c.dom.Node;
 
 public class NewGameController {
 

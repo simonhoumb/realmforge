@@ -13,7 +13,6 @@ public class Main {
       System.out.println(story);
     }
      */
-
     ApplicationStart applicationStart = new ApplicationStart();
     applicationStart.startApplication(args);
   }
