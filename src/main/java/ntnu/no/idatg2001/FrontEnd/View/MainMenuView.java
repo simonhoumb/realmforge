@@ -51,7 +51,7 @@ public class MainMenuView extends BorderPane {
     playMusic();
   }
 
-  public void menuView() throws IOException {
+  public MainMenuView menuView() throws IOException {
     Locale locale = new Locale(settings.getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
     //Buttons for the menu
@@ -119,6 +119,7 @@ public class MainMenuView extends BorderPane {
       imageView.setFitHeight(newValue.doubleValue() * 0.9);
     }));
     //return contentBox;
+    return this;
   }
 
   private void playMusic() {
@@ -142,7 +143,7 @@ public class MainMenuView extends BorderPane {
     }
   }
   private void newGameView() {
-    newGameDialog = new NewGameDialog(settings, getScene());
+    newGameDialog = new NewGameDialog(settings, getScene(), this);
   }
   private void loadGameView() {
     loadGameDialog = new LoadGameDialog(settings);
@@ -172,7 +173,8 @@ public class MainMenuView extends BorderPane {
   public JFXButton getSettingsButton() {
     return settingsButton;
   }
-  public Scene getMainScene() {
-    return getScene();
+  public MainMenuView getMainScene() throws IOException {
+    System.out.println("I got there");
+    return menuView();
   }
 }

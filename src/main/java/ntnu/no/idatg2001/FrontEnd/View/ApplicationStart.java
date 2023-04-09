@@ -16,6 +16,7 @@ public class ApplicationStart extends Application {
   private static final double SCREEN_WIDTH = 800;
   private static final double SCREEN_HEIGHT = 700;
   public static Scene mainMenuScene;
+  public MainMenuView mainMenuView;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -23,13 +24,12 @@ public class ApplicationStart extends Application {
       Screen screen = Screen.getPrimary();
       double screenWidth = screen.getBounds().getWidth();
       double screenHeight = screen.getBounds().getWidth();
-      MainMenuView menuView = null;
       try {
-        menuView = new MainMenuView(screenHeight, screenWidth);
+        mainMenuView = new MainMenuView(screenHeight, screenWidth);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-      mainMenuScene = new Scene(menuView, screenHeight, screenWidth);
+      mainMenuScene = new Scene(mainMenuView, screenHeight, screenWidth);
       Image icon = new Image(getClass().getResource("/images/fantasy.png").toExternalForm());
 
 

@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 import ntnu.no.idatg2001.FrontEnd.Controller.NewGameController;
 import ntnu.no.idatg2001.FrontEnd.Controller.SettingsModel;
 import ntnu.no.idatg2001.FrontEnd.View.CreateStoryView;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 public class NewGameDialog extends Dialog<ButtonType> {
   private NewGameController newGameController;
@@ -31,8 +32,10 @@ public class NewGameDialog extends Dialog<ButtonType> {
   private Label newGameLabel;
   private SettingsModel settings;
   private MainMenuView mainMenuView;
+  private Scene mainMenuScene;
 
-  public NewGameDialog(SettingsModel settings, Scene mainMenuScene) {
+  public NewGameDialog(SettingsModel settings, Scene mainMenuScene, MainMenuView mainMenuView) {
+    this.mainMenuView = mainMenuView;
     getDialogPane().setContent(layout(settings, mainMenuScene));
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
@@ -59,7 +62,7 @@ public class NewGameDialog extends Dialog<ButtonType> {
     VBox vBox = new VBox();
 
     createPlayNewStoryButton(resourceBundle);
-    createCreateStoryButton(resourceBundle, mainMenuScene, mainMenuView);
+    createCreateStoryButton(resourceBundle, mainMenuScene, settings);
     createBackToMainMenuButton(resourceBundle);
     vBox.fillWidthProperty();
     vBox.getContentBias();
@@ -85,7 +88,7 @@ public class NewGameDialog extends Dialog<ButtonType> {
     return newStoryButton;
   }
 
-  public Button createCreateStoryButton(ResourceBundle bundle, Scene mainMenuScene, MainMenuView mainMenuView) {
+  public void createCreateStoryButton(ResourceBundle bundle, Scene mainMenuScene, SettingsModel settings) {
     createStoryButton = new Button(bundle.getString("createStoryButton"));
     ButtonType createStoryType = new ButtonType(bundle.getString("createStoryButton"),
         ButtonData.OK_DONE);
@@ -97,18 +100,11 @@ public class NewGameDialog extends Dialog<ButtonType> {
       Node source = (Node) event.getSource();
       Stage stage = (Stage) source.getScene().getWindow();
       stage.close();
+
       Stage currentStage = (Stage) mainMenuScene.getWindow();
-      try {
-        createStoryView = new CreateStoryView(currentStage, mainMenuView);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      Scene createStoryScene = new Scene(createStoryView,600,800);
-      currentStage.setScene(createStoryScene);
+      createStoryView = new CreateStoryView(currentStage, settings, mainMenuView);
       currentStage.setFullScreen(true);
     });
-
-    return createStoryButton;
   }
   public Button createBackToMainMenuButton(ResourceBundle bundle) {
     backToMainMenuButton = new Button(bundle.getString("backToMainMenuButton"));
