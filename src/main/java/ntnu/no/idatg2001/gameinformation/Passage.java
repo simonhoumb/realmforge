@@ -23,10 +23,14 @@ public class Passage {
     return content;
   }
 
-  public boolean addLink(Link link) {
+  public boolean addLink(Link link) throws IllegalArgumentException{
     boolean linkAdded = true;
     try {
-      getLinks().add(link);
+      if(link == null) {
+        throw new IllegalArgumentException();
+      } else {
+        getLinks().add(link);
+      }
     } catch (Exception exception) {
       linkAdded = false;
     }

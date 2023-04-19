@@ -24,8 +24,18 @@ public class Link {
     return reference;
   }
 
-  public void addAction(Action action) {
-    actions.add(action);
+  public Boolean addAction(Action action) {
+    boolean actionAdded = true;
+    try {
+      if(action == null) {
+        throw new IllegalArgumentException();
+      } else {
+        getActions().add(action);
+      }
+    } catch (Exception exception) {
+      actionAdded = false;
+    }
+    return actionAdded;
   }
 
   public List<Action> getActions() {

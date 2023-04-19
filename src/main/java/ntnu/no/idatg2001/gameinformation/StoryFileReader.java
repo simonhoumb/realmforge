@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class StoryFileReader{
   public List<Story> readFile(String fileName) {
-    Scanner scanner;
     List<Story> stories = new ArrayList<>();
     Story story;
     String storyTitle = "";
@@ -26,20 +25,10 @@ public class StoryFileReader{
           Passage passageToAdd;
           String passageTitle = currentLine.replace(":", "");
           String passageContent = reader.readLine();
-          String linkText = "";
-          String linkReference = "";
           passageToAdd = new Passage(passageTitle, passageContent);
           while ((currentLine = reader.readLine()) != null && !currentLine.trim().isEmpty()) {
-            scanner = new Scanner(currentLine);
-            for (String s; (s = scanner.findWithinHorizon("(?<=\\[).*?(?=\\])", 0)) != null;) {
-               linkText = s;
-            }
-            for (String s; (s = scanner.findWithinHorizon("(?<=\\().*?(?=\\))", 0)) != null;) {
-              linkReference = s;
-            }
-            Link linkToAdd = new Link(linkText, linkReference);
+            Link linkToAdd = new Link(findLinkText(currentLine), findLinkReference(currentLine));
             passageToAdd.addLink(linkToAdd);
-            scanner.close();
           }
           passagesToAdd.add(passageToAdd);
         }
@@ -53,5 +42,27 @@ public class StoryFileReader{
       e.printStackTrace();
     }
     return stories;
+  }
+
+  //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
+  private String findLinkText(String currentLine) {
+    Scanner scanner = new Scanner(currentLine);
+    String linkText = "";
+    for (String s; (s = scanner.findWithinHorizon("(?<=\\[).*?(?=\\])", 0)) != null;) {
+      linkText = s;
+    }
+    scanner.close();
+    return linkText;
+  }
+
+  //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
+  private String findLinkReference(String currentLine) {
+    Scanner scanner = new Scanner(currentLine);
+    String linkReference = "";
+    for (String s; (s = scanner.findWithinHorizon("(?<=\\().*?(?=\\))", 0)) != null;) {
+      linkReference = s;
+    }
+    scanner.close();
+    return linkReference;
   }
 }
