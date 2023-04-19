@@ -9,7 +9,8 @@ import ntnu.no.idatg2001.gameinformation.StoryFileReader;
 public class Main {
 
   public static void main(String[] args) {
-    StoryFileReader storyReader = new StoryFileReader();
+    /*
+        StoryFileReader storyReader = new StoryFileReader();
     for (Story story : storyReader.readFile("src/main/resources/story.Paths")) {
       System.out.println(story);
       System.out.println("----");
@@ -22,5 +23,9 @@ public class Main {
         }
       }
     }
+     */
+
+    ApplicationStart applicationStart = new ApplicationStart();
+    applicationStart.startApplication(args);
   }
 }
