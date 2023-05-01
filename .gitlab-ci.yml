@@ -1,7 +1,7 @@
 variables:
     MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
 
-image: maven:3.8.3-openjdk-17
+image: maven:3.8.5-openjdk-17
 
 stages:
   - build
@@ -10,7 +10,7 @@ stages:
 
 cache:
     paths:
-        - m2/repository
+        - .m2/repository
         - target
 
 build_job:
@@ -20,7 +20,7 @@ build_job:
 
     script:
         - echo "Maven compile started"
-        - "mvn compile"
+        - "mvn compile -B"
 
 test_job:
     stage: test
@@ -29,7 +29,7 @@ test_job:
 
     script:
         - echo "Maven test Started"
-        - "mvn test"
+        - "mvn test -B"
 
 package_job:
     stage: package
@@ -38,6 +38,6 @@ package_job:
 
     script:
         - echo "Maven package started"
-        - "mvn package"
+        - "mvn package -B"
 
 
