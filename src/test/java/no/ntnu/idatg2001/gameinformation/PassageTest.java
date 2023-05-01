@@ -1,7 +1,9 @@
-package ntnu.no.idatg2001.gameinformation;
+package no.ntnu.idatg2001.gameinformation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import no.ntnu.idatg2001.BackEnd.gameinformation.Link;
+import no.ntnu.idatg2001.BackEnd.gameinformation.Passage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
