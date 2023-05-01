@@ -33,7 +33,7 @@ public abstract class Entity {
   private List<String> entityInventory; // The entity's inventory
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
-  public Entity() {
+  protected Entity() {
     this(100, 100, "default", 0, 100);
   }
 

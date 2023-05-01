@@ -1,0 +1,46 @@
+variables:
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+
+image: maven:3.8.5-openjdk-17
+
+stages:
+  - build
+  - test
+  - package
+
+cache:
+  paths:
+    - .m2/repository
+    - target
+
+build_job:
+  stage: build
+  tags:
+    - docker
+
+  script:
+    - echo "Maven compile started"
+    - "mvn compile -B"
+    - echo $SOME_VARIABLE
+
+
+test_job:
+  stage: test
+  tags:
+    - docker
+
+  script: 
+    - echo "maven test started"
+    - "mvn clean test -B"
+    - echo $SOME_VARIABLE
+
+
+package_job:
+  stage: package
+  tags:
+    - docker
+
+  script:
+    - echo "Maven packaging started"
+    - "mvn package -B"
+    - echo $SOME_VARIABLE
