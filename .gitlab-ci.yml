@@ -4,9 +4,9 @@ variables:
 image: maven:3.8.5-openjdk-17
 
 stages:
-  - build
-  - test
   - compile
+  - test
+  - package
 
 cache:
   paths:
