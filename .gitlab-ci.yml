@@ -4,7 +4,7 @@ variables:
 image: maven:3.8.5-openjdk-17
 
 stages:
-  - build
+  - compile
   - test
   - package
 
@@ -14,7 +14,7 @@ cache:
     - target
 
 build_job:
-  stage: build
+  stage: compile
   tags:
     - docker
 
