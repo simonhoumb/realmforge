@@ -1,9 +1,11 @@
-package ntnu.no.idatg2001.actions;
+package no.ntnu.idatg2001.actions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import ntnu.no.idatg2001.entityinformation.Entity;
-import ntnu.no.idatg2001.entityinformation.playerclasses.Mage;
+import no.ntnu.idatg2001.BackEnd.actions.Action;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses.Mage;
+import no.ntnu.idatg2001.BackEnd.actions.GoldAction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
