@@ -89,21 +89,13 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>ntnu.no.idatg2001.Main</mainClass>
+          <mainClass>no.ntnu.idatg2001.Main</mainClass>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.0</version>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <mainClass>ntnu.no.idatg2001.Main</mainClass>
-              <preloaderClass>ntnu.no.idatg2001.FrontEnd.Controller.PreLoader</preloaderClass>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
