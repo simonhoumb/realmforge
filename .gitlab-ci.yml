@@ -4,7 +4,7 @@ variables:
 image: maven:3.8.5-openjdk-17
 
 stages:
-  - compile
+  - build
   - test
   - package
 
@@ -14,13 +14,14 @@ cache:
     - target
 
 build_job:
-  stage: compile
+  stage: build
   tags:
     - docker
 
   script:
     - echo "Maven compile started"
     - "mvn compile -B"
+    - echo $SOME_VARIABLE
 
 
 test_job:
@@ -31,6 +32,7 @@ test_job:
   script: 
     - echo "maven test started"
     - "mvn clean test -B"
+    - echo $SOME_VARIABLE
 
 
 package_job:
@@ -41,3 +43,4 @@ package_job:
   script:
     - echo "Maven packaging started"
     - "mvn package -B"
+    - echo $SOME_VARIABLE
