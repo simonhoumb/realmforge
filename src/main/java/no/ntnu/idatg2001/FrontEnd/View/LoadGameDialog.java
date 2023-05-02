@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 import no.ntnu.idatg2001.SavedGames;
 
 public class LoadGameDialog extends Dialog<ButtonType> {

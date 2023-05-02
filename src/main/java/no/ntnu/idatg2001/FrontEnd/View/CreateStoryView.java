@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 
 public class CreateStoryView extends Parent {
   private Stage stage;
