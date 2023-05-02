@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.FrontEnd.Controller;
 
 import java.util.ResourceBundle;
+import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
 
 public class MainMenuController {
 

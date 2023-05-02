@@ -1,10 +1,7 @@
-package no.ntnu.idatg2001.FrontEnd.Controller;
+package no.ntnu.idatg2001.FrontEnd.Model;
 
 import com.sun.jdi.DoubleValue;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
