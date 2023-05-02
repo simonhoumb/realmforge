@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.FrontEnd.Controller.NewGameController;
-import no.ntnu.idatg2001.FrontEnd.Controller.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
 
 public class NewGameDialog extends Dialog<ButtonType> {
   private NewGameController newGameController;

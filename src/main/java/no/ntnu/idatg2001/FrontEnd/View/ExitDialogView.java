@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
-import no.ntnu.idatg2001.FrontEnd.Controller.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
 
 public class ExitDialogView extends Dialog<ButtonType> {
   private ResourceBundle resourceBundle;

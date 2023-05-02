@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.media.MediaPlayer;
+import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
 import no.ntnu.idatg2001.FrontEnd.View.ExitDialogView;
 import no.ntnu.idatg2001.FrontEnd.View.SettingsDialog;
 

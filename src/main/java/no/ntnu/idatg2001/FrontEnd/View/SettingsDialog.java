@@ -8,7 +8,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
-import no.ntnu.idatg2001.FrontEnd.Controller.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
 
 public class SettingsDialog extends Dialog<ButtonType> {
 
