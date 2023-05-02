@@ -21,7 +21,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import no.ntnu.idatg2001.FrontEnd.Controller.SettingsController;
-import no.ntnu.idatg2001.FrontEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 
 
 public class MainMenuView extends BorderPane {

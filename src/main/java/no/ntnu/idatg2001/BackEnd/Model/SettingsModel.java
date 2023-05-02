@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.FrontEnd.Model;
+package no.ntnu.idatg2001.BackEnd.Model;
 
 import com.sun.jdi.DoubleValue;
 import java.io.*;
