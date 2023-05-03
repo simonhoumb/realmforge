@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
-import no.ntnu.idatg2001.SavedGames;
+import no.ntnu.idatg2001.GameSave;
 
 public class LoadGameDialog extends Dialog {
 
@@ -33,7 +33,7 @@ public class LoadGameDialog extends Dialog {
   private Button loadGameButton;
   private VBox layout;
   private MainMenuController controller;
-  private TableView<SavedGames> savedGamesTableView;
+  private TableView<GameSave> savedGamesTableView;
 
   public LoadGameDialog(MainMenuController controller) {
     this.controller = controller;
@@ -68,10 +68,10 @@ public class LoadGameDialog extends Dialog {
 
   private void createTableView() {
     //This is used for testing; remove later!!!
-    ObservableList<SavedGames> savedGames = FXCollections.observableArrayList(
-        new SavedGames("Saved games 1", new Date(),"Player 1"),
-        new SavedGames("Saved games 2", new Date(),"Player 2"),
-        new SavedGames("Saved games 3", new Date(),"Player 3"));
+    ObservableList<GameSave> savedGames = FXCollections.observableArrayList(
+        new GameSave("Saved games 1", new Date(),"Player 1"),
+        new GameSave("Saved games 2", new Date(),"Player 2"),
+        new GameSave("Saved games 3", new Date(),"Player 3"));
 
     savedGamesTableView = new TableView<>();
     savedGamesTableView.setEditable(false);
