@@ -58,7 +58,7 @@ public class SettingsDialog extends Dialog {
     muteCheckBox = new CheckBox(resourceBundle.getString("settings.muteLable"));
     muteCheckBox.setSelected(SettingsModel.getInstance().isMuted());
     muteCheckBox.selectedProperty().addListener((observable, oldValue, newValue)-> {
-      if (newValue) {
+      if (newValue.equals(Boolean.TRUE)) {
         MusicPlayer.getInstance().pauseMusic();
       } else {
         MusicPlayer.getInstance().startMusic();

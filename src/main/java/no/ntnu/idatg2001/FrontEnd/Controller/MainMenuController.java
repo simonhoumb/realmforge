@@ -13,7 +13,7 @@ import no.ntnu.idatg2001.FrontEnd.View.LoadGameDialog;
 import no.ntnu.idatg2001.FrontEnd.View.MainMenuView;
 import no.ntnu.idatg2001.FrontEnd.View.NewGameDialog;
 import no.ntnu.idatg2001.FrontEnd.View.SettingsDialog;
-import org.cef.SystemBootstrap.Loader;
+import no.ntnu.idatg2001.dao.GameDAO;
 
 public class MainMenuController {
   private MainMenuView menuView;
@@ -83,7 +83,7 @@ public class MainMenuController {
   }
 
   public void onExitApplication(ActionEvent event) {
-    //GameDAO.getInstance.close();
+    GameDAO.getInstance().close();
     Platform.exit();
     System.exit(0);
 
