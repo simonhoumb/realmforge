@@ -2,81 +2,109 @@ package no.ntnu.idatg2001.FrontEnd.View;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
+import no.ntnu.idatg2001.BackEnd.Model.MusicPlayer;
 import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
 
-public class SettingsDialog extends Dialog<ButtonType> {
-
-  private Dialog<ButtonType> settingsDialog;
+public class SettingsDialog extends Dialog {
   private ChoiceBox<String> languageSelection;
   private Slider volumeSlider;
   private CheckBox muteCheckBox;
-  private ButtonType saveButton;
-  private ButtonType cancelButton;
+  private Button saveButton;
+  private Button cancelButton;
   private ResourceBundle resourceBundle;
+  private MainMenuController controller;
 
-  private SettingsModel settings = new SettingsModel();
-
-  public SettingsDialog(SettingsModel model) {
-    settingsDialog = new Dialog<>();
+  public SettingsDialog(MainMenuController controller) {
+    this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
+    initModality(Modality.APPLICATION_MODAL);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
+    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
+    this.resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    createSaveButton();
+    createCancelButton();
+    createMuteCheckBox();
+    createVolumeSlider();
+    createChoiceBox();
+    createLayout();
   }
 
-  public GridPane layout() {
-    Locale locale = new Locale(settings.getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
-    // Create language selection box
+  private void createSaveButton() {
+    saveButton = new Button(resourceBundle.getString("settings.save"));
+    getDialogPane().getChildren().add(saveButton);
+    saveButton.setOnAction(event -> {
+      controller.onSettingSaveButtonPressed(event);
+    });
+  }
+
+  private void createCancelButton() {
+    cancelButton = new Button(resourceBundle.getString("settings.cancel"));
+    getDialogPane().getChildren().add(cancelButton);
+    cancelButton.setOnAction(event -> {
+      controller.onCloseSource(event);
+    });
+  }
+
+  private void createMuteCheckBox() {
+    muteCheckBox = new CheckBox(resourceBundle.getString("settings.muteLable"));
+    muteCheckBox.setSelected(SettingsModel.getInstance().isMuted());
+    muteCheckBox.selectedProperty().addListener((observable, oldValue, newValue)-> {
+      if (newValue) {
+        MusicPlayer.getInstance().pauseMusic();
+      } else {
+        MusicPlayer.getInstance().startMusic();
+      }
+    });
+  }
+
+  private void createVolumeSlider() {
+    volumeSlider = new Slider();
+    volumeSlider.setValue(SettingsModel.getInstance().getVolumeSliderValue());
+    volumeSlider.setShowTickLabels(false);
+    volumeSlider.setShowTickMarks(false);
+    volumeSlider.setMajorTickUnit(50);
+    volumeSlider.setMinorTickCount(5);
+    volumeSlider.setBlockIncrement(10);
+    volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+      double volume = getVolumeSliderValue() / 100;
+      MusicPlayer.getInstance().musicVolume(volume);
+    });
+  }
+
+  private void createChoiceBox() {
     languageSelection = new ChoiceBox<>();
     languageSelection.getItems().addAll(
         resourceBundle.getString("settings.language.english"),
         resourceBundle.getString("settings.language.norwegian"),
         resourceBundle.getString("settings.language.french"));
     languageSelection.setValue(resourceBundle.getString("settings.language.selected"));
-
-    // Create volume slider
-    volumeSlider = new Slider(0, 100, 50);
-    volumeSlider.setShowTickLabels(false);
-    volumeSlider.setShowTickMarks(false);
-    volumeSlider.setMajorTickUnit(50);
-    volumeSlider.setMinorTickCount(5);
-    volumeSlider.setBlockIncrement(10);
-
-    // Create mute check box
-    muteCheckBox = new CheckBox(resourceBundle.getString("settings.muteLable"));
-    // Create layout and add components
-    GridPane layout = new GridPane();
-    layout.setHgap(10);
-    layout.setVgap(10);
-    layout.addRow(0, new Label(resourceBundle.getString("settings.language")), languageSelection);
-    layout.addRow(1, new Label(resourceBundle.getString("settings.volume")), volumeSlider);
-    layout.addRow(2, new Label(resourceBundle.getString("settings.mute")), muteCheckBox);
-    settingsDialog.getDialogPane().setContent(layout);
-
-    // Add buttons to dialog
-    createSaveButton();
-    createCancelButton();
-    return layout;
   }
 
-  private ButtonType createSaveButton() {
-    saveButton = new ButtonType(resourceBundle.getString("settings.save"),
-        ButtonData.OK_DONE);
-    settingsDialog.getDialogPane().getButtonTypes().add(saveButton);
-    return saveButton;
-  }
-
-  private ButtonType createCancelButton() {
-    cancelButton = new ButtonType(resourceBundle.getString("settings.cancel"),
-        ButtonData.CANCEL_CLOSE);
-    settingsDialog.getDialogPane().getButtonTypes().add(cancelButton);
-    return cancelButton;
+  private void createLayout() {
+    GridPane gridLayout = new GridPane();
+    VBox layout = new VBox();
+    layout.setSpacing(10);
+    gridLayout.setHgap(10);
+    gridLayout.setVgap(10);
+    gridLayout.addRow(0, new Label(resourceBundle.getString("settings.language")), languageSelection);
+    gridLayout.addRow(1, new Label(resourceBundle.getString("settings.volume")), volumeSlider);
+    gridLayout.addRow(2, new Label(resourceBundle.getString("settings.mute")), muteCheckBox);
+    gridLayout.setAlignment(Pos.CENTER);
+    HBox buttonBox = new HBox();
+    buttonBox.setSpacing(10);
+    buttonBox.getChildren().addAll(saveButton,cancelButton);
+    buttonBox.setAlignment(Pos.BOTTOM_CENTER);
+    layout.getChildren().addAll(gridLayout,buttonBox);
+    getDialogPane().setContent(layout);
   }
 
   public void setLanguageSelection(String language) {
@@ -103,6 +131,10 @@ public class SettingsDialog extends Dialog<ButtonType> {
     return muteCheckBox.isSelected();
   }
 
+  public void setMuteCheckBox(CheckBox muteCheckBox) {
+    this.muteCheckBox = muteCheckBox;
+  }
+
   public CheckBox getMuteCheckBox() {
     return muteCheckBox;
   }
@@ -110,29 +142,9 @@ public class SettingsDialog extends Dialog<ButtonType> {
   public Slider getVolumeSlider() {
     return volumeSlider;
   }
+
   public ChoiceBox<String> getLanguage() {
     return languageSelection;
-  }
-
-  public Stage getDialogStage() {
-    return (Stage)settingsDialog.getDialogPane().getScene().getWindow();
-  }
-
-  public Scene getDialogScene() {
-    return settingsDialog.getDialogPane().getScene();
-  }
-
-  public Dialog<ButtonType> getDialog() {
-    return settingsDialog;
-
-  }
-
-  public ButtonType getSaveButton() {
-    return saveButton;
-  }
-
-  public ButtonType getCancelButton() {
-    return cancelButton;
   }
 }
 
