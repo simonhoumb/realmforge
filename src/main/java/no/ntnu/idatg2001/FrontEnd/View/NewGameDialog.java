@@ -5,18 +5,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
@@ -24,7 +18,6 @@ import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
 
 public class NewGameDialog extends Dialog {
-  private Dialog<ButtonType> newGameDialog;
   private ResourceBundle resourceBundle;
   private Label newGameLabel;
   private Button playNewStoryButton;
