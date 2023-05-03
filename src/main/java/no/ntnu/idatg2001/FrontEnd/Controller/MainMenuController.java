@@ -13,7 +13,6 @@ import no.ntnu.idatg2001.FrontEnd.View.LoadGameDialog;
 import no.ntnu.idatg2001.FrontEnd.View.MainMenuView;
 import no.ntnu.idatg2001.FrontEnd.View.NewGameDialog;
 import no.ntnu.idatg2001.FrontEnd.View.SettingsDialog;
-import org.cef.SystemBootstrap.Loader;
 
 public class MainMenuController {
   private MainMenuView menuView;
