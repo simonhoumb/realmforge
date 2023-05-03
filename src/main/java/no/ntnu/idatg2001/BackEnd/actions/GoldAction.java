@@ -1,15 +1,21 @@
 package no.ntnu.idatg2001.BackEnd.actions;
 
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import jakarta.persistence.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class GoldAction implements Action {
+@Entity
+public class GoldAction extends Action {
   int gold;
 
   public GoldAction(int gold) {
     this.gold = gold;
   }
 
-  public void execute(Entity entity) {
-    entity.setGold(entity.getGold() + gold);
+  public GoldAction() {
+
+  }
+
+  public void execute(Unit unit) {
+    unit.setGold(unit.getGold() + gold);
   }
 }

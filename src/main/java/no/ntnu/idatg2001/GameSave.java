@@ -2,12 +2,12 @@ package no.ntnu.idatg2001;
 
 import java.util.Date;
 
-public class SavedGames {
+public class GameSave {
   private String name;
   private Date date;
   private String PlayerName;
 
-  public SavedGames(String name, Date date, String playerName) {
+  public GameSave(String name, Date date, String playerName) {
     this.name = name;
     this.date = date;
     this.PlayerName = playerName;

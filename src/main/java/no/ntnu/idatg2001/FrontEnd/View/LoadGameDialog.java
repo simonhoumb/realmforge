@@ -78,7 +78,7 @@ public class LoadGameDialog extends Dialog {
     savedGamesTableView.setItems(FXCollections.observableArrayList(
         savedGames.subList(0, Math.min(3, savedGames.size()))));
 
-    TableColumn<SavedGames, String> nameColum = new TableColumn<>(
+    TableColumn<GameSave, String> nameColum = new TableColumn<>(
         resourceBundle.getString("loadGameTableName"));
     nameColum.setCellValueFactory(new PropertyValueFactory<>("name"));
     nameColum.setResizable(false);
@@ -86,7 +86,7 @@ public class LoadGameDialog extends Dialog {
     nameColum.setReorderable(false);
     nameColum.setPrefWidth(200);
 
-    TableColumn<SavedGames, Date> dateColum = new TableColumn<>(
+    TableColumn<GameSave, Date> dateColum = new TableColumn<>(
         resourceBundle.getString("loadGameTableDate"));
     dateColum.setCellValueFactory(new PropertyValueFactory<>("date"));
     dateColum.setResizable(false);
@@ -94,7 +94,7 @@ public class LoadGameDialog extends Dialog {
     dateColum.setReorderable(false);
     dateColum.setPrefWidth(250);
 
-    TableColumn<SavedGames, String> playerColum = new TableColumn<>(
+    TableColumn<GameSave, String> playerColum = new TableColumn<>(
         resourceBundle.getString("loadGameTablePlayer"));
     playerColum.setCellValueFactory(new PropertyValueFactory<>("playerName"));
     playerColum.setResizable(false);
