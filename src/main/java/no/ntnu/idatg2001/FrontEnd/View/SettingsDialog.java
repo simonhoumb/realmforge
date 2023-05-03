@@ -50,6 +50,8 @@ public class SettingsDialog extends Dialog {
     cancelButton = new Button(resourceBundle.getString("settings.cancel"));
     getDialogPane().getChildren().add(cancelButton);
     cancelButton.setOnAction(event -> {
+      setVolumeSliderValue(SettingsModel.getInstance().getVolumeSliderValue());
+      getMuteCheckBox().setSelected(SettingsModel.getInstance().isMuted());
       controller.onCloseSource(event);
     });
   }
