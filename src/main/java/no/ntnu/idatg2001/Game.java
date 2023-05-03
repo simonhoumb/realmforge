@@ -1,30 +1,65 @@
 package no.ntnu.idatg2001;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 import no.ntnu.idatg2001.BackEnd.gameinformation.Link;
 import no.ntnu.idatg2001.BackEnd.gameinformation.Passage;
 import no.ntnu.idatg2001.BackEnd.gameinformation.Story;
 import no.ntnu.idatg2001.BackEnd.goals.Goal;
 
-
+@Entity
+@Table(name = "game")
 public class Game {
-  private Entity entity;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "unit_id")
+  private Unit unit;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "story_id")
   private Story story;
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "game_id")
   private List<Goal> goals;
 
-  public Game(Entity entity, Story story, List<Goal> goals) {
-    this.entity = entity;
+  public Game() {
+
+  }
+
+  public Game(Unit unit, Story story, List<Goal> goals) {
+    this.unit = unit;
     this.story = story;
     this.goals = goals;
   }
 
-  public Entity getPlayer() {
-    return entity;
+  public Long getId() {
+    return id;
   }
 
-  public void setPlayer(Entity entity) {
-    this.entity = entity;
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Unit getUnit() {
+    return unit;
+  }
+
+  public void setUnit(Unit unit) {
+    this.unit = unit;
   }
 
   public Story getStory() {

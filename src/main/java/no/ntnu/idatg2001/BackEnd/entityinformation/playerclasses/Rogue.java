@@ -1,9 +1,11 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import jakarta.persistence.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 import no.ntnu.idatg2001.BackEnd.entityinformation.PlayerClass;
 
-public class Rogue extends Entity {
+@Entity
+public class Rogue extends Unit {
 
   public Rogue(String playerName) {
     super(75, 75, playerName, 0, 75);
@@ -18,4 +20,7 @@ public class Rogue extends Entity {
     super.setLuck(10);
   }
 
+  public Rogue() {
+
+  }
 }

@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
-import no.ntnu.idatg2001.SavedGames;
+import no.ntnu.idatg2001.GameSave;
 
 public class LoadGameDialog extends Dialog<ButtonType> {
 
@@ -45,17 +45,17 @@ public class LoadGameDialog extends Dialog<ButtonType> {
     Locale locale = new Locale(settings.getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
 
-    ObservableList<SavedGames> savedGames = FXCollections.observableArrayList(
-        new SavedGames("Saved games 1", new Date(),"Player 1"),
-        new SavedGames("Saved games 2", new Date(),"Player 2"),
-        new SavedGames("Saved games 3", new Date(),"Player 3"));
+    ObservableList<GameSave> savedGames = FXCollections.observableArrayList(
+        new GameSave("Saved games 1", new Date(),"Player 1"),
+        new GameSave("Saved games 2", new Date(),"Player 2"),
+        new GameSave("Saved games 3", new Date(),"Player 3"));
 
-    TableView<SavedGames> savedGamesTableView = new TableView<>();
+    TableView<GameSave> savedGamesTableView = new TableView<>();
     savedGamesTableView.setEditable(false);
     savedGamesTableView.setItems(FXCollections.observableArrayList(
         savedGames.subList(0, Math.min(3, savedGames.size()))));
 
-    TableColumn<SavedGames, String> nameColum = new TableColumn<>(
+    TableColumn<GameSave, String> nameColum = new TableColumn<>(
         resourceBundle.getString("loadGameTableName"));
     nameColum.setCellValueFactory(new PropertyValueFactory<>("name"));
     nameColum.setResizable(false);
@@ -63,7 +63,7 @@ public class LoadGameDialog extends Dialog<ButtonType> {
     nameColum.setReorderable(false);
     nameColum.setPrefWidth(200);
 
-    TableColumn<SavedGames, Date> dateColum = new TableColumn<>(
+    TableColumn<GameSave, Date> dateColum = new TableColumn<>(
         resourceBundle.getString("loadGameTableDate"));
     dateColum.setCellValueFactory(new PropertyValueFactory<>("date"));
     dateColum.setResizable(false);
@@ -71,7 +71,7 @@ public class LoadGameDialog extends Dialog<ButtonType> {
     dateColum.setReorderable(false);
     dateColum.setPrefWidth(250);
 
-    TableColumn<SavedGames, String> playerColum = new TableColumn<>(
+    TableColumn<GameSave, String> playerColum = new TableColumn<>(
         resourceBundle.getString("loadGameTablePlayer"));
     playerColum.setCellValueFactory(new PropertyValueFactory<>("playerName"));
     playerColum.setResizable(false);

@@ -1,13 +1,15 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
+import jakarta.persistence.Entity;
 import no.ntnu.idatg2001.BackEnd.entityinformation.PlayerClass;
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class Ranger extends Entity {
+@Entity
+public class Ranger extends Unit {
 
   public Ranger(String entityName) {
     super(100, 100, entityName, 0, 50);
-    this.setEntityHealth(150);
+    this.setUnitHealth(150);
     super.addToInventory("Bow");
     super.addToInventory("HealthPotion");
     super.addToInventory("Trap");
@@ -17,5 +19,9 @@ public class Ranger extends Entity {
     super.setDexterity(10);
     super.setStrength(3);
     super.setLuck(5);
+  }
+
+  public Ranger() {
+
   }
 }
