@@ -155,7 +155,7 @@ public class GameDAO implements DAO<Game> {
               + " :: "
               + game.getStory().getTitle()
               + " :: "
-              + game.getGoals());
+              + game.getGoals().size());
     }
   }
 

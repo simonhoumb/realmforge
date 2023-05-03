@@ -26,6 +26,7 @@ public class Main {
         new Ranger("Legolas"),
         new Story("myStory", new Passage("openingPassage", "this is the opening passage")),
         goals));
+    GameDAO.getInstance().printAllDetails();
 
     ApplicationStart.startApplication(args);
   }
