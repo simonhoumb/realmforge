@@ -11,15 +11,16 @@ import javafx.beans.value.ChangeListener;
 
 public class SettingsModel {
 
-  private String filepath;
-
+  private final String filepath;
   private double volumeSliderValue;
   private boolean isMuted;
   private String languageSelection;
   private Properties properties;
   private final DoubleProperty volume = new SimpleDoubleProperty();
 
-  public SettingsModel() {
+  private static final SettingsModel instance = new SettingsModel();
+
+  private SettingsModel() {
     properties = new Properties();
     filepath = "src/main/resources/settings/settings.properties";
     loadSettings();
@@ -93,5 +94,9 @@ public class SettingsModel {
     String languageCode = languageCodes.getString(languageSelection.toLowerCase());
     String countryCode = languageCode.toUpperCase();
     return new Locale(languageCode, countryCode);
+  }
+
+  public static SettingsModel getInstance() {
+    return instance;
   }
 }

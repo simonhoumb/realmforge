@@ -23,34 +23,57 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
 import no.ntnu.idatg2001.SavedGames;
 
-public class LoadGameDialog extends Dialog<ButtonType> {
+public class LoadGameDialog extends Dialog {
 
   private ResourceBundle resourceBundle;
   private Button backButton;
   private Button loadGameButton;
   private VBox layout;
-  public LoadGameDialog(SettingsModel settings) {
-    getDialogPane().setContent(layout(settings));
+  private MainMenuController controller;
+  private TableView<SavedGames> savedGamesTableView;
+
+  public LoadGameDialog(MainMenuController controller) {
+    this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
-    layout(settings);
-    createBackToMainMenuButton(resourceBundle);
+    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    createTableView();
+    createLoadGameButton();
+    createBackToMainMenuButton();
+    createLayout();
     getDialogPane().setContent(layout);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add("css/LoadGameDialog.css");
   }
 
-  private StackPane layout(SettingsModel settings) {
-    Locale locale = new Locale(settings.getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+  private void createLayout() {
+    layout = new VBox();
+    layout.getChildren().add(savedGamesTableView);
+    layout.setAlignment(Pos.CENTER);
+    HBox buttonBox = new HBox();
+    buttonBox.setSpacing(20);
+    buttonBox.setAlignment(Pos.CENTER);
+    buttonBox.setPadding(new Insets(10));
+    buttonBox.getChildren().addAll(loadGameButton,backButton);
+    layout.getChildren().add(buttonBox);
+    layout.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
+    layout.setAlignment(Pos.CENTER);
+    layout.setSpacing(20);
+    layout.setPadding(new Insets(20));
+    layout.setPrefSize(644,350);
+  }
 
+  private void createTableView() {
+    //This is used for testing; remove later!!!
     ObservableList<SavedGames> savedGames = FXCollections.observableArrayList(
         new SavedGames("Saved games 1", new Date(),"Player 1"),
         new SavedGames("Saved games 2", new Date(),"Player 2"),
         new SavedGames("Saved games 3", new Date(),"Player 3"));
 
-    TableView<SavedGames> savedGamesTableView = new TableView<>();
+    savedGamesTableView = new TableView<>();
     savedGamesTableView.setEditable(false);
     savedGamesTableView.setItems(FXCollections.observableArrayList(
         savedGames.subList(0, Math.min(3, savedGames.size()))));
@@ -82,53 +105,23 @@ public class LoadGameDialog extends Dialog<ButtonType> {
     savedGamesTableView.getColumns().addAll(nameColum, dateColum, playerColum);
     savedGamesTableView.setFixedCellSize(30);
     savedGamesTableView.setPrefHeight(250);
-
-    layout = new VBox();
-    layout.getChildren().add(savedGamesTableView);
-    layout.setAlignment(Pos.CENTER);
-
-    createBackToMainMenuButton(resourceBundle);
-    createLoadGameButton(resourceBundle);
-
-    HBox buttonBox = new HBox();
-    buttonBox.setSpacing(20);
-    buttonBox.setAlignment(Pos.CENTER);
-    buttonBox.setPadding(new Insets(10));
-
-    buttonBox.getChildren().addAll(loadGameButton,backButton);
-    layout.getChildren().add(buttonBox);
-
-    layout.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
-    layout.setAlignment(Pos.CENTER);
-    layout.setSpacing(20);
-    layout.setPadding(new Insets(20));
-    layout.setPrefSize(644,350);
-    return new StackPane(layout);
   }
 
-  public Button createBackToMainMenuButton(ResourceBundle bundle) {
-    backButton = new Button(bundle.getString("backToMainMenuButton"));
-    ButtonType backToMainMenuType = new ButtonType(bundle.getString("backToMainMenuButton"),
-        ButtonData.CANCEL_CLOSE);
-    backButton.setUserData(backToMainMenuType);
+  private void createBackToMainMenuButton() {
+    backButton = new Button(resourceBundle.getString("backToMainMenuButton"));
     backButton.setAlignment(Pos.CENTER);
     backButton.setWrapText(true);
-
     backButton.setOnAction(event -> {
-      Node source = (Node) event.getSource();
-      Stage stage = (Stage) source.getScene().getWindow();
-      stage.close();
+     controller.onCloseSource(event);
     });
-    return backButton;
   }
 
-  public Button createLoadGameButton(ResourceBundle bundle) {
-        loadGameButton = new Button(bundle.getString("loadGameButton"));
-        ButtonType loadGameButtonType = new ButtonType(bundle.getString("loadGameButton"),
-            ButtonData.OK_DONE);
-        loadGameButton.setUserData(loadGameButtonType);
-    backButton.setAlignment(Pos.CENTER);
-    backButton.setWrapText(true);
-    return loadGameButton;
+  private void createLoadGameButton() {
+    loadGameButton = new Button(resourceBundle.getString("loadGameButton"));
+    loadGameButton.setAlignment(Pos.CENTER);
+    loadGameButton.setWrapText(true);
+    loadGameButton.setOnAction(event -> {
+      throw new UnsupportedOperationException();
+    });
   }
 }

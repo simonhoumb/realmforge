@@ -8,13 +8,16 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import no.ntnu.idatg2001.BackEnd.Model.MusicPlayer;
+import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
+import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
 
 public class ApplicationStart extends Application {
 
   private static final double SCREEN_WIDTH = 800;
   private static final double SCREEN_HEIGHT = 700;
-  public static Scene mainMenuScene;
-  public MainMenuView mainMenuView;
+  private MainMenuController mainMenuController;
+  private MainMenuView menuView;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -22,18 +25,22 @@ public class ApplicationStart extends Application {
       Screen screen = Screen.getPrimary();
       double screenWidth = screen.getBounds().getWidth();
       double screenHeight = screen.getBounds().getWidth();
+      // Create the MainMenuView object
       try {
-        mainMenuView = new MainMenuView(screenHeight, screenWidth);
+        menuView = new MainMenuView();
+        mainMenuController = new MainMenuController(menuView);
+        menuView.setController(mainMenuController);
+
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-      mainMenuScene = new Scene(mainMenuView, screenHeight, screenWidth);
+      // Create a new Scene with the MainMenuView as its root
+      Scene mainMenuScene = new Scene(menuView);
+
+      //Set up the Primary View
       Image icon = new Image(getClass().getResource("/images/fantasy.png").toExternalForm());
-
-
       primaryStage.setX((screenWidth - primaryStage.getWidth()) / 2);
       primaryStage.setY((screenHeight - primaryStage.getHeight()) / 2);
-
       primaryStage.setWidth(screenWidth * 0.8);
       primaryStage.setHeight(screenHeight * 0.8);
       primaryStage.setFullScreen(true);
@@ -45,6 +52,11 @@ public class ApplicationStart extends Application {
       primaryStage.setMinWidth(200);
       primaryStage.setTitle("StoryGameWIP");
       primaryStage.setScene(mainMenuScene);
+      primaryStage.setOnCloseRequest(windowEvent -> {
+        //GameDAO.getInstance.close();
+        Platform.exit();
+        System.exit(0);
+      });
       primaryStage.show();
     });
   }
