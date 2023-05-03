@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001.BackEnd.gameinformation;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -25,9 +26,10 @@ public class Story {
 
   private String title;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
 
@@ -41,7 +43,7 @@ public class Story {
     this.passages = new HashMap<>();
   }
 
-  protected Story() {}
+  public Story() {}
 
   public Long getId() {
     return id;

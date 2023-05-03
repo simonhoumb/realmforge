@@ -1,8 +1,10 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
+import jakarta.persistence.Entity;
 import no.ntnu.idatg2001.BackEnd.entityinformation.PlayerClass;
 import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
+@Entity
 public class Warrior extends Unit {
 
   public Warrior(String playerName) {
@@ -16,5 +18,9 @@ public class Warrior extends Unit {
     super.setDexterity(5);
     super.setStrength(10);
     super.setLuck(3);
+  }
+
+  public Warrior() {
+
   }
 }

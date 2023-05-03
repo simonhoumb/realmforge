@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
 import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 import no.ntnu.idatg2001.BackEnd.gameinformation.Link;
@@ -16,6 +18,7 @@ import no.ntnu.idatg2001.BackEnd.gameinformation.Story;
 import no.ntnu.idatg2001.BackEnd.goals.Goal;
 
 @Entity
+@Table(name = "game")
 public class Game {
 
   @Id
@@ -23,16 +26,17 @@ public class Game {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "unit_id")
   private Unit unit;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Story story;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "game_id")
   private List<Goal> goals;
 
-  protected Game() {
+  public Game() {
 
   }
 

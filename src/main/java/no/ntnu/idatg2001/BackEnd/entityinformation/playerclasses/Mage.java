@@ -1,7 +1,9 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
+import jakarta.persistence.Entity;
 import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
+@Entity
 public class Mage extends Unit {
   public Mage(String entityName) {
 
@@ -15,6 +17,7 @@ public class Mage extends Unit {
     super.setLuck(4);
   }
 
+  public Mage() {
 
-
+  }
 }

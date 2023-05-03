@@ -24,7 +24,7 @@ public class GameDAO implements DAO<Game> {
   private static final GameDAO instance = new GameDAO();
 
   /** Constructs an GameDAO instance, initializing the EntityManagerFactory and EntityManager. */
-  public GameDAO() {
+  private GameDAO() {
     this.emf = Persistence.createEntityManagerFactory("gamedb");
     this.em = this.emf.createEntityManager();
   }
