@@ -1,51 +1,77 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.idatg2001.BackEnd.utility.CheckIfValid;
 
 /**
- * Represents A Item Class.
+ * Represents A unit in the game.
 
  * @author Eskil Alstad & Simon Husås Houmb
  * @version 2022-12-07
  */
-public abstract class Entity {
+@Entity
+public abstract class Unit {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
 
   //ALL
-  private String entityName; //Name of the Entity.
+  private String entityName; //Name of the Unit.
   private PlayerClass playerClass; //The Class of the Player
-  private int entityHealthMax; //The max Health points of the Entity.
-  private int entityHealth; //The Health of the Entity.
-  private int entityLevel; //The Level of the Entity.
+  private int entityHealthMax; //The max Health points of the Unit.
+  private int entityHealth; //The Health of the Unit.
+  private int entityLevel; //The Level of the Unit.
   private int entityMana;
   private int entityManaMax;
   //Stats
-  private int strength; //Strength stat of the Entity.
-  private int intelligence; //Intelligence stat of the Entity.
-  private int dexterity; //Dexterity stat of the Entity.
-  private int luck; //Luck stat of the Entity.
-  private int gold; //Gold for the Entity.
-  private double damage = 30; //Damage the Entity starts with.
-  private double criticalChance = 0.0; //Entity CriticalChance.
-  private int armour; //Armor stat to the Entity.
-  private String weapon = "hands"; //Weapon Entity Starts With.
+  private int strength; //Strength stat of the Unit.
+  private int intelligence; //Intelligence stat of the Unit.
+  private int dexterity; //Dexterity stat of the Unit.
+  private int luck; //Luck stat of the Unit.
+  private int gold; //Gold for the Unit.
+  private double damage = 30; //Damage the Unit starts with.
+  private double criticalChance = 0.0; //Unit CriticalChance.
+  private int armour; //Armor stat to the Unit.
+  private String weapon = "hands"; //Weapon Unit Starts With.
+  @ElementCollection
   private List<String> entityInventory; // The entity's inventory
-  private final CheckIfValid checkIfValid = new CheckIfValid();
 
-  protected Entity() {
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  protected Unit() {
     this(100, 100, "default", 0, 100);
   }
 
   /**
-   * Instantiates a new Entity.
+   * Instantiates a new Unit.
    *
    * @param entityHealthMax the entity health max
    * @param entityHealth    the entity health
    * @param entityName      the entity name
    * @param gold            the gold
    */
-  protected Entity(int entityHealthMax, int entityHealth, String entityName, int gold,
+  protected Unit(int entityHealthMax, int entityHealth, String entityName, int gold,
       int entityMana) {
     this.entityHealthMax = entityHealthMax;
     this.entityHealth = entityHealth;
@@ -388,7 +414,7 @@ public abstract class Entity {
 
   @Override
   public String toString() {
-    return "Entity{"
+    return "Unit{"
         + "entityName= '" + entityName + '\''
         + ", entityHealthPoints= " + entityHealth
         + ", entityMana= " + entityMana

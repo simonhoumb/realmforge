@@ -1,13 +1,27 @@
 package no.ntnu.idatg2001.BackEnd.gameinformation;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import no.ntnu.idatg2001.BackEnd.actions.Action;
 
+@Entity
 public class Link {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
   private String text;
   private String reference;
+  @OneToMany
   private List<Action> actions;
 
   public Link(String text, String reference) {
@@ -15,6 +29,17 @@ public class Link {
     this.reference = reference;
     actions = new ArrayList<>(); //vet ikke om denne skal være her
   }
+
+  public Link() {}
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
 
   public String getText() {
     return text;

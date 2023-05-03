@@ -1,20 +1,54 @@
 package no.ntnu.idatg2001.BackEnd.gameinformation;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@Entity
 public class Story {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
   private String title;
+
+  @OneToMany
   private Map<Link, Passage> passages;
+  @ManyToOne
+  @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
+
+  public void setOpeningPassage(Passage openingPassage) {
+    this.openingPassage = openingPassage;
+  }
 
   public Story(String title, Passage openingPassage) {
     this.title = title;
     this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
+  }
+
+  protected Story() {}
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getTitle() {

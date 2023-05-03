@@ -1,8 +1,27 @@
 package no.ntnu.idatg2001.BackEnd.goals;
 
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public interface Goal {
+@Entity
+public abstract class Goal {
 
-  public boolean isFulfilled(Entity entity);
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
+  Long getId() {
+    return id;
+  }
+
+  void setId(Long id) {
+    this.id = id;
+  }
+
+  public abstract boolean isFulfilled(Unit unit);
 }

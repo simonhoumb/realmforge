@@ -1,15 +1,15 @@
 package no.ntnu.idatg2001.BackEnd.actions;
 
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class ScoreAction implements Action {
+public class ScoreAction extends Action {
   int points;
 
   public ScoreAction(int points) {
     this.points = points;
   }
 
-  public void execute(Entity entity) {
-    entity.setEntityLevel(entity.getEntityLevel() + points);
+  public void execute(Unit unit) {
+    unit.setEntityLevel(unit.getEntityLevel() + points);
   }
 }

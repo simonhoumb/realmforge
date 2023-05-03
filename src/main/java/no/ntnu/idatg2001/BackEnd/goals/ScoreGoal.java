@@ -1,15 +1,15 @@
 package no.ntnu.idatg2001.BackEnd.goals;
 
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class ScoreGoal implements Goal {
+public class ScoreGoal extends Goal {
   private int minimumPoints;
 
   public ScoreGoal(int minimumPoints) {
     this.minimumPoints = minimumPoints;
   }
 
-  public boolean isFulfilled(Entity entity) {
-    return entity.getEntityLevel() >= minimumPoints;
+  public boolean isFulfilled(Unit unit) {
+    return unit.getEntityLevel() >= minimumPoints;
   }
 }

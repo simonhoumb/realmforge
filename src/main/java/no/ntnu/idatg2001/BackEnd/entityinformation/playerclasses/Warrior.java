@@ -1,9 +1,9 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
 import no.ntnu.idatg2001.BackEnd.entityinformation.PlayerClass;
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class Warrior extends Entity {
+public class Warrior extends Unit {
 
   public Warrior(String playerName) {
     super(200, 200, playerName, 0, 50);

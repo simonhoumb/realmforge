@@ -1,9 +1,9 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses;
 
 import no.ntnu.idatg2001.BackEnd.entityinformation.PlayerClass;
-import no.ntnu.idatg2001.BackEnd.entityinformation.Entity;
+import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 
-public class Ranger extends Entity {
+public class Ranger extends Unit {
 
   public Ranger(String entityName) {
     super(100, 100, entityName, 0, 50);
