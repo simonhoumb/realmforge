@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import no.ntnu.idatg2001.BackEnd.Model.MusicPlayer;
 import no.ntnu.idatg2001.BackEnd.Model.SettingsModel;
 import no.ntnu.idatg2001.FrontEnd.Controller.MainMenuController;
+import no.ntnu.idatg2001.dao.GameDAO;
 
 public class ApplicationStart extends Application {
 
@@ -53,7 +54,7 @@ public class ApplicationStart extends Application {
       primaryStage.setTitle("StoryGameWIP");
       primaryStage.setScene(mainMenuScene);
       primaryStage.setOnCloseRequest(windowEvent -> {
-        //GameDAO.getInstance.close();
+        GameDAO.getInstance().close();
         Platform.exit();
         System.exit(0);
       });

@@ -50,6 +50,8 @@ public class SettingsDialog extends Dialog {
     cancelButton = new Button(resourceBundle.getString("settings.cancel"));
     getDialogPane().getChildren().add(cancelButton);
     cancelButton.setOnAction(event -> {
+      setVolumeSliderValue(SettingsModel.getInstance().getVolumeSliderValue());
+      getMuteCheckBox().setSelected(SettingsModel.getInstance().isMuted());
       controller.onCloseSource(event);
     });
   }
@@ -58,7 +60,7 @@ public class SettingsDialog extends Dialog {
     muteCheckBox = new CheckBox(resourceBundle.getString("settings.muteLable"));
     muteCheckBox.setSelected(SettingsModel.getInstance().isMuted());
     muteCheckBox.selectedProperty().addListener((observable, oldValue, newValue)-> {
-      if (newValue) {
+      if (newValue.equals(Boolean.TRUE)) {
         MusicPlayer.getInstance().pauseMusic();
       } else {
         MusicPlayer.getInstance().startMusic();
