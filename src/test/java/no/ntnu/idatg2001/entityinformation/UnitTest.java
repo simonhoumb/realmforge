@@ -21,18 +21,18 @@ class UnitTest {
   class removeFromInventoryTest {
     @Test
     void removeItemThatIsInInventory() {
-      ArrayList<String> testInventory = new ArrayList<>(unit.getEntityInventory());
+      ArrayList<String> testInventory = new ArrayList<>(unit.getUnitInventory());
       assertDoesNotThrow(() -> unit.removeFromInventory("Bow"));
-      assertFalse(unit.getEntityInventory().contains("Bow"));
-      assertNotEquals(testInventory, unit.getEntityInventory());
+      assertFalse(unit.getUnitInventory().contains("Bow"));
+      assertNotEquals(testInventory, unit.getUnitInventory());
     }
 
     @Test
     void removeItemThatIsNotInInventory() {
-      ArrayList<String> testInventory = new ArrayList<>(unit.getEntityInventory());
+      ArrayList<String> testInventory = new ArrayList<>(unit.getUnitInventory());
       Exception thrown = assertThrows(IllegalArgumentException.class,
           () -> unit.removeFromInventory("Shield"));
-      assertEquals(testInventory, unit.getEntityInventory());
+      assertEquals(testInventory, unit.getUnitInventory());
     }
   }
 
@@ -40,23 +40,23 @@ class UnitTest {
   class addToInventoryTest {
     @Test
     void addOneItemToInventory() {
-      ArrayList<String> testInventory = new ArrayList<>(unit.getEntityInventory());
+      ArrayList<String> testInventory = new ArrayList<>(unit.getUnitInventory());
       unit.addToInventory("Jewel");
-      assertTrue(unit.getEntityInventory().contains("Jewel"));
-      assertEquals(testInventory.size() + 1, unit.getEntityInventory().size());
+      assertTrue(unit.getUnitInventory().contains("Jewel"));
+      assertEquals(testInventory.size() + 1, unit.getUnitInventory().size());
     }
 
     @Test
     void addMultipleItemsToInventory() {
-      ArrayList<String> testInventory = new ArrayList<>(unit.getEntityInventory());
+      ArrayList<String> testInventory = new ArrayList<>(unit.getUnitInventory());
       ArrayList<String> itemsToAdd = new ArrayList<>();
       itemsToAdd.add("Jewel");
       itemsToAdd.add("Map");
       itemsToAdd.add("Bread");
       unit.addToInventory(itemsToAdd);
-      assertTrue(unit.getEntityInventory().containsAll(itemsToAdd));
+      assertTrue(unit.getUnitInventory().containsAll(itemsToAdd));
       assertEquals(testInventory.size() + itemsToAdd.size(),
-          unit.getEntityInventory().size());
+          unit.getUnitInventory().size());
     }
   }
 }

@@ -11,6 +11,6 @@ public class InventoryGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getEntityInventory().equals(mandatoryItems);
+    return unit.getUnitInventory().equals(mandatoryItems);
   }
 }

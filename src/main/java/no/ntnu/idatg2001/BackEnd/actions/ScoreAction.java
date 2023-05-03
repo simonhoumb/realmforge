@@ -10,6 +10,6 @@ public class ScoreAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.setEntityLevel(unit.getEntityLevel() + points);
+    unit.setUnitLevel(unit.getUnitLevel() + points);
   }
 }

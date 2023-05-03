@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.util.List;
 import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
 import no.ntnu.idatg2001.BackEnd.gameinformation.Link;
@@ -56,15 +55,6 @@ public class Game {
   }
 
   public void setUnit(Unit unit) {
-    this.unit = unit;
-  }
-
-
-  public Unit getPlayer() {
-    return unit;
-  }
-
-  public void setPlayer(Unit unit) {
     this.unit = unit;
   }
 

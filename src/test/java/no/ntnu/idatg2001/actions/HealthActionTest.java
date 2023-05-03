@@ -12,17 +12,17 @@ class HealthActionTest {
    void settingEntityHealthAsLessThanZero() {
     Unit player = new Ranger("TestRanger");
     int expectedHealth = 0;
-    player.setEntityHealth(-100);
-    int actualHealth = player.getEntityHealth();
+    player.setUnitHealth(-100);
+    int actualHealth = player.getUnitHealth();
     assertEquals(expectedHealth, actualHealth);
   }
 
   @Test
   void settingEntityHealthAsMoreThanMaxHealth() {
     Unit player = new Ranger("TestRanger");
-    int expectedHealth = player.getEntityHealthMax(); //Expect it to set it to max health and not above
-    player.setEntityHealth(99999);
-    int actualHealth = player.getEntityHealth();
+    int expectedHealth = player.getUnitHealthMax(); //Expect it to set it to max health and not above
+    player.setUnitHealth(99999);
+    int actualHealth = player.getUnitHealth();
     assertEquals(expectedHealth, actualHealth);
   }
 }

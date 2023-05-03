@@ -10,6 +10,6 @@ public class ScoreGoal extends Goal {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getEntityLevel() >= minimumPoints;
+    return unit.getUnitLevel() >= minimumPoints;
   }
 }

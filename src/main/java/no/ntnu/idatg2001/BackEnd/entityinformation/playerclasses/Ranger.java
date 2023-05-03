@@ -7,7 +7,7 @@ public class Ranger extends Unit {
 
   public Ranger(String entityName) {
     super(100, 100, entityName, 0, 50);
-    this.setEntityHealth(150);
+    this.setUnitHealth(150);
     super.addToInventory("Bow");
     super.addToInventory("HealthPotion");
     super.addToInventory("Trap");

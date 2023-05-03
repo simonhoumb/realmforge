@@ -10,6 +10,6 @@ public class HealthGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getEntityHealth() >= minimumHealth;
+    return unit.getUnitHealth() >= minimumHealth;
   }
 }

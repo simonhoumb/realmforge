@@ -1,20 +1,13 @@
 package no.ntnu.idatg2001.BackEnd.entityinformation;
 
-import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
-import no.ntnu.idatg2001.BackEnd.utility.CheckIfValid;
 
 /**
  * Represents A unit in the game.
@@ -31,13 +24,14 @@ public abstract class Unit {
   private Long id;
 
   //ALL
-  private String entityName; //Name of the Unit.
+  private String unitName; //Name of the Unit.
   private PlayerClass playerClass; //The Class of the Player
-  private int entityHealthMax; //The max Health points of the Unit.
-  private int entityHealth; //The Health of the Unit.
-  private int entityLevel; //The Level of the Unit.
-  private int entityMana;
-  private int entityManaMax;
+  private int unitHealthMax; //The max Health points of the Unit.
+  private int unitHealth; //The Health of the Unit.
+  private int unitLevel; //The Level of the Unit.
+  private int unitMana; //The Mana of the unit.
+  private int unitManaMax; //The max Mana points of the unit.
+
   //Stats
   private int strength; //Strength stat of the Unit.
   private int intelligence; //Intelligence stat of the Unit.
@@ -49,7 +43,29 @@ public abstract class Unit {
   private int armour; //Armor stat to the Unit.
   private String weapon = "hands"; //Weapon Unit Starts With.
   @ElementCollection
-  private List<String> entityInventory; // The entity's inventory
+  private List<String> unitInventory; // The unit's inventory
+
+
+  protected Unit() {
+    this(100, 100, "default", 0, 100);
+  }
+
+  /**
+   * Instantiates a new Unit.
+   *
+   * @param unitHealthMax the unit health max
+   * @param unitHealth    the unit health
+   * @param unitName      the unit name
+   * @param gold            the gold
+   */
+  protected Unit(int unitHealthMax, int unitHealth, String unitName, int gold,
+      int unitMana) {
+    this.unitHealthMax = unitHealthMax;
+    this.unitHealth = unitHealth;
+    this.unitName = unitName;
+    this.unitMana = unitMana;
+    this.unitInventory = new ArrayList<>();
+  }
 
   public Long getId() {
     return id;
@@ -59,85 +75,64 @@ public abstract class Unit {
     this.id = id;
   }
 
-  protected Unit() {
-    this(100, 100, "default", 0, 100);
-  }
-
   /**
-   * Instantiates a new Unit.
+   * Gets unit health.
    *
-   * @param entityHealthMax the entity health max
-   * @param entityHealth    the entity health
-   * @param entityName      the entity name
-   * @param gold            the gold
+   * @return the unit health
    */
-  protected Unit(int entityHealthMax, int entityHealth, String entityName, int gold,
-      int entityMana) {
-    this.entityHealthMax = entityHealthMax;
-    this.entityHealth = entityHealth;
-    this.entityName = entityName;
-    this.entityMana = entityMana;
-    this.entityInventory = new ArrayList<>();
+  public int getUnitHealth() {
+    return this.unitHealth;
   }
 
   /**
-   * Gets entity health.
-   *
-   * @return the entity health
-   */
-  public int getEntityHealth() {
-    return this.entityHealth;
-  }
-
-  /**
-   * Sets entity health. if Health is bigger than max health, health
+   * Sets unit health. if Health is bigger than max health, health
    * is set to maxHealth.
    *
-   * @param entityHealth the entity health
+   * @param unitHealth the unit health
    */
-  public void setEntityHealth(int entityHealth) {
-    if (entityHealth > this.entityHealthMax) {
-      this.entityHealth = this.entityHealthMax;
-    } else if (entityHealth < 0) {
-      this.entityHealth = 0;
+  public void setUnitHealth(int unitHealth) {
+    if (unitHealth > this.unitHealthMax) {
+      this.unitHealth = this.unitHealthMax;
+    } else if (unitHealth < 0) {
+      this.unitHealth = 0;
     } else {
-      this.entityHealth = entityHealth;
+      this.unitHealth = unitHealth;
     }
   }
 
-  public int getEntityManaMax() {
-    return entityManaMax;
+  public int getUnitManaMax() {
+    return unitManaMax;
   }
 
-  public void setEntityManaMax(int entityManaMax) {
-    this.entityManaMax = entityManaMax;
-    if (entityMana > entityManaMax) {
-      entityMana = entityManaMax;
+  public void setUnitManaMax(int unitManaMax) {
+    this.unitManaMax = unitManaMax;
+    if (unitMana > unitManaMax) {
+      unitMana = unitManaMax;
     }
   }
 
   /**
-   * Gets entity mana.
+   * Gets unit mana.
    *
-   * @return the entity mana
+   * @return the unit mana
    */
-  public int getEntityMana() {
-    return entityMana;
+  public int getUnitMana() {
+    return unitMana;
   }
 
   /**
-   * Sets entity mana if mana is bigger than mana, its set back
+   * Sets unit mana if mana is bigger than mana, its set back
    * to max mana.
    *
-   * @param entityMana the entity mana
+   * @param unitMana the unit mana
    */
-  public void setEntityMana(int entityMana) {
-    if (entityMana > this.entityManaMax) {
-      this.entityMana = this.entityManaMax;
-    } else if (entityMana < 0) {
-      this.entityHealth = 0;
+  public void setUnitMana(int unitMana) {
+    if (unitMana > this.unitManaMax) {
+      this.unitMana = this.unitManaMax;
+    } else if (unitMana < 0) {
+      this.unitHealth = 0;
     } else {
-      this.entityMana = entityMana;
+      this.unitMana = unitMana;
     }
   }
 
@@ -178,18 +173,18 @@ public abstract class Unit {
   }
 
   /**
-   * Gets crit chance.
+   * Gets critical chance.
    *
-   * @return the crit chance
+   * @return the critical chance
    */
   public double getCriticalChance() {
     return criticalChance;
   }
 
   /**
-   * Sets crit chance.
+   * Sets critical chance.
    *
-   * @param criticalChance the crit chance
+   * @param criticalChance the critical chance
    */
   public void setCriticalChance(double criticalChance) {
     this.criticalChance = criticalChance;
@@ -214,60 +209,60 @@ public abstract class Unit {
   }
 
   /**
-   * Gets entity health max.
+   * Gets unit health max.
    *
-   * @return the entity health max
+   * @return the unit health max
    */
-  public int getEntityHealthMax() {
-    return entityHealthMax;
+  public int getUnitHealthMax() {
+    return unitHealthMax;
   }
 
   /**
-   * Sets entity health max.
+   * Sets unit health max.
    *
-   * @param entityHealthMax the entity health max
+   * @param unitHealthMax the unit health max
    */
-  public void setEntityHealthMax(int entityHealthMax) {
-    this.entityHealthMax = entityHealthMax;
-    if (entityHealth > entityHealthMax) {
-      entityHealth = entityHealthMax;
+  public void setUnitHealthMax(int unitHealthMax) {
+    this.unitHealthMax = unitHealthMax;
+    if (unitHealth > unitHealthMax) {
+      unitHealth = unitHealthMax;
     }
   }
 
   /**
-   * Gets entity name.
+   * Gets unit name.
    *
-   * @return the entity name
+   * @return the unit name
    */
-  public String getEntityName() {
-    return entityName;
+  public String getUnitName() {
+    return unitName;
   }
 
   /**
-   * Sets entity name.
+   * Sets unit name.
    *
-   * @param entityName the entity name
+   * @param unitName the unit name
    */
-  public void setEntityName(String entityName) {
-    this.entityName = entityName;
+  public void setUnitName(String unitName) {
+    this.unitName = unitName;
   }
 
   /**
-   * Gets entity level.
+   * Gets unit level.
    *
-   * @return the entity level
+   * @return the unit level
    */
-  public int getEntityLevel() {
-    return entityLevel;
+  public int getUnitLevel() {
+    return unitLevel;
   }
 
   /**
-   * Sets entity level.
+   * Sets unit level.
    *
-   * @param entityLevel the entity level
+   * @param unitLevel the unit level
    */
-  public void setEntityLevel(int entityLevel) {
-    this.entityLevel = entityLevel;
+  public void setUnitLevel(int unitLevel) {
+    this.unitLevel = unitLevel;
   }
 
   /**
@@ -370,59 +365,59 @@ public abstract class Unit {
   }
 
   /**
-   * Adds an item to the entity's inventory.
+   * Adds an item to the unit's inventory.
    *
    * @param item the item to be added to the inventory
    */
   public void addToInventory(String item) {
-    entityInventory.add(item);
+    unitInventory.add(item);
   }
 
   /**
-   * Adds multiple items to the entity's inventory.
+   * Adds multiple items to the unit's inventory.
    *
    * @param itemsToAdd the items to be added to the inventory
    */
   public void addToInventory(List<String> itemsToAdd) {
-    entityInventory.addAll(itemsToAdd);
+    unitInventory.addAll(itemsToAdd);
   }
 
   /**
-   * Removes an item from the entity's inventory.
+   * Removes an item from the unit's inventory.
    *
    * @param item the item to be removed from the inventory
-   * @throws IllegalArgumentException ("Item not in entity's inventory.") if the item is not in the
-   *     entity's inventory.
+   * @throws IllegalArgumentException ("Item not in unit's inventory.") if the item is not in the
+   *     unit's inventory.
    */
   public void removeFromInventory(String item) throws IllegalArgumentException {
-    if (!entityInventory.contains(item)) {
-      throw new IllegalArgumentException("Item not in entity's inventory.");
+    if (!unitInventory.contains(item)) {
+      throw new IllegalArgumentException("Item not in unit's inventory.");
     } else {
-      entityInventory.remove(item);
+      unitInventory.remove(item);
     }
   }
 
   /**
-   * Returns the entity's inventory.
+   * Returns the unit's inventory.
    *
    * @return the inventory to be returned as a List.
    */
-  public List<String> getEntityInventory() {
-    return entityInventory;
+  public List<String> getUnitInventory() {
+    return unitInventory;
   }
 
 
   @Override
   public String toString() {
     return "Unit{"
-        + "entityName= '" + entityName + '\''
-        + ", entityHealthPoints= " + entityHealth
-        + ", entityMana= " + entityMana
-        + ", entityScore= " + entityLevel
-        + ", entityGold= " + gold
+        + "unitName= '" + unitName + '\''
+        + ", unitHealthPoints= " + unitHealth
+        + ", unitMana= " + unitMana
+        + ", unitScore= " + unitLevel
+        + ", unitGold= " + gold
         + ", playerClass= " + playerClass
-        + ", entityInventory= " + entityInventory
-        + ", entity Stats §§ "
+        + ", unitInventory= " + unitInventory
+        + ", unit Stats §§ "
         + " STR " + strength + ", "
         + " INT " + intelligence + ", "
         + " DEX " + dexterity + ", "
