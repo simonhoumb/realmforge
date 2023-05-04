@@ -18,7 +18,6 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class NewGameDialog extends Dialog {
-  private Dialog<ButtonType> newGameDialog;
   private ResourceBundle resourceBundle;
   private Label newGameLabel;
   private Button playNewStoryButton;
