@@ -11,11 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
-import no.ntnu.idatg2001.BackEnd.entityinformation.Unit;
-import no.ntnu.idatg2001.BackEnd.gameinformation.Link;
-import no.ntnu.idatg2001.BackEnd.gameinformation.Passage;
-import no.ntnu.idatg2001.BackEnd.gameinformation.Story;
-import no.ntnu.idatg2001.BackEnd.goals.Goal;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
+import no.ntnu.idatg2001.backend.gameinformation.Link;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.goals.Goal;
 
 @Entity
 @Table(name = "game")

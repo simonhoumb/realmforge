@@ -2,12 +2,12 @@ package no.ntnu.idatg2001;
 
 
 import java.util.ArrayList;
-import no.ntnu.idatg2001.BackEnd.entityinformation.playerclasses.Ranger;
-import no.ntnu.idatg2001.BackEnd.gameinformation.Passage;
-import no.ntnu.idatg2001.BackEnd.gameinformation.Story;
-import no.ntnu.idatg2001.BackEnd.goals.Goal;
-import no.ntnu.idatg2001.BackEnd.goals.ScoreGoal;
-import no.ntnu.idatg2001.FrontEnd.View.ApplicationStart;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Ranger;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.backend.goals.ScoreGoal;
+import no.ntnu.idatg2001.frontend.View.ApplicationStart;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 
@@ -28,6 +28,11 @@ public class Main {
         goals));
     GameDAO.getInstance().printAllDetails();
 
+
+    for (Game game : GameDAO.getInstance().getAll()) {
+      GameDAO.getInstance().remove(game);
+      System.out.println("game removed");
+    }
     ApplicationStart.startApplication(args);
   }
 }
