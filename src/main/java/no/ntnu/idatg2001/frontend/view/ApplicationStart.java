@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import java.io.IOException;
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -12,10 +13,7 @@ import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 public class ApplicationStart extends Application {
-
-  private static final double SCREEN_WIDTH = 800;
-  private static final double SCREEN_HEIGHT = 700;
-  private MainMenuController mainMenuController;
+    private MainMenuController mainMenuController;
   private MainMenuView menuView;
   
   @Override
@@ -31,13 +29,13 @@ public class ApplicationStart extends Application {
         menuView.setController(mainMenuController);
 
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
       // Create a new Scene with the MainMenuView as its root
       Scene mainMenuScene = new Scene(menuView);
 
       //Set up the Primary View
-      Image icon = new Image(getClass().getResource("/images/fantasy.png").toExternalForm());
+      Image icon = new Image(Objects.requireNonNull(getClass().getResource("/images/fantasy.png")).toExternalForm());
       primaryStage.setX((screenWidth - primaryStage.getWidth()) / 2);
       primaryStage.setY((screenHeight - primaryStage.getHeight()) / 2);
       primaryStage.setWidth(screenWidth * 0.8);
