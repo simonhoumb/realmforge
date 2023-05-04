@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001.backend.gameinformation;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Table
-public class Passage {
+public class Passage extends RecursiveTreeObject<Passage> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

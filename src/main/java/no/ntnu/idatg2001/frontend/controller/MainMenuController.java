@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.view.CreateStoryViewTemp;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.LoadGameDialog;

@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
+import no.ntnu.idatg2001.frontend.view.CreateStoryViewTemp;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 
 public class CreateStoryController {
