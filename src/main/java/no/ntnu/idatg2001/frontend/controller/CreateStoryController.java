@@ -17,7 +17,7 @@ import no.ntnu.idatg2001.frontend.view.MainMenuView;
 public class CreateStoryController {
   private CreateStoryView createStoryView;
 
-  public CreateStoryController(CreateStoryView createStoryView) throws IOException {
+  public CreateStoryController(CreateStoryView createStoryView) {
     this.createStoryView = createStoryView;
   }
 
