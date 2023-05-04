@@ -46,7 +46,7 @@ public abstract class Unit {
   private List<String> unitInventory; // The unit's inventory
 
 
-  public Unit() {
+  protected Unit() {
     this(100, 100, "default", 0, 100);
   }
 
