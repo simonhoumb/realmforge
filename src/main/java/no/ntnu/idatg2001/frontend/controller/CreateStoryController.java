@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.Controller;
+package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,8 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import no.ntnu.idatg2001.frontend.View.CreateStoryView;
-import no.ntnu.idatg2001.frontend.View.MainMenuView;
+import no.ntnu.idatg2001.frontend.view.CreateStoryView;
+import no.ntnu.idatg2001.frontend.view.MainMenuView;
 
 public class CreateStoryController {
   private CreateStoryView createStoryView;

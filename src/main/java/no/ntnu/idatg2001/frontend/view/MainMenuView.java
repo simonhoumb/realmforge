@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.View;
+package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.MusicPlayer;
-import no.ntnu.idatg2001.frontend.Controller.MainMenuController;
+import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.backend.SettingsModel;
 
 

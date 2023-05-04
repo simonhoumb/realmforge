@@ -7,7 +7,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
 import no.ntnu.idatg2001.backend.goals.ScoreGoal;
-import no.ntnu.idatg2001.frontend.View.ApplicationStart;
+import no.ntnu.idatg2001.frontend.view.ApplicationStart;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 

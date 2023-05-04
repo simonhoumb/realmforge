@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.View;
+package no.ntnu.idatg2001.frontend.view;
 
 import java.util.Date;
 import java.util.Locale;
@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.Controller.MainMenuController;
+import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.GameSave;
 
 public class LoadGameDialog extends Dialog {

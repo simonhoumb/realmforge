@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.View;
+package no.ntnu.idatg2001.frontend.view;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import no.ntnu.idatg2001.frontend.Controller.MainMenuController;
+import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 public class ApplicationStart extends Application {

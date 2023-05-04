@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.View;
+package no.ntnu.idatg2001.frontend.view;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.*;
 import no.ntnu.idatg2001.backend.MusicPlayer;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.Controller.MainMenuController;
+import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class SettingsDialog extends Dialog {
   private ChoiceBox<String> languageSelection;

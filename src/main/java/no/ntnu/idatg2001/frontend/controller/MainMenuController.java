@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.Controller;
+package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
 import javafx.application.Platform;
@@ -7,12 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.View.CreateStoryView;
-import no.ntnu.idatg2001.frontend.View.ExitDialog;
-import no.ntnu.idatg2001.frontend.View.LoadGameDialog;
-import no.ntnu.idatg2001.frontend.View.MainMenuView;
-import no.ntnu.idatg2001.frontend.View.NewGameDialog;
-import no.ntnu.idatg2001.frontend.View.SettingsDialog;
+import no.ntnu.idatg2001.frontend.view.CreateStoryView;
+import no.ntnu.idatg2001.frontend.view.ExitDialog;
+import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
+import no.ntnu.idatg2001.frontend.view.MainMenuView;
+import no.ntnu.idatg2001.frontend.view.NewGameDialog;
+import no.ntnu.idatg2001.frontend.view.SettingsDialog;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 public class MainMenuController {

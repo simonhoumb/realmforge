@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.View;
+package no.ntnu.idatg2001.frontend.view;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.Controller.CreateStoryController;
+import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
 public class CreateStoryView extends AnchorPane {
   private Stage stage;
