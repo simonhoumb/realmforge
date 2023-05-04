@@ -39,9 +39,7 @@ public class SettingsDialog extends Dialog {
   private void createSaveButton() {
     saveButton = new Button(resourceBundle.getString("settings.save"));
     getDialogPane().getChildren().add(saveButton);
-    saveButton.setOnAction(event -> {
-      controller.onSettingSaveButtonPressed(event);
-    });
+    saveButton.setOnAction(event -> controller.onSettingSaveButtonPressed(event));
   }
 
   private void createCancelButton() {
