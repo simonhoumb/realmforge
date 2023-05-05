@@ -2,7 +2,6 @@ package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +21,7 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 
 public class MainMenuView extends BorderPane {
 
-  private static final String cssFile = "/CSS/MainMenuStyleSheet.css";
+  private static final String CSS_FILE = "/CSS/MainMenuStyleSheet.css";
   private JFXButton newGameButton;
   private JFXButton loadGameButton;
   private JFXButton settingsButton;
@@ -33,37 +32,30 @@ public class MainMenuView extends BorderPane {
 
   public MainMenuView() throws IOException {
     setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-    getStylesheets().add(cssFile);
+    getStylesheets().add(CSS_FILE);
     MusicPlayer.getInstance().playMusic();
     menuView();
   }
 
-  public MainMenuView menuView() throws IOException {
-    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+  public void menuView() throws IOException {
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
     //Buttons for the menu
     newGameButton = new JFXButton();
     newGameButton.setId("newGameButton");
-    newGameButton.setOnAction(actionEvent -> {
-      controller.onNewGameButtonPressed();
-    });
+    newGameButton.setOnAction(actionEvent
+        -> controller.onNewGameButtonPressed());
 
     loadGameButton = new JFXButton();
     loadGameButton.setId("loadGameButton");
-    loadGameButton.setOnAction(actionEvent -> {
-      controller.onLoadGameButtonPressed();
-    } );
+    loadGameButton.setOnAction(actionEvent
+        -> controller.onLoadGameButtonPressed());
 
     settingsButton = new JFXButton();
     settingsButton.setId("settingsButton");
-    settingsButton.setOnAction(event -> {
-      controller.onSettingsViewButtonPressed();
-    });
+    settingsButton.setOnAction(event -> controller.onSettingsViewButtonPressed());
 
     exitGameButton = new JFXButton();
-    exitGameButton.setOnAction(event1 -> {
-      controller.onExitViewButtonPressed();
-    });
+    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed());
 
     updateMainMenu();
 
@@ -86,13 +78,10 @@ public class MainMenuView extends BorderPane {
     contentBox.setMinSize(200, 200);
     contentBox.setPadding(new Insets(10, 0, 0, 0));
     setCenter(contentBox);
-    contentBox.widthProperty().addListener(((observableValue, oldValue, newValue) -> {
-      imageView.setFitWidth(newValue.doubleValue() * 0.9);
-    }));
-    contentBox.heightProperty().addListener(((observableValue, oldValue, newValue) -> {
-      imageView.setFitHeight(newValue.doubleValue() * 0.9);
-    }));
-    return this;
+    contentBox.widthProperty().addListener(((observableValue, oldValue, newValue)
+        -> imageView.setFitWidth(newValue.doubleValue() * 0.9)));
+    contentBox.heightProperty().addListener(((observableValue, oldValue, newValue)
+        -> imageView.setFitHeight(newValue.doubleValue() * 0.9)));
   }
 
   public void setController(MainMenuController menuController) {
@@ -100,8 +89,7 @@ public class MainMenuView extends BorderPane {
   }
 
   public void updateMainMenu() {
-    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));
