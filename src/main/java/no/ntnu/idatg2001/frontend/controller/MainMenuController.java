@@ -10,6 +10,7 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryViewTemp;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
+import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewGameDialog;
@@ -23,9 +24,20 @@ public class MainMenuController {
   private SettingsDialog settingsDialog;
   private CreateStoryView createStoryView;
   private CreateStoryController createStoryController;
+  private GameView gameView;
+  private GameController gameController;
 
   public MainMenuController(MainMenuView menuView) throws IOException {
     this.menuView =  menuView;
+  }
+
+  public void onStartGameButtonPressed(ActionEvent event) {
+    gameView = new GameView();
+    gameController = new GameController(gameView);
+    gameView.setController(gameController);
+    Scene newScene = menuView.getScene();
+    onCloseSource(event);
+    newScene.setRoot(gameView);
   }
 
   public void onNewGameButtonPressed() {
