@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXButton.ButtonType;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
@@ -37,7 +38,7 @@ public class MainMenuView extends BorderPane {
     menuView();
   }
 
-  public void menuView() throws IOException {
+  private void menuView() throws IOException {
     resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
     //Buttons for the menu
     newGameButton = new JFXButton();
@@ -55,6 +56,7 @@ public class MainMenuView extends BorderPane {
     settingsButton.setOnAction(event -> controller.onSettingsViewButtonPressed());
 
     exitGameButton = new JFXButton();
+    exitGameButton.setCancelButton(true);
     exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed());
 
     updateMainMenu();
