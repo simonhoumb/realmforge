@@ -23,12 +23,7 @@ build_job:
   script:
     - echo "Maven compile started"
     - "mvn compile -B"
-    - "mvn javadoc:javadoc"
     - echo $SOME_VARIABLE
-  artifacts:
-    paths:
-      - javadoc
-
 
 test_job:
   stage: test
@@ -97,5 +92,6 @@ pages:
   artifacts:
     paths:
       - public
+
 
 
