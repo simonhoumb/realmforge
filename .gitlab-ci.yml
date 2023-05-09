@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  CI_SERVER_URL: https://git.gvk.idi.ntnu.no/
-  CI_JOB_TOKEN: GR1348941xuPYDmjc8CLxJaQ6C81x
+  CI_SERVER_URL: https://git.gvk.idi.ntnu.no/course/idatg2001/idatg2001-2023-ws/eskal/mappeoppgaveidatg2001
+  CI_JOB_TOKEN: 5YF8D2CFF
 
 image: maven:3.8.5-openjdk-17
 
