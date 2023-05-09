@@ -27,8 +27,8 @@ build_job:
     - echo $SOME_VARIABLE
   artifacts:
     paths:
-      -target
-      -javadoc
+      - target
+      - javadoc
 
 
 test_job:
