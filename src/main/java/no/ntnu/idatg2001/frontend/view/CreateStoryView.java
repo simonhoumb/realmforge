@@ -1,112 +1,123 @@
 package no.ntnu.idatg2001.frontend.view;
 
+import static javafx.scene.control.SelectionMode.*;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTreeTableView;
 import java.io.IOException;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import javafx.scene.paint.Color;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
 public class CreateStoryView extends BorderPane {
 
+  private static final String cssFile = "/CSS/NewStoryView.css";
   private ButtonBar buttonBar;
-  private JFXTextArea jfxTextArea;
-  private JFXTreeTableView<Passage> jfxTreeTableView;
+  private TableView<Story> storyTableView;
+  private TableColumn<Story, String> columnStoryName;
+  private TableColumn<Story, Integer> columnStoryPassageAmount;
+  private TableColumn<Story, Integer> columnStoryLinkAmount;
   private CreateStoryController controller;
   private JFXButton storyNameButton;
-  private JFXButton newRoomButton;
-  private JFXButton newLinkButton;
-  private JFXButton saveButton;
+  private JFXButton editStoryButton;
   private JFXButton loadButton;
   private JFXButton backButton;
-
+  private ResourceBundle resourceBundle;
 
   public CreateStoryView() {
+    setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.8), null, null)));
     this.setController(controller);
     // Initialize the view
+    getStylesheets().add(cssFile);
     init();
   }
 
   private void init() {
-    // Set up the buttons
+    // Set up the Objects in the View
     createNewStoryNameButton();
-    createNewPassageButton();
-    creatNewLinkButton();
-    saveButton = new JFXButton("Save");
-    loadButton = new JFXButton("Load");
+    createEditStoryButton();
+    createLoadStoryButton();
     createBackButton();
+    createStoryTableView();
+
     buttonBar = new ButtonBar();
-    buttonBar.getButtons().addAll(storyNameButton, newRoomButton, newLinkButton, saveButton, loadButton, backButton);
+    buttonBar.setButtonMinWidth(10);
+    buttonBar.getButtons().addAll(storyNameButton,editStoryButton,loadButton, backButton);
+    HBox buttonHbox = new HBox(buttonBar);
+    buttonHbox.setAlignment(Pos.CENTER);
+    buttonHbox.setPadding(new Insets(10,0,0,0));
 
-    // Set up the text area
-    jfxTextArea = new JFXTextArea();
-    jfxTextArea.setPadding(new Insets(0,0,0,20));
-
-    jfxTreeTableView = new JFXTreeTableView<>();
-    // Set up the table columns
-    TreeTableColumn<Passage, String> roomName = new TreeTableColumn<>("Room");
-    TreeTableColumn<Passage, String> linkName = new TreeTableColumn<>("Link");
-    jfxTreeTableView.getColumns().setAll(roomName,linkName);
 
     // Set up the layout
-    setPadding(new Insets(20,20,0,20));
-    setCenter(jfxTextArea);
+    setPadding(new Insets(50,100,0,100));
 
-    VBox rightVBox = new VBox();
-    rightVBox.getChildren().addAll(buttonBar, jfxTreeTableView);
+    VBox centerBox = new VBox();
 
-    HBox bottomHBox = new HBox();
-    bottomHBox.setPadding(new Insets(10));
-    bottomHBox.setSpacing(10);
-    bottomHBox.getChildren().addAll(storyNameButton, newRoomButton, newLinkButton, saveButton, loadButton, backButton);
-
-    setLeft(rightVBox);
-    setBottom(bottomHBox);
+    centerBox.getChildren().addAll(storyTableView,buttonHbox);
+    centerBox.setAlignment(Pos.CENTER);
+    setCenter(centerBox);
   }
+
+  private void createStoryTableView() {
+    createStoryTableColumnName();
+    createStoryTableColumnPassageAmount();
+    createStoryTableColumnLinkAmount();
+    storyTableView = new TableView<>();
+    storyTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    storyTableView.getColumns().addAll(columnStoryName,columnStoryPassageAmount,columnStoryLinkAmount);
+
+  }
+
+  private void createStoryTableColumnName() {
+    columnStoryName = new TableColumn<>("Name");
+    columnStoryName.setPrefWidth(100);
+  }
+
+  private void createStoryTableColumnPassageAmount() {
+    columnStoryPassageAmount = new TableColumn<>("Passage Amount");
+    columnStoryPassageAmount.setPrefWidth(100);
+  }
+
+  private void createStoryTableColumnLinkAmount() {
+    columnStoryLinkAmount = new TableColumn<>("Link Amount");
+    columnStoryLinkAmount.setPrefWidth(100);
+  }
+
   private void createNewStoryNameButton() {
-    storyNameButton = new JFXButton("Story Name");
+    storyNameButton = new JFXButton("New Story");
     storyNameButton.setOnAction(event -> {
-      //TODO
+      controller.onNewStory();
     });
   }
 
-  private void createNewPassageButton() {
-    newRoomButton = new JFXButton("New Room");
-    newRoomButton.setOnAction(event -> {
-      //TODO
-    });
-  }
-
-  private void creatNewLinkButton() {
-    newLinkButton = new JFXButton("New Link");
-    newLinkButton.setOnAction(event -> {
-      //TODO
-    });
-  }
-
-  private void createSaveStoryButton() {
-    saveButton = new JFXButton("Save");
-    saveButton.setOnAction(event -> {
-      //TODO
+  private void createEditStoryButton() {
+    editStoryButton = new JFXButton("Edit Story");
+    editStoryButton.setOnAction(event -> {
+      //TODO this is where i want the user to select the story it wants to edit.
     });
   }
 
   private void createLoadStoryButton() {
     loadButton = new JFXButton("Load");
     loadButton.setOnAction(event -> {
-      //TODO
+      //TODO want to add it sso the user can load a text file and then add it all to the DAO.
     });
   }
-
 
   private void createBackButton() {
     backButton = new JFXButton("Back");
@@ -119,13 +130,35 @@ public class CreateStoryView extends BorderPane {
     });
   }
 
-  public Map<String, TextArea> getRoomTextAreas() {
-    return (Map<String, TextArea>) jfxTextArea;
-  }
-
   public void setController(CreateStoryController createStoryController) {
     this.controller = createStoryController;
   // Add any additional methods, event handlers, or getters/setters as needed
+  }
+
+  public JFXButton getBackButton() {
+    return backButton;
+  }
+  public JFXButton getLoadButton() {
+    return loadButton;
+  }
+  public JFXButton getStoryNameButton() {
+    return storyNameButton;
+  }
+
+  public TableView<Story> getStoryTableView() {
+    return storyTableView;
+  }
+
+  public TableColumn<Story, String> getColumnStoryName() {
+    return columnStoryName;
+  }
+
+  public TableColumn<Story, Integer> getColumnStoryPassageAmount() {
+    return columnStoryPassageAmount;
+  }
+
+  public TableColumn<Story, Integer> getColumnStoryLinkAmount() {
+    return columnStoryLinkAmount;
   }
 }
 

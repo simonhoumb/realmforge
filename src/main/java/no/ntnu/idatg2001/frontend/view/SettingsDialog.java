@@ -27,7 +27,7 @@ public class SettingsDialog extends Dialog {
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    this.resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    this.resourceBundle = ResourceBundle.getBundle("languages/settingsDialog", locale);
     createSaveButton();
     createCancelButton();
     createMuteCheckBox();

@@ -40,7 +40,7 @@ public class MainMenuView extends BorderPane {
 
   public MainMenuView menuView() throws IOException {
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/mainMenu", locale);
     //Buttons for the menu
     newGameButton = new JFXButton();
     newGameButton.setId("newGameButton");
@@ -101,7 +101,7 @@ public class MainMenuView extends BorderPane {
 
   public void updateMainMenu() {
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/mainMenu", locale);
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));

@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,21 +18,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @Entity
+@Table(name = "story")
 public class Story {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
-
-  private String title;
-
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
+  private String title;
 
   public void setOpeningPassage(Passage openingPassage) {
     this.openingPassage = openingPassage;
@@ -41,6 +42,9 @@ public class Story {
     this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
   }
+  public Story(String title) {
+    this.title = title;
+  }
 
   public Story() {}
 
@@ -50,6 +54,11 @@ public class Story {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Story setTitle(String title) {
+    this.title = title;
+    return this;
   }
 
   public String getTitle() {
@@ -103,5 +112,39 @@ public class Story {
         + ", openingPassage=" + openingPassage
         + ", passages=" + passages +
         + '}';
+  }
+
+  /**
+   * This method counts the amount of passages in Story.
+   * @return the amount of passages in the story as a int.
+   */
+  public int getTotalAmountOfPassages() {
+    List<Passage> passageList = new ArrayList<>();
+    for (Passage storyPassage: passages.values()) {
+      if (!passageList.contains(storyPassage)) {
+        passageList.add(storyPassage);
+      }
+    }
+    if (getOpeningPassage() != null) {
+      passageList.add(getOpeningPassage());
+    }
+    return passageList.size();
+  }
+
+  /**
+   * This method counts the amount of links in passages in Story.
+   * @return the amount of links in passages in the story as an int.
+   */
+  public int getTotalAmountOfPassagesLinks() {
+    List<Link> linkList = new ArrayList<>();
+
+    for (Passage passage : passages.values()) {
+      passage.getLinks().forEach(link -> {
+        if (!linkList.contains(link)) {
+          linkList.add(link);
+        }
+      });
+    }
+    return linkList.size();
   }
 }
