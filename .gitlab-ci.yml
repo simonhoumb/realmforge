@@ -54,6 +54,8 @@ package_job:
 
 deploy:
   stage: deploy
+  tags:
+    - docker
   script:
     - mv public public_old || true
     - mkdir public
@@ -65,6 +67,8 @@ deploy:
     - main
 
 maven-site:
+  tags:
+    - docker
   script:
     - mvn site
     - mkdir -p public
