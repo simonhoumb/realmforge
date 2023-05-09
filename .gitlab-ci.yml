@@ -76,6 +76,8 @@ maven-site:
 
 pages:
   stage: deploy
+  tags:
+    - docker
   when: manual
   script:
     - mvn clean package
