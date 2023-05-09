@@ -78,7 +78,7 @@ maven-site:
       - public
   only:
     - master
-    - 
+
 pages:
   stage: deploy
   when: manual
