@@ -89,7 +89,7 @@ public class SettingsModel {
     volume.addListener(listener);
   }
   public Locale getLocale() {
-    ResourceBundle languageCodes = ResourceBundle.getBundle("languages/languagecodes");
+    ResourceBundle languageCodes = ResourceBundle.getBundle("settings/languagecodes");
     String languageCode = languageCodes.getString(languageSelection.toLowerCase());
     String countryCode = languageCode.toUpperCase();
     return new Locale(languageCode, countryCode);

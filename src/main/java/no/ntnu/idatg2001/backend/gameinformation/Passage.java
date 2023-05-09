@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Table
-public class Passage extends RecursiveTreeObject<Passage> {
+public class Passage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
