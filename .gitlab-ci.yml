@@ -64,7 +64,7 @@ deploy:
     paths:
       - public
   only:
-    - main
+    - eskil
 
 maven-site:
   stage: deploy
