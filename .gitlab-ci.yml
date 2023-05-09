@@ -27,7 +27,6 @@ build_job:
     - echo $SOME_VARIABLE
   artifacts:
     paths:
-      - target
       - javadoc
 
 
@@ -64,7 +63,7 @@ deploy:
     paths:
       - public
   only:
-    - eskil
+    - main
 
 maven-site:
   stage: deploy
