@@ -1,5 +1,7 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  CI_SERVER_URL: https://git.gvk.idi.ntnu.no/
+  CI_JOB_TOKEN: GR1348941xuPYDmjc8CLxJaQ6C81x
 
 image: maven:3.8.5-openjdk-17
 
