@@ -90,6 +90,7 @@ public class CreateStoryController {
     newStoryDialog = new NewStoryDialog(this);
     newStoryDialog.initOwner(createStoryView.getScene().getWindow());
     newStoryDialog.showAndWait();
+    populateTableView();
   }
 
   public void onLoad() {
@@ -114,5 +115,19 @@ public class CreateStoryController {
       int linkAmount = story.getTotalAmountOfPassagesLinks();
       return new SimpleIntegerProperty(linkAmount).asObject();
     });
+  }
+
+  public void getSelectedItemInTableView() {
+    // Get the selected item from the table view
+    Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
+
+// If no item is selected, show an error message and return
+    if (selectedStory == null) {
+      Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
+      alert.initOwner(createStoryView.getScene().getWindow());
+      alert.showAndWait();
+      return;
+    }
+    System.out.println(selectedStory);
   }
 }

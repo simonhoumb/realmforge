@@ -5,6 +5,7 @@ import static javafx.scene.control.SelectionMode.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
@@ -20,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
@@ -40,6 +42,8 @@ public class CreateStoryView extends BorderPane {
   private ResourceBundle resourceBundle;
 
   public CreateStoryView() {
+    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
+    resourceBundle = ResourceBundle.getBundle("languages/createStoryView", locale);
     setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.8), null, null)));
     this.setController(controller);
     // Initialize the view
@@ -84,43 +88,45 @@ public class CreateStoryView extends BorderPane {
   }
 
   private void createStoryTableColumnName() {
-    columnStoryName = new TableColumn<>("Name");
+    columnStoryName = new TableColumn<>(resourceBundle.getString("newStoryView.tableName"));
     columnStoryName.setPrefWidth(100);
   }
 
   private void createStoryTableColumnPassageAmount() {
-    columnStoryPassageAmount = new TableColumn<>("Passage Amount");
+    columnStoryPassageAmount = new TableColumn<>(resourceBundle.getString("newStoryView.tablePassageAmount"));
     columnStoryPassageAmount.setPrefWidth(100);
   }
 
   private void createStoryTableColumnLinkAmount() {
-    columnStoryLinkAmount = new TableColumn<>("Link Amount");
+    columnStoryLinkAmount = new TableColumn<>(resourceBundle.getString("newStoryView.tableLinkAmount"));
     columnStoryLinkAmount.setPrefWidth(100);
   }
 
   private void createNewStoryNameButton() {
-    storyNameButton = new JFXButton("New Story");
+    storyNameButton = new JFXButton(resourceBundle.getString("newStoryView.newStoryButton"));
     storyNameButton.setOnAction(event -> {
       controller.onNewStory();
     });
   }
 
   private void createEditStoryButton() {
-    editStoryButton = new JFXButton("Edit Story");
+    editStoryButton = new JFXButton(resourceBundle.getString("newStoryView.editStoryButton"));
     editStoryButton.setOnAction(event -> {
-      //TODO this is where i want the user to select the story it wants to edit.
+      controller.getSelectedItemInTableView();
+      //TODO this is where i want the user to select the story it wants to edit open new View where
+      // user edits the current selected story.
     });
   }
 
   private void createLoadStoryButton() {
-    loadButton = new JFXButton("Load");
+    loadButton = new JFXButton(resourceBundle.getString("newStoryView.loadStoryButton"));
     loadButton.setOnAction(event -> {
       //TODO want to add it sso the user can load a text file and then add it all to the DAO.
     });
   }
 
   private void createBackButton() {
-    backButton = new JFXButton("Back");
+    backButton = new JFXButton(resourceBundle.getString("newStoryView.backButton"));
     backButton.setOnAction(event -> {
       try {
         controller.onBackToMainMenuButtonPressed(event);

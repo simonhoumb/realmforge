@@ -78,6 +78,7 @@ public class Story {
     }
   }
 
+  //TODO må sjekke om detter rett.
   public void removePassage(Link link) {
     for (Entry<Link, Passage> entry : passages.entrySet()) {
       if (entry.getValue().getLinks().size() == 1
@@ -87,6 +88,7 @@ public class Story {
     }
   }
 
+  //TODO må sjekke om detter rett.
   public List<Link> getBrokenLinks() {
     ArrayList<Link> brokenLinks = new ArrayList<>();
     for (Entry<Link, Passage> entry : passages.entrySet()) {

@@ -83,7 +83,8 @@ public class SettingsDialog extends Dialog {
     languageSelection.getItems().addAll(
         resourceBundle.getString("settings.language.english"),
         resourceBundle.getString("settings.language.norwegian"),
-        resourceBundle.getString("settings.language.french"));
+        resourceBundle.getString("settings.language.french"),
+        resourceBundle.getString("settings.language.german"));
     languageSelection.setValue(resourceBundle.getString("settings.language.selected"));
   }
 
