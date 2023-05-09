@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Represents A unit in the game.
 
- * @author Eskil Alstad & Simon Husaas Houmb
+ * @author Eskil Alstad and Simon Husaas Houmb
  * @version 2022-12-07
  */
 @Entity
