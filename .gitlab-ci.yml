@@ -48,54 +48,20 @@ package_job:
     - "mvn package -B"
     - echo $SOME_VARIABLE
 
-deploy:
+pages:
   stage: deploy
   tags:
     - docker
   script:
-    - mv public public_old || true
-    - mkdir public
-    - mv javadoc/* public/
+    - mkdir .public
+    - cp -r javadoc/* .public
+    - mv .public public
   artifacts:
     paths:
       - public
   only:
     - main
 
-maven-site:
-  stage: deploy
-  tags:
-    - docker
-  script:
-    - mvn site
-    - mkdir -p public
-    - cp -R site/* public/
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
-
-pages:
-  stage: deploy
-  tags:
-    - docker
-  when: manual
-  script:
-    - mvn clean package
-    - mvn javadoc:javadoc
-    - ls target/site/
-    - ls target/site/apidocs/
-    - mkdir .public
-    - cd .public
-    - mkdir apidocs
-    - cd ..
-    - cp -rf target/site/apidocs/* .public/apidocs/
-    - cp -rf target/jacoco/* .public
-    - mv -f .public public
-  artifacts:
-    paths:
-      - public
 
 
 
