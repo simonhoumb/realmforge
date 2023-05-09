@@ -67,6 +67,7 @@ deploy:
     - main
 
 maven-site:
+  stage: deploy
   tags:
     - docker
   script:
