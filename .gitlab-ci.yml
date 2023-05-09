@@ -63,3 +63,15 @@ deploy:
       - public
   only:
     - main
+
+maven-site:
+  script:
+    - mvn site
+    - mkdir -p public
+    - cp -R site/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+

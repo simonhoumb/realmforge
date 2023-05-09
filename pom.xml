@@ -135,6 +135,14 @@
           <outputDirectory>${project.basedir}/javadoc</outputDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.9.0</version>
+        <configuration>
+          <outputDirectory>${project.basedir}/site</outputDirectory>
+        </configuration>
+      </plugin>
     </plugins>
     <resources>
       <resource>
