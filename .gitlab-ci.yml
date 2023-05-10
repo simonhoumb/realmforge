@@ -53,20 +53,15 @@ pages:
   when: manual
 
   script:
-    - mvn clean package
     - mvn javadoc:javadoc
-    - ls target/site/
-    - ls target/site/apidocs/
-    - mkdir .public
-    - cd .public
-    - mkdir apidocs
-    - cd ..
-    - cp -rf target/site/apidocs/* .public/apidocs/
-    - cp -rf target/jacoco/* .public
-    - mv -f .public public
-  artifacts:
-    paths:
-      - public
+    - mv target/site/apidocs/ ./
+    - git config user.email "eskilal@stud.ntnu.no"
+    - git config user.name "eskilal"
+    - git add apidocs
+    - git commit -m "Update JavaDoc"
+    - git push https://git.gvk.idi.ntnu.no/course/idatg2001/idatg2001-2023-ws/eslatte/mappevudering-idatg2001-gruppe-3.git HEAD:main
+  only:
+    - main
 
 
 
