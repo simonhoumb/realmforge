@@ -58,7 +58,8 @@ javadoc_job:
     - mvn javadoc:javadoc
   artifacts:
     paths:
-      - javadoc/
+      - javadoc/apidocs
+
 
 
 
