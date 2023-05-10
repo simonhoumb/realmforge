@@ -41,48 +41,95 @@ public class Game {
 
   }
 
+  /**
+   * Constructor for Game.
+   *
+   * @param unit  The unit that is playing the game.
+   * @param story The story that the unit is playing.
+   * @param goals The goals that the unit has to complete.
+   */
   public Game(Unit unit, Story story, List<Goal> goals) {
     this.unit = unit;
     this.story = story;
     this.goals = goals;
   }
 
+  /**
+   * getId returns the id of the game.
+   * @return
+   */
   public Long getId() {
     return id;
   }
 
+  /**
+   * setId sets the id of the game.
+   * @param id
+   */
   public void setId(Long id) {
     this.id = id;
   }
 
+  /**
+   * getUnit returns the unit that is playing the game.
+   * @return unit
+   */
   public Unit getUnit() {
     return unit;
   }
 
+  /**
+   * setUnit sets the unit that is playing the game.
+   * @param unit
+   */
   public void setUnit(Unit unit) {
     this.unit = unit;
   }
 
+  /**
+   * getStory returns the story that the unit is playing.
+   * @return story
+   */
   public Story getStory() {
     return story;
   }
 
+  /**
+   * setStory sets the story that the unit is playing.
+   * @param story
+   */
   public void setStory(Story story) {
     this.story = story;
   }
 
+  /**
+   * getGoals returns the goals that the unit has to complete.
+   * @return goals
+   */
   public List<Goal> getGoals() {
     return goals;
   }
 
+  /**
+   * setGoals sets the goals that the unit has to complete.
+   * @param goals
+   */
   public void setGoals(List<Goal> goals) {
     this.goals = goals;
   }
 
+  /**
+   * gets the opening passage of the story.
+   * @return opening passage
+   */
   public Passage begin() {
     return story.getOpeningPassage();
   }
 
+  /**
+   * goes to the passage you get with link.
+   * @return story.getPassages().get(link)
+   */
   public Passage go(Link link) {
     return story.getPassages().get(link);
   }

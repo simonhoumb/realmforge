@@ -36,6 +36,12 @@ public class Passage {
     this.id = id;
   }
 
+  /**
+   * Constructor for Passage.
+   *
+   * @param title   The title of the passage.
+   * @param content The content of the passage.
+   */
   public Passage(String title, String content) {
     this.title = title;
     this.content = content;
@@ -44,14 +50,29 @@ public class Passage {
 
   public Passage() {}
 
+  /**
+   * getTitle returns the title of the passage.
+   *
+   * @return title
+   */
   public String getTitle() {
     return title;
   }
 
+  /**
+   * getContent returns the content of the passage.
+   * @return content in passage.
+   */
   public String getContent() {
     return content;
   }
 
+  /**
+   * addLink to a passage.
+   * @param link
+   * @return  the link linkAdded.
+   * @throws IllegalArgumentException
+   */
   public boolean addLink(Link link) throws IllegalArgumentException{
     boolean linkAdded = true;
     try {
@@ -66,14 +87,27 @@ public class Passage {
     return linkAdded;
   }
 
+  /**
+   * getLinks returns the links in a passage.
+   * @return links
+   */
   public List<Link> getLinks() {
     return links;
   }
 
+  /**
+   * hasLinks checks if a passage has links.
+   * @return true if passage has links, false if not.
+   */
   public boolean hasLinks() {
     return (!this.links.isEmpty());
   }
 
+  /**
+   * checks if a passage has a link that is equals to the link parameter.
+   * @param o
+   * @return true if passage has link, false if not.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -87,11 +121,19 @@ public class Passage {
         passage.links);
   }
 
+  /**
+   * hashCode returns the hashcode of the passage.
+   * @return hashcode
+   */
   @Override
   public int hashCode() {
     return Objects.hash(title, content, links);
   }
 
+  /**
+   * toString returns a string representation of the passage.
+   * @return string representation of passage.
+   */
   @Override
   public String toString() {
     return "Passage{"

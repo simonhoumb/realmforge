@@ -67,10 +67,20 @@ public abstract class Unit {
     this.unitInventory = new ArrayList<>();
   }
 
+  /**
+   * Gets unit name.
+   *
+   * @return the unit name
+   */
   public Long getId() {
     return id;
   }
 
+  /**
+   * Sets unit name.
+   *
+   * @param id the unit name
+   */
   public void setId(Long id) {
     this.id = id;
   }
@@ -100,10 +110,20 @@ public abstract class Unit {
     }
   }
 
+  /**
+   * Gets unit health max.
+   *
+   * @return the unit health max
+   */
   public int getUnitManaMax() {
     return unitManaMax;
   }
 
+  /**
+   * Sets unit health max.
+   *
+   * @param unitManaMax the unit health max
+   */
   public void setUnitManaMax(int unitManaMax) {
     this.unitManaMax = unitManaMax;
     if (unitMana > unitManaMax) {

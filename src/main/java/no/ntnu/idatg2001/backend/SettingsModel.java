@@ -19,12 +19,18 @@ public class SettingsModel {
 
   private static final SettingsModel instance = new SettingsModel();
 
+  /**
+   * Constructor of SettingsModel.
+   */
   private SettingsModel() {
     properties = new Properties();
     filepath = "src/main/resources/settings/settings.properties";
     loadSettings();
   }
 
+  /**
+   * Saves the settings and write it to a file called settings.properties.
+   */
   public void saveSettings() {
     try (OutputStream outputStream = new FileOutputStream(filepath)){
       // Update the properties with new settings data
@@ -40,6 +46,9 @@ public class SettingsModel {
     System.out.println("Saved");
   }
 
+  /**
+   * Loads the settings from the file called settings.properties.
+   */
   public void loadSettings() {
     try (InputStream inputStream = new FileInputStream(filepath)) {
       properties.load(inputStream);
@@ -52,42 +61,93 @@ public class SettingsModel {
     System.out.println("Loaded");
   }
 
+  /**
+   * Gets instance of the singleton SettingsModel.
+   *
+   * @return the instance
+   */
   public double getVolumeSliderValue() {
     return volumeSliderValue;
   }
 
+  /**
+   * Sets volume slider value.
+   *
+   * @param volume the volume
+   */
   public void setVolumeSliderValue(double volume) {
     this.volumeSliderValue = volume;
     volumeProperty().set(volume);
   }
 
+  /**
+   * Is muted boolean.
+   *
+   * @return the boolean
+   */
   public boolean isMuted() {
     return isMuted;
   }
 
+  /**
+   * Sets muted.
+   *
+   * @param muted the muted
+   */
   public void setMuted(boolean muted) {
     isMuted = muted;
   }
 
+  /**
+   * Gets language selection.
+   *
+   * @return the language selection
+   */
   public String getLanguageSelection() {
     return languageSelection;
   }
 
+  /**
+   * Sets language selection.
+   *
+   * @param languageSelection the language selection
+   */
   public void setLanguageSelection(String languageSelection) {
     this.languageSelection = languageSelection;
   }
 
+  /**
+   * Gets volume.
+   *
+   * @return the volume
+   */
   public double getVolume() {
     return volume.get();
   }
 
+  /**
+   * Volume property double property.
+   *
+   * @return the double property
+   */
   public DoubleProperty volumeProperty() {
     return volume;
   }
 
+  /**
+   * Adds a listener to the volume property.
+   *
+   * @param listener the listener
+   */
   public void addVolumeChangeListener(ChangeListener<Number> listener) {
     volume.addListener(listener);
   }
+
+  /**
+   * Gets the locale of the selected language.
+   *
+   * @return the locale
+   */
   public Locale getLocale() {
     ResourceBundle languageCodes = ResourceBundle.getBundle("settings/languagecodes");
     String languageCode = languageCodes.getString(languageSelection.toLowerCase());
@@ -95,6 +155,11 @@ public class SettingsModel {
     return new Locale(languageCode, countryCode);
   }
 
+  /**
+   * Gets instance of the singleton SettingsModel.
+   *
+   * @return the instance
+   */
   public static SettingsModel getInstance() {
     return instance;
   }

@@ -27,6 +27,11 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
   private Button cancelButton;
   private CreateStoryController controller;
 
+  /**
+   * The constructor of the class.
+   *
+   * @param controller the controller of the class.
+   */
   public AddRoomDialog(CreateStoryController controller) {
     this.controller = controller;
     setTitle("Add Room");

@@ -9,12 +9,18 @@ public class MusicPlayer {
   private MediaPlayer mediaPlayer;
   private static final MusicPlayer instance = new MusicPlayer();
 
+  /**
+   * The constructor of the class.
+   */
   private MusicPlayer() {
     String musicFile = "/music/One-Bard-Band.mp3";
     Media music = new Media(Objects.requireNonNull(getClass().getResource(musicFile)).toExternalForm());
     mediaPlayer = new MediaPlayer(music);
   }
 
+  /**
+   * Play music.
+   */
   public void playMusic() {
     mediaPlayer.setVolume(SettingsModel.getInstance().getVolumeSliderValue() / 100);
     mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
@@ -24,18 +30,35 @@ public class MusicPlayer {
     }
   }
 
+
+  /**
+   * Pause music.
+   */
   public void pauseMusic() {
     mediaPlayer.pause();
   }
 
+  /**
+   * Stop music.
+   */
   public void startMusic() {
     mediaPlayer.play();
   }
 
+  /**
+   * Music volume.
+   *
+   * @param volume the volume
+   */
   public void musicVolume(double volume) {
     mediaPlayer.setVolume(volume);
   }
 
+  /**
+   * Gets instance of the singleton MusicPlayer.
+   *
+   * @return the instance
+   */
   public static MusicPlayer getInstance() {
     return instance;
   }

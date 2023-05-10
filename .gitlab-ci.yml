@@ -1,8 +1,6 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  CI_SERVER_URL: https://git.gvk.idi.ntnu.no/course/idatg2001/idatg2001-2023-ws/eskal/mappeoppgaveidatg2001
-  CI_JOB_TOKEN: 5YF8D2CFF
-
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 image: maven:3.8.5-openjdk-17
 
 stages:
@@ -53,7 +51,7 @@ pages:
   tags:
     - docker
   when: manual
-  
+
   script:
     - mvn clean package
     - mvn javadoc:javadoc
