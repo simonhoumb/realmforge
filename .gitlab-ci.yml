@@ -58,7 +58,7 @@ javadoc_job:
     - "mvn javadoc:javadoc"
   artifacts:
     paths:
-      - target/site/apidocs/
+      - javadoc/
 
 
 
