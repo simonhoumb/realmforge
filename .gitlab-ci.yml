@@ -1,6 +1,10 @@
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  token: 6jd5PyyLxwV8wwRP1YTB
+  MAVEN_OPTS: >-
+    -Dhttps.protocols=TLSv1.2
+    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+    -Dorg.slf4j.simpleLogger.showDateTime=true
+    -Djava.awt.headless=true
+
 
 image: maven:3.8.5-openjdk-17
 
