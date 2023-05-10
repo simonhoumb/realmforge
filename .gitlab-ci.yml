@@ -55,7 +55,7 @@ javadoc_job:
   script:
     - echo "Generating Javadoc"
     - export ACCESS_TOKEN=$CI_CD  # Set the access token as an environment variable
-    - "mvn javadoc:javadoc"
+    - mvn javadoc:javadoc
   artifacts:
     paths:
       - javadoc/
