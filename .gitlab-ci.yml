@@ -50,18 +50,23 @@ package_job:
 
 pages:
   stage: deploy
-  tags:
-    - docker
   when: manual
   script:
+    - mvn clean package
+    - mvn javadoc:javadoc
+    - ls target/site/
+    - ls target/site/apidocs/
     - mkdir .public
-    - cp -r javadoc/* .public
-    - mv .public public
+    - cd .public
+    - mkdir apidocs
+    - cd ..
+    - cp -rf target/site/apidocs/* .public/apidocs/
+    - cp -rf target/jacoco/* .public
+    - mv -f .public public
   artifacts:
     paths:
       - public
-  only:
-    - main
+
 
 
 
