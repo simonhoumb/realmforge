@@ -1,5 +1,6 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  token: 6jd5PyyLxwV8wwRP1YTB
 
 image: maven:3.8.5-openjdk-17
 
