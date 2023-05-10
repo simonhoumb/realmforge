@@ -57,6 +57,7 @@ javadoc_job:
     - export ACCESS_TOKEN=$CI_CD  # Set the access token as an environment variable
     - mvn javadoc:javadoc
   artifacts:
+    untracked: true
     paths:
       - javadoc/apidocs/*
 
