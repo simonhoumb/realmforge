@@ -55,7 +55,25 @@ javadoc_job:
   script:
     - echo "Generating Javadoc"
     - export ACCESS_TOKEN=$CI_CD  # Set the access token as an environment variable
+    - "mvn javadoc:javadoc -B"
+
+pages:
+  stage: deploy
+  when: manual
+  script:
+    - mvn clean package
     - mvn javadoc:javadoc
+    - ls target/site/
+    - ls target/site/apidocs/
+    - mkdir .public
+    - cd .public
+    - mkdir apidocs
+    - cd ..
+    - cp -rf target/site/apidocs/* .public/apidocs/
+    - cp -rf target/jacoco/* .public
+    - mv -f .public public
+
+
 
 
 
