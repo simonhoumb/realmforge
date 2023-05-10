@@ -1,6 +1,6 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
 image: maven:3.8.5-openjdk-17
 
 stages:
@@ -46,22 +46,17 @@ package_job:
     - "mvn package -B"
     - echo $SOME_VARIABLE
 
-pages:
-  stage: deploy
+javadoc_job:
+  stage: build
   tags:
     - docker
-  when: manual
 
   script:
-    - mvn javadoc:javadoc
-    - mv target/site/apidocs/ ./
-    - git config user.email "eskilal@stud.ntnu.no"
-    - git config user.name "eskilal"
-    - git add apidocs
-    - git commit -m "Update JavaDoc"
-    - git push https://git.gvk.idi.ntnu.no/course/idatg2001/idatg2001-2023-ws/eslatte/mappevudering-idatg2001-gruppe-3.git HEAD:main
-  only:
-    - main
+    - echo "Generating Javadoc"
+    - "mvn javadoc:javadoc"
+  artifacts:
+    paths:
+      - target/site/apidocs/
 
 
 
