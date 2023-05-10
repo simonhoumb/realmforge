@@ -52,6 +52,7 @@ pages:
   stage: deploy
   tags:
     - docker
+  when: manual
   script:
     - mkdir .public
     - cp -r javadoc/* .public
