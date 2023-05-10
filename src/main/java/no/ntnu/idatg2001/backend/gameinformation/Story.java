@@ -107,6 +107,10 @@ public class Story {
     return passages;
   }
 
+  /**
+   * This method returns a string representation of the Story object.
+   * @return a string representation of the Story object.
+   */
   @Override
   public String toString() {
     return "Story{"
