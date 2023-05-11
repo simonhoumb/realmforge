@@ -31,8 +31,8 @@ public class NewGameDialog extends Dialog {
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/newGameDialog.css"));
-    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    this.resourceBundle = ResourceBundle.getBundle("languages/newGameDialog", locale);
+    this.resourceBundle = ResourceBundle.getBundle("languages/newGameDialog",
+        SettingsModel.getInstance().getLocale());
     createNewGameLabel();
     createNewGameButton();
     createNewStoryButton();
