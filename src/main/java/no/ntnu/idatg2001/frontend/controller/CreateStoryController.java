@@ -1,27 +1,51 @@
 package no.ntnu.idatg2001.frontend.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import no.ntnu.idatg2001.backend.gameinformation.Link;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.frontend.view.AddRoomDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
-import no.ntnu.idatg2001.frontend.view.CreateStoryViewTemp;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
+import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
 public class CreateStoryController {
   private CreateStoryView createStoryView;
+  private AddRoomDialog addRoomDialog;
+  private NewStoryDialog newStoryDialog;
 
   public CreateStoryController(CreateStoryView createStoryView) {
     this.createStoryView = createStoryView;
+    init();
   }
 
+  private void init() {
+    configureTableView();
+    populateTableView();
+  }
+
+  /*
   public void saveStoryTest(ActionEvent event) {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Story");
@@ -45,6 +69,7 @@ public class CreateStoryController {
     }
   }
 
+   */
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
     MainMenuView mainMenuView = new MainMenuView();
     Scene newScene = createStoryView.getScene();
@@ -57,5 +82,52 @@ public class CreateStoryController {
     Node source = (Node) event.getSource();
     Stage stage = (Stage) source.getScene().getWindow();
     stage.close();
+  }
+
+  public void onNewStory() {
+    // Create a new dialog that opens the new story dialog, this story will be
+    // saved in the StoryDao.
+    newStoryDialog = new NewStoryDialog(this);
+    newStoryDialog.initOwner(createStoryView.getScene().getWindow());
+    newStoryDialog.showAndWait();
+    populateTableView();
+  }
+
+  public void onLoad() {
+    //TODO: Implement functionality for loading a previously saved story
+  }
+
+  private void populateTableView() {
+    createStoryView.getStoryTableView().getItems().clear();
+    List<Story> storylist = StoryDAO.getInstance().getAll();
+    ObservableList<Story> list = FXCollections.observableArrayList(storylist);
+    createStoryView.getStoryTableView().setItems(list);
+  }
+  public void configureTableView() {
+    createStoryView.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
+    createStoryView.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
+      Story story = cell.getValue();
+      int passageAmount = story.getTotalAmountOfPassages();
+      return new SimpleIntegerProperty(passageAmount).asObject();
+    });
+    createStoryView.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
+      Story story = cell.getValue();
+      int linkAmount = story.getTotalAmountOfPassagesLinks();
+      return new SimpleIntegerProperty(linkAmount).asObject();
+    });
+  }
+
+  public void getSelectedItemInTableView() {
+    // Get the selected item from the table view
+    Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
+
+// If no item is selected, show an error message and return
+    if (selectedStory == null) {
+      Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
+      alert.initOwner(createStoryView.getScene().getWindow());
+      alert.showAndWait();
+      return;
+    }
+    System.out.println(selectedStory);
   }
 }

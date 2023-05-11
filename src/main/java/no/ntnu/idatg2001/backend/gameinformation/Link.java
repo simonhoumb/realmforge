@@ -26,6 +26,12 @@ public class Link {
   @JoinColumn(name = "link_id")
   private List<Action> actions;
 
+  /**
+   * Constructor for Link.
+   *
+   * @param text      The text that is displayed to the user.
+   * @param reference The reference to the passage that the link leads to.
+   */
   public Link(String text, String reference) {
     this.text = text;
     this.reference = reference;
@@ -34,23 +40,43 @@ public class Link {
 
   public Link() {}
 
+  /**
+   * getId returns the id of the link.
+   * @return id
+   */
   public Long getId() {
     return id;
   }
 
+  /**
+   * setId sets the id of the link.
+   * @param id
+   */
   public void setId(Long id) {
     this.id = id;
   }
 
-
+  /**
+   * getText returns the text of the link.
+   * @return text in link.
+   */
   public String getText() {
     return text;
   }
 
+  /**
+   * getReference returns the reference of the link.
+   * @return link reference.
+   */
   public String getReference() {
     return reference;
   }
 
+  /**
+   * addAction adds an action to the link.
+   * @param action
+   * @return added action.
+   */
   public Boolean addAction(Action action) {
     boolean actionAdded = true;
     try {
@@ -65,10 +91,18 @@ public class Link {
     return actionAdded;
   }
 
+  /**
+   * getActions returns the actions of the link.
+   * @return actions in link.
+   */
   public List<Action> getActions() {
     return actions;
   }
 
+  /**
+   * toString returns the link as a string.
+   * @return
+   */
   @Override
   public String toString() {
     return "Link{"
@@ -78,6 +112,11 @@ public class Link {
         + '}';
   }
 
+  /**
+   * equals checks if two links are equal.
+   * @param o
+   * @return test if two links are equal.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -90,6 +129,10 @@ public class Link {
     return reference.equals(link.reference);
   }
 
+  /**
+   * hashCode returns the hashcode of the link.
+   * @return hashcode of link.
+   */
   @Override
   public int hashCode() {
     return Objects.hash(text, reference, actions);

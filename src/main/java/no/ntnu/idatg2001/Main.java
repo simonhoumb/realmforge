@@ -3,6 +3,7 @@ package no.ntnu.idatg2001;
 
 import java.util.ArrayList;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Ranger;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;

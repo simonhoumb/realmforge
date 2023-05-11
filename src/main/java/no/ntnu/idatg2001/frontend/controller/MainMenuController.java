@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.view.CreateStoryViewTemp;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
@@ -79,13 +78,13 @@ public class MainMenuController {
     SettingsModel.getInstance().setVolumeSliderValue(settingsDialog.getVolumeSliderValue());
     SettingsModel.getInstance().setMuted(settingsDialog.isMuteCheckBoxSelected());
 
-    // Save the settings data to a file
+    // Save the settings data to a file.
     SettingsModel.getInstance().saveSettings();
 
-    //updates Main Menu
+    //updates Main Menu.
     menuView.updateMainMenu();
 
-    // Close the settings dialog
+    // Close the settings dialog.
     onCloseSource(event);
   }
 

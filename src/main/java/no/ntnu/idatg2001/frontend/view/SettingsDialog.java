@@ -27,7 +27,7 @@ public class SettingsDialog extends Dialog {
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    this.resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    this.resourceBundle = ResourceBundle.getBundle("languages/settingsDialog", locale);
     createSaveButton();
     createCancelButton();
     createMuteCheckBox();
@@ -83,7 +83,8 @@ public class SettingsDialog extends Dialog {
     languageSelection.getItems().addAll(
         resourceBundle.getString("settings.language.english"),
         resourceBundle.getString("settings.language.norwegian"),
-        resourceBundle.getString("settings.language.french"));
+        resourceBundle.getString("settings.language.french"),
+        resourceBundle.getString("settings.language.german"));
     languageSelection.setValue(resourceBundle.getString("settings.language.selected"));
   }
 

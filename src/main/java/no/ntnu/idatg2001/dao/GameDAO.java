@@ -6,7 +6,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import no.ntnu.idatg2001.Game;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
 
 /**
  * Provides access to game data stored in the database. Each Game object in the database acts as
@@ -127,20 +127,6 @@ public class GameDAO implements DAO<Game> {
   public List<Long> getAllGameIds() {
     return em.createQuery("SELECT a.id FROM Game a", Long.class).getResultList();
   }
-
-
-  /*
-   * Finds and returns an account from the database by matching email.
-   *
-   * @param email The email to find the account by as a String.
-   * @return The account found.
-   *
-  public Game getAccountByEmail(String email) {
-    return em.createQuery(
-            "SELECT a FROM Game a WHERE a.email LIKE '" + email + "'", Game.class)
-        .getSingleResult();
-  }
-  */
 
 
   /** Prints details for all games in the database. */

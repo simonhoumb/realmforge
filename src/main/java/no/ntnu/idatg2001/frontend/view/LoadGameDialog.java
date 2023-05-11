@@ -34,7 +34,7 @@ public class LoadGameDialog extends Dialog {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/loadGameDialog", locale);
     createTableView();
     createLoadGameButton();
     createBackToMainMenuButton();
