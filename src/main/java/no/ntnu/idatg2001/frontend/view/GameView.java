@@ -65,7 +65,7 @@ public class GameView extends BorderPane {
   }
 
   public void clearGameTextFlow() {
-    gameTextFlow.getChildren().removeAll();
+    gameTextFlow.getChildren().clear();
   }
 
   public void setController(GameController gameController) {
