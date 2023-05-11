@@ -66,13 +66,13 @@ public class MainMenuController {
     SettingsModel.getInstance().setVolumeSliderValue(settingsDialog.getVolumeSliderValue());
     SettingsModel.getInstance().setMuted(settingsDialog.isMuteCheckBoxSelected());
 
-    // Save the settings data to a file
+    // Save the settings data to a file.
     SettingsModel.getInstance().saveSettings();
 
-    //updates Main Menu
+    //updates Main Menu.
     menuView.updateMainMenu();
 
-    // Close the settings dialog
+    // Close the settings dialog.
     onCloseSource(event);
   }
 

@@ -1,5 +1,10 @@
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  MAVEN_OPTS: >-
+    -Dhttps.protocols=TLSv1.2
+    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+    -Dorg.slf4j.simpleLogger.showDateTime=true
+    -Djava.awt.headless=true
+
 
 image: maven:3.8.5-openjdk-17
 
@@ -7,11 +12,13 @@ stages:
   - build
   - test
   - package
+  - deploy
 
 cache:
   paths:
     - .m2/repository
     - target
+    - javadoc
 
 build_job:
   stage: build
@@ -22,7 +29,6 @@ build_job:
     - echo "Maven compile started"
     - "mvn compile -B"
     - echo $SOME_VARIABLE
-
 
 test_job:
   stage: test
@@ -44,3 +50,40 @@ package_job:
     - echo "Maven packaging started"
     - "mvn package -B"
     - echo $SOME_VARIABLE
+
+javadoc_job:
+  stage: build
+  tags:
+    - docker
+
+  script:
+    - echo "Generating Javadoc"
+    - export ACCESS_TOKEN=$CI_CD  # Set the access token as an environment variable
+    - "mvn javadoc:javadoc -B"
+
+pages:
+  stage: deploy
+  tags:
+    - docker
+  when: manual
+  script:
+    - mvn clean package
+    - mvn javadoc:javadoc
+    - ls target/site/
+    - ls target/site/apidocs/
+    - mkdir .public
+    - cd .public
+    - mkdir apidocs
+    - cd ..
+    - cp -rf target/site/apidocs/* .public/apidocs/
+    - cp -rf target/jacoco/* .public
+    - mv -f .public public
+
+
+
+
+
+
+
+
+
