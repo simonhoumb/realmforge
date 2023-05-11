@@ -28,12 +28,6 @@ public class Main {
         new Story("myStory", new Passage("openingPassage", "this is the opening passage")),
         goals));
     GameDAO.getInstance().printAllDetails();
-
-
-    for (Game game : GameDAO.getInstance().getAll()) {
-      GameDAO.getInstance().remove(game);
-      System.out.println("game removed");
-    }
     ApplicationStart.startApplication(args);
   }
 }

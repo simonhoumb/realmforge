@@ -7,6 +7,7 @@ import java.util.Map;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,14 +15,25 @@ import org.junit.jupiter.api.Test;
 class StoryTest {
   Story story;
   Passage openingPassage;
+  Passage dungeonPassage;
   Link dungeonLink1;
 
   @BeforeEach
   void setUp() {
-    openingPassage = new Passage("Dungeon", "Some Dead Dude");
+    openingPassage = new Passage("testOpeningPassage", "This is the opening passage");
+    dungeonPassage = new Passage("Dungeon", "This is the dungeon");
     dungeonLink1 = new Link("Open Dungeon Door", "Dungeon");
     openingPassage.addLink(dungeonLink1);
     story = new Story("MyStory", openingPassage);
+    story.addPassage(dungeonPassage);
+  }
+
+  @AfterEach
+  void tearDown() {
+    openingPassage = null;
+    dungeonPassage = null;
+    dungeonLink1 = null;
+    story = null;
   }
 
   @Test
@@ -50,6 +62,20 @@ class StoryTest {
       Link dungeonLink2 = new Link("Fall Down Hatch", "");
       openingPassage.addLink(dungeonLink2);
       assertFalse(story.getBrokenLinks().contains(dungeonLink2));
+    }
+  }
+
+  @Nested
+  class getPassageTest {
+    @Test
+    void passageIsFound() {
+      assertEquals(dungeonPassage, story.getPassage(dungeonLink1));
+    }
+
+    @Test
+    void passageIsNotFound() {
+      Link testLink = new Link("testText", "testReference");
+      assertNull(story.getPassage(testLink));
     }
   }
 

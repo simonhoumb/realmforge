@@ -73,6 +73,7 @@ public class NewGameDialog extends Dialog {
   private void createNewGameButton() {
     playNewStoryButton = new Button(resourceBundle.getString("playNewStoryButton"));
     playNewStoryButton.setPrefSize(150,30);
+    playNewStoryButton.setOnAction(event -> controller.onStartGameButtonPressed(event));
   }
 
   private void createCloseNewGameDialogButton() {

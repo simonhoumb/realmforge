@@ -126,8 +126,7 @@ public class Link {
       return false;
     }
     Link link = (Link) o;
-    return text.equals(link.text) && reference.equals(link.reference) && actions.equals(
-        link.actions);
+    return reference.equals(link.reference);
   }
 
   /**

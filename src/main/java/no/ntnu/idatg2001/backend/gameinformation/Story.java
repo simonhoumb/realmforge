@@ -73,7 +73,7 @@ public class Story {
     if (getPassages().containsValue(passage)) {
       return false;
     } else {
-      getPassages().put(new Link(this.title, this.title), passage);
+      getPassages().put(new Link(passage.getTitle(), passage.getTitle()), passage);
       return true;
     }
   }
