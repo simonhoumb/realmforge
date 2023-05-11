@@ -105,8 +105,7 @@ public class CreateStoryView extends BorderPane {
     editStoryButton = new JFXButton(resourceBundle.getString("newStoryView.editStoryButton"));
     editStoryButton.setOnAction(event -> {
       controller.getSelectedItemInTableView();
-      //TODO this is where i want the user to select the story it wants to edit open new View where
-      // user edits the current selected story.
+      controller.onEditButton();
     });
   }
 

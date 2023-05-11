@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXButton.ButtonType;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
@@ -15,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.MusicPlayer;
-import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.backend.SettingsModel;
 
@@ -57,9 +57,9 @@ public class MainMenuView extends BorderPane {
 
     exitGameButton = new JFXButton();
     exitGameButton.setCancelButton(true);
-    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed(event1));
+    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed());
 
-    update();
+    updateMainMenu();
 
     //a box to hold the buttons
     HBox buttonBox = new HBox(10, newGameButton, loadGameButton, settingsButton, exitGameButton);
@@ -86,15 +86,15 @@ public class MainMenuView extends BorderPane {
         -> imageView.setFitHeight(newValue.doubleValue() * 0.9)));
   }
 
-  public void update() {
+  public void setController(MainMenuController menuController) {
+    this.controller = menuController;
+  }
+
+  public void updateMainMenu() {
     resourceBundle = ResourceBundle.getBundle("languages/mainMenu", SettingsModel.getInstance().getLocale());
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));
     exitGameButton.setText(resourceBundle.getString("menu.exitGame"));
-  }
-
-  public void setController(MainMenuController controller) {
-    this.controller = controller;
   }
 }
