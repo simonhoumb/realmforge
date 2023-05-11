@@ -91,7 +91,7 @@ public class MainMenuView extends BorderPane {
   }
 
   public void updateMainMenu() {
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
+    resourceBundle = ResourceBundle.getBundle("languages/mainMenu", SettingsModel.getInstance().getLocale());
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));
