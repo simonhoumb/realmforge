@@ -47,6 +47,7 @@ public class GameView extends BorderPane {
         CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     gameVBox.getChildren().add(gameTextFlow);
     this.setCenter(gameVBox);
+    this.setOnKeyPressed(event -> controller.onEscapeButtonPressed(event));
   }
 
   public void addToGameTextFlow(Passage currentPassage) {
