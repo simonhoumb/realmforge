@@ -99,9 +99,26 @@ public class Link {
     return actions;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Link link = (Link) o;
+    return Objects.equals(reference, link.reference);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(reference);
+  }
+
   /**
-   * toString returns the link as a string.
-   * @return
+   * toString returns the Link as a string.
+   * @return the Link as a String
    */
   @Override
   public String toString() {
@@ -112,29 +129,4 @@ public class Link {
         + '}';
   }
 
-  /**
-   * equals checks if two links are equal.
-   * @param o
-   * @return test if two links are equal.
-   */
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Link link = (Link) o;
-    return reference.equals(link.reference);
-  }
-
-  /**
-   * hashCode returns the hashcode of the link.
-   * @return hashcode of link.
-   */
-  @Override
-  public int hashCode() {
-    return Objects.hash(text, reference, actions);
-  }
 }
