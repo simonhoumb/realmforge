@@ -27,6 +27,7 @@ import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.AddRoomDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
+import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
@@ -70,6 +71,14 @@ public class CreateStoryController {
   }
 
    */
+  public void onEditButton() {
+    EditStoryView editStoryView = new EditStoryView();
+    Scene newScene = createStoryView.getScene();
+    EditStoryController editStoryController = new EditStoryController(editStoryView);
+    editStoryView.setController(editStoryController);
+    newScene.setRoot(editStoryView);
+  }
+
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
     MainMenuView mainMenuView = new MainMenuView();
     Scene newScene = createStoryView.getScene();
