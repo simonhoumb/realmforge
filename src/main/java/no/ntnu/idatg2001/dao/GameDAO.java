@@ -18,6 +18,7 @@ import no.ntnu.idatg2001.Game;
  * @version 1.0
  */
 public class GameDAO implements DAO<Game> {
+  //TODO Make mock/test database for testing the database instead of using the business database.
   private final EntityManagerFactory emf;
   private EntityManager em;
 
