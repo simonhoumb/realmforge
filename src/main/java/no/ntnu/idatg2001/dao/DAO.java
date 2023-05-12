@@ -46,7 +46,7 @@ public interface DAO<T> extends Iterable<T> {
    * @param id The id as a String.
    * @return The entity instance found.
    */
-  Optional<T> find(String id);
+  Optional<T> find(Long id);
 
   /**
    * Returns a List of all entity instances in the database.

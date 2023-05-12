@@ -6,24 +6,28 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.AddRoomDialog;
+import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
-public class CreateStoryController extends Controller<CreateStoryView> {
+public class CreateStoryController {
+  private CreateStoryView createStoryView;
+  private AddPassageDialog addPassageDialog;
+  private NewStoryDialog newStoryDialog;
 
-  private AddRoomDialog addRoomDialog;
-
-  public CreateStoryController(CreateStoryView view) {
-    this.view = view;
+  public CreateStoryController(CreateStoryView createStoryView) {
+    this.createStoryView = createStoryView;
     init();
   }
 
@@ -59,25 +63,32 @@ public class CreateStoryController extends Controller<CreateStoryView> {
    */
   public void onEditButton() {
     EditStoryView editStoryView = new EditStoryView();
-    Scene newScene = view.getScene();
+    Scene newScene = createStoryView.getScene();
     EditStoryController editStoryController = new EditStoryController(editStoryView);
     editStoryView.setController(editStoryController);
+    editStoryController.setSelectedStory(getSelectedItemInTableView());
     newScene.setRoot(editStoryView);
   }
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
     MainMenuView mainMenuView = new MainMenuView();
-    Scene newScene = view.getScene();
+    Scene newScene = createStoryView.getScene();
     MainMenuController menuController = new MainMenuController(mainMenuView);
     mainMenuView.setController(menuController);
     newScene.setRoot(mainMenuView);
   }
 
+  public void onCloseSource(ActionEvent event) {
+    Node source = (Node) event.getSource();
+    Stage stage = (Stage) source.getScene().getWindow();
+    stage.close();
+  }
+
   public void onNewStory() {
     // Create a new dialog that opens the new story dialog, this story will be
     // saved in the StoryDao.
-    NewStoryDialog newStoryDialog = new NewStoryDialog(this);
-    newStoryDialog.initOwner(view.getScene().getWindow());
+    newStoryDialog = new NewStoryDialog(this);
+    newStoryDialog.initOwner(createStoryView.getScene().getWindow());
     newStoryDialog.showAndWait();
     populateTableView();
   }
@@ -87,36 +98,35 @@ public class CreateStoryController extends Controller<CreateStoryView> {
   }
 
   private void populateTableView() {
-    view.getStoryTableView().getItems().clear();
+    createStoryView.getStoryTableView().getItems().clear();
     List<Story> storylist = StoryDAO.getInstance().getAll();
     ObservableList<Story> list = FXCollections.observableArrayList(storylist);
-    view.getStoryTableView().setItems(list);
+    createStoryView.getStoryTableView().setItems(list);
   }
   public void configureTableView() {
-    view.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
-    view.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
+    createStoryView.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
+    createStoryView.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
       int passageAmount = story.getTotalAmountOfPassages();
       return new SimpleIntegerProperty(passageAmount).asObject();
     });
-    view.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
+    createStoryView.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
       int linkAmount = story.getTotalAmountOfPassagesLinks();
       return new SimpleIntegerProperty(linkAmount).asObject();
     });
   }
 
-  public void getSelectedItemInTableView() {
+  public Story getSelectedItemInTableView() {
     // Get the selected item from the table view
-    Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
-
+     Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
 // If no item is selected, show an error message and return
     if (selectedStory == null) {
       Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
-      alert.initOwner(view.getScene().getWindow());
+      alert.initOwner(createStoryView.getScene().getWindow());
       alert.showAndWait();
-      return;
+      return null;
     }
-    System.out.println(selectedStory);
+    return selectedStory;
   }
 }
