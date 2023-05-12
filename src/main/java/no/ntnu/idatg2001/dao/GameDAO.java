@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
 
 /**
  * Provides access to game data stored in the database. Each Game object in the database acts as
@@ -105,7 +107,7 @@ public class GameDAO implements DAO<Game> {
    * @return an Optional containing the account if found, otherwise empty.
    */
   @Override
-  public Optional<Game> find(String id) {
+  public Optional<Game> find(Long id) {
     return Optional.ofNullable(em.find(Game.class, id));
   }
 
@@ -117,6 +119,18 @@ public class GameDAO implements DAO<Game> {
   @Override
   public List<Game> getAll() {
     return em.createQuery("SELECT a FROM Game a", Game.class).getResultList();
+  }
+
+  public List<Story> getAllStories() {
+    return em.createQuery("SELECT a.story FROM Game a", Story.class).getResultList();
+  }
+
+  public Story getGameStory() {
+    return em.createQuery("SELECT a.story FROM Game a", Story.class).getSingleResult();
+  }
+
+  public List<Passage> getAllPassagesInStory(Game game) {
+    return em.createQuery("SELECT a.story.passages FROM Game a", Passage.class).getResultList();
   }
 
   /**

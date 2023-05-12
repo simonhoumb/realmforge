@@ -5,10 +5,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import no.ntnu.idatg2001.backend.gameinformation.Link;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
 public class EditStoryView extends BorderPane {
@@ -24,8 +28,10 @@ public class EditStoryView extends BorderPane {
   private JFXButton mapButton;
   private JFXButton saveButton;
   private JFXButton backButton;
-  private ListView<?> passageList;
-  private ListView<?> linkList;
+  private TableView<Passage> passageTableView;
+  private TableColumn<Passage, String> passageTableColumn;
+  private TableView<Link> linkTableView;
+  private TableColumn<Link, String> linkTableColumn;
   private ListView<?> actionList;
   private ButtonBar buttonBar;
   private JFXTextArea passageContentTextArea;
@@ -45,9 +51,9 @@ public class EditStoryView extends BorderPane {
     createMapButton();
     createSaveButton();
     createBackButton();
-    createPassageList();
+    createPassageTableView();
     createButtonBar();
-    createLinkList();
+    createLinkTableView();
     createActionList();
     createPassageContentTextArea();
     createLinkContentTextArea();
@@ -65,7 +71,7 @@ public class EditStoryView extends BorderPane {
 
     HBox linkBox = new HBox();
 
-    linkBox.getChildren().addAll(linkList, actionList, linkContentTextArea);
+    linkBox.getChildren().addAll(linkTableView, actionList, linkContentTextArea);
     contentBox.getChildren().addAll(passageContentTextArea, linkBox);
     centerHBox.getChildren().add(contentBox);
 
@@ -75,14 +81,14 @@ public class EditStoryView extends BorderPane {
   private void createNewPassageButton() {
     addPassageButton = new JFXButton("Add passage");
     addPassageButton.setOnAction(event -> {
-      //controller.addPassage();
+      controller.onAddPassageButtonPressed();
     });
   }
 
   private void  createNewLinkButton() {
     addLinkButton = new JFXButton("Add link");
     addLinkButton.setOnAction(event -> {
-      //controller.addLink();
+      controller.onAddLinkButtonPressed();
     });
   }
   private void createNewActionButton() {
@@ -135,15 +141,29 @@ public class EditStoryView extends BorderPane {
   }
 
 
-  private void createPassageList() {
-    passageList = new ListView<>();
-    passageList.setPrefWidth(400);
-    passageList.setPadding(new Insets(10, 0, 10, 10));
-    setLeft(passageList);
+  private void createPassageTableView() {
+    createPassageTableColumn();
+    passageTableView = new TableView<>();
+    passageTableView.setPrefWidth(400);
+    passageTableView.setPadding(new Insets(10, 0, 10, 10));
+    passageTableView.getColumns().add(passageTableColumn);
+    setLeft(passageTableView);
   }
 
-  private void createLinkList() {
-    linkList = new ListView<>();
+  private void createPassageTableColumn() {
+    passageTableColumn = new TableColumn<>("Passage Name");
+    passageTableColumn.setPrefWidth(400);
+  }
+
+  private void createLinkTableView() {
+    createLinkTableColumn();
+    linkTableView = new TableView<>();
+    linkTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    linkTableView.getColumns().add(linkTableColumn);
+  }
+
+  private void createLinkTableColumn() {
+    linkTableColumn = new TableColumn<>("Link Name");
   }
 
   private void createActionList() {
@@ -159,12 +179,12 @@ public class EditStoryView extends BorderPane {
     linkContentTextArea = new JFXTextArea();
   }
 
-  public ListView<?> getPassageList() {
-    return passageList;
+  public TableView<Passage> getPassageTableView() {
+    return passageTableView;
   }
 
-  public ListView<?> getLinkList() {
-    return linkList;
+  public TableView<Link> getLinkTableView() {
+    return linkTableView;
   }
 
   public ListView<?> getActionList() {
@@ -181,6 +201,14 @@ public class EditStoryView extends BorderPane {
 
   public void setController(EditStoryController controller) {
     this.controller = controller;
+  }
+
+  public TableColumn<Passage, String> getPassageTableColumn() {
+    return passageTableColumn;
+  }
+
+  public TableColumn<Link, String> getLinkTableColumn() {
+    return linkTableColumn;
   }
 }
 

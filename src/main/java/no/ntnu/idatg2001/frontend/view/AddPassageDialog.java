@@ -1,15 +1,11 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -17,22 +13,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.util.Pair;
-import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
+import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
-public class AddRoomDialog extends Dialog<Pair<String, String>> {
+public class AddPassageDialog extends Dialog<Pair<String, String>> {
 
   private final TextField roomNameTextField;
   private final TextArea roomContentTextArea;
   private Button addButton;
   private Button cancelButton;
-  private CreateStoryController controller;
+  private EditStoryController controller;
 
   /**
    * The constructor of the class.
    *
    * @param controller the controller of the class.
    */
-  public AddRoomDialog(CreateStoryController controller) {
+  public AddPassageDialog(EditStoryController controller) {
     this.controller = controller;
     setTitle("Add Room");
     setHeaderText("Enter Room Name and Content");
@@ -92,6 +88,7 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
         alert.setContentText("The Content Can't be Empty!");
         alert.showAndWait();
       } else {
+       controller.onAddPassageAddButtonPressed();
        controller.onCloseSource(event);
       }
     });

@@ -1,20 +1,14 @@
 package no.ntnu.idatg2001.frontend.view;
 
-import static javafx.scene.control.SelectionMode.*;
-
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -23,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
-import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
 public class CreateStoryView extends BorderPane {
@@ -112,7 +105,6 @@ public class CreateStoryView extends BorderPane {
   private void createEditStoryButton() {
     editStoryButton = new JFXButton(resourceBundle.getString("newStoryView.editStoryButton"));
     editStoryButton.setOnAction(event -> {
-      controller.getSelectedItemInTableView();
       controller.onEditButton();
     });
   }

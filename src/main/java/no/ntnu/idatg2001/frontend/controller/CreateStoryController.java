@@ -1,13 +1,7 @@
 package no.ntnu.idatg2001.frontend.controller;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,16 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import no.ntnu.idatg2001.backend.gameinformation.Link;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.AddRoomDialog;
+import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
@@ -33,7 +23,7 @@ import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
 public class CreateStoryController {
   private CreateStoryView createStoryView;
-  private AddRoomDialog addRoomDialog;
+  private AddPassageDialog addPassageDialog;
   private NewStoryDialog newStoryDialog;
 
   public CreateStoryController(CreateStoryView createStoryView) {
@@ -76,6 +66,7 @@ public class CreateStoryController {
     Scene newScene = createStoryView.getScene();
     EditStoryController editStoryController = new EditStoryController(editStoryView);
     editStoryView.setController(editStoryController);
+    editStoryController.setSelectedStory(getSelectedItemInTableView());
     newScene.setRoot(editStoryView);
   }
 
@@ -126,17 +117,16 @@ public class CreateStoryController {
     });
   }
 
-  public void getSelectedItemInTableView() {
+  public Story getSelectedItemInTableView() {
     // Get the selected item from the table view
-    Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
-
+     Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
 // If no item is selected, show an error message and return
     if (selectedStory == null) {
       Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
       alert.initOwner(createStoryView.getScene().getWindow());
       alert.showAndWait();
-      return;
+      return null;
     }
-    System.out.println(selectedStory);
+    return selectedStory;
   }
 }
