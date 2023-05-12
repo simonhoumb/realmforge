@@ -14,16 +14,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class ExitDialog extends Dialog {
+public class ExitDialog extends Dialog implements View {
   private ResourceBundle resourceBundle;
   private Label titleLabel;
   private Label messageLabel;
   private Button confirmButton;
   private Button cancelButton;
   private StackPane layout;
-  private MainMenuController controller;
+  private Controller controller;
 
   public ExitDialog(MainMenuController controller) {
     this.controller = controller;
@@ -69,6 +70,11 @@ public class ExitDialog extends Dialog {
     cancelButton.setOnAction(event -> {
       controller.onCloseSource(event);
     });
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = controller;
   }
 }
 

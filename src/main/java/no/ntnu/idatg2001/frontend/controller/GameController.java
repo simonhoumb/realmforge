@@ -8,16 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.PauseMenuDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
 
-public class GameController {
+public class GameController extends Controller<GameController> {
   private GameView gameView;
-  private PauseMenuDialog pauseMenuDialog;
-  private SettingsDialog settingsDialog;
+  PauseMenuDialog pauseMenuDialog;
 
   public GameController(GameView gameView) {
     this.gameView = gameView;
@@ -39,25 +39,25 @@ public class GameController {
     }
   }
 
-  /**
-   * Se ChatGPT historie for hjelp, (kanskje?)
   public void onSettingsViewButtonPressed() {
-    settingsDialog = new SettingsDialog(this);
-    settingsDialog.initOwner(gameView.getScene().getWindow());
+    SettingsDialog settingsDialog = new SettingsDialog(this);
+    settingsDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
     settingsDialog.showAndWait();
   }
-   */
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
+  public void onSettingSaveButtonPressed(ActionEvent event) {
+    // Update the model with new settings data
+    SettingsModel.getInstance().setLanguageSelection(settingsDialog.getLanguageSelection());
+    SettingsModel.getInstance().setVolumeSliderValue(settingsDialog.getVolumeSliderValue());
+    SettingsModel.getInstance().setMuted(settingsDialog.isMuteCheckBoxSelected());
+
+    // Save the settings data to a file.
+    SettingsModel.getInstance().saveSettings();
+
+    pauseMenuDialog.update();
+    gameView.update();
+
+    // Close the settings dialog.
+    onCloseSource(event);
   }
-
-  public void onExitApplication(ActionEvent event) {
-    GameDAO.getInstance().close();
-    Platform.exit();
-    System.exit(0);
-  }
-
 }

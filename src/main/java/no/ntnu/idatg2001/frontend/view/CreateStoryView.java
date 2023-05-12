@@ -1,20 +1,14 @@
 package no.ntnu.idatg2001.frontend.view;
 
-import static javafx.scene.control.SelectionMode.*;
-
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -23,12 +17,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
-import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
-public class CreateStoryView extends BorderPane {
+public class CreateStoryView extends BorderPane implements View {
 
-  private static final String cssFile = "/CSS/NewStoryView.css";
+  private static final String CSS_FILE = "/CSS/NewStoryView.css";
   private ButtonBar buttonBar;
   private TableView<Story> storyTableView;
   private TableColumn<Story, String> columnStoryName;
@@ -39,15 +33,14 @@ public class CreateStoryView extends BorderPane {
   private JFXButton editStoryButton;
   private JFXButton loadButton;
   private JFXButton backButton;
-  private ResourceBundle resourceBundle;
+  private final ResourceBundle resourceBundle;
 
   public CreateStoryView() {
-    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/createStoryView", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/createStoryView", SettingsModel.getInstance().getLocale());
     setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.8), null, null)));
     this.setController(controller);
     // Initialize the view
-    getStylesheets().add(cssFile);
+    getStylesheets().add(CSS_FILE);
     init();
   }
 
@@ -136,8 +129,9 @@ public class CreateStoryView extends BorderPane {
     });
   }
 
-  public void setController(CreateStoryController createStoryController) {
-    this.controller = createStoryController;
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (CreateStoryController) controller;
   // Add any additional methods, event handlers, or getters/setters as needed
   }
 

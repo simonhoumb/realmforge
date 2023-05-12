@@ -17,15 +17,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.util.Pair;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
-public class AddRoomDialog extends Dialog<Pair<String, String>> {
+public class AddRoomDialog extends Dialog<Pair<String, String>> implements View {
 
   private final TextField roomNameTextField;
   private final TextArea roomContentTextArea;
   private Button addButton;
   private Button cancelButton;
-  private CreateStoryController controller;
+  private Controller controller;
 
   /**
    * The constructor of the class.
@@ -115,5 +116,10 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
 
   public TextArea getRoomContentTextArea() {
     return roomContentTextArea;
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = controller;
   }
 }

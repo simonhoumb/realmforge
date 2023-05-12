@@ -17,14 +17,16 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.GameController;
 
-public class GameView extends BorderPane {
+public class GameView extends BorderPane implements View<GameView> {
   private TextFlow gameTextFlow;
   private VBox gameVBox;
   private ResourceBundle resourceBundle;
   private GameController controller;
   private Story story;
+  private Text choiceText;
 
   public GameView() {
     //TODO: slett denne test story og passage
@@ -38,7 +40,7 @@ public class GameView extends BorderPane {
   }
 
   private void createLayout() {
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
+    resourceBundle = ResourceBundle.getBundle("languages/GameView", SettingsModel.getInstance().getLocale());
     gameVBox = new VBox();
     gameVBox.setAlignment(Pos.CENTER);
     gameTextFlow = new TextFlow();
@@ -54,7 +56,8 @@ public class GameView extends BorderPane {
     String passageString = String.format("%s: %s%n",
         currentPassage.getTitle(), currentPassage.getContent());
     gameTextFlow.getChildren().add(new Text(passageString));
-    gameTextFlow.getChildren().add(new Text("Your Choices Are: \n"));
+    choiceText = new Text(String.format("%s:%n", resourceBundle.getString("game.choices")));
+    gameTextFlow.getChildren().add(choiceText);
     for (Link link : currentPassage.getLinks()) {
       Hyperlink hyperLink = new Hyperlink(String.format("%s ",link.getText()));
       hyperLink.setOnAction(event -> {
@@ -69,7 +72,13 @@ public class GameView extends BorderPane {
     gameTextFlow.getChildren().clear();
   }
 
-  public void setController(GameController gameController) {
-    this.controller = gameController;
+  public void update() {
+    resourceBundle = ResourceBundle.getBundle("languages/gameView", SettingsModel.getInstance().getLocale());
+    choiceText.setText(String.format("%s:%n", resourceBundle.getString("game.choices")));
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (GameController) controller;
   }
 }

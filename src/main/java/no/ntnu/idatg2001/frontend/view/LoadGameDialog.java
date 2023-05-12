@@ -18,10 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.GameSave;
 
-public class LoadGameDialog extends Dialog {
+public class LoadGameDialog extends Dialog implements View {
 
   private ResourceBundle resourceBundle;
   private Button backButton;
@@ -118,5 +119,10 @@ public class LoadGameDialog extends Dialog {
     loadGameButton.setOnAction(event -> {
       throw new UnsupportedOperationException();
     });
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (MainMenuController) controller;
   }
 }

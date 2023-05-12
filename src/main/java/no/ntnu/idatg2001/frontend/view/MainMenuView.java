@@ -16,11 +16,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.MusicPlayer;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.backend.SettingsModel;
 
 
-public class MainMenuView extends BorderPane {
+public class MainMenuView extends BorderPane implements View {
 
   private static final String CSS_FILE = "/CSS/MainMenuStyleSheet.css";
   private JFXButton newGameButton;
@@ -96,5 +97,10 @@ public class MainMenuView extends BorderPane {
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
     settingsButton.setText(resourceBundle.getString("menu.settings"));
     exitGameButton.setText(resourceBundle.getString("menu.exitGame"));
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (MainMenuController) controller;
   }
 }

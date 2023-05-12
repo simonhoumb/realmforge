@@ -3,9 +3,7 @@ package no.ntnu.idatg2001.frontend.controller;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
@@ -16,21 +14,17 @@ import no.ntnu.idatg2001.frontend.view.NewGameDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
 import no.ntnu.idatg2001.dao.GameDAO;
 
-public class MainMenuController {
+public class MainMenuController extends Controller<MainMenuController> {
   private MainMenuView menuView;
-  private NewGameDialog newGameDialog;
-  private LoadGameDialog loadGameDialog;
   private SettingsDialog settingsDialog;
-  private CreateStoryView createStoryView;
-  private CreateStoryController createStoryController;
-  private GameView gameView;
-  private GameController gameController;
 
   public MainMenuController(MainMenuView menuView) throws IOException {
     this.menuView =  menuView;
   }
 
   public void onStartGameButtonPressed(ActionEvent event) {
+    GameController gameController;
+    GameView gameView;
     gameView = new GameView();
     gameController = new GameController(gameView);
     gameView.setController(gameController);
@@ -40,28 +34,22 @@ public class MainMenuController {
   }
 
   public void onNewGameButtonPressed() {
-    newGameDialog = new NewGameDialog(this);
+    NewGameDialog newGameDialog = new NewGameDialog(this);
     newGameDialog.initOwner(menuView.getScene().getWindow());
     newGameDialog.showAndWait();
   }
 
   public void onCreateStoryButtonPressed(ActionEvent event) throws IOException {
-    createStoryView = new CreateStoryView();
-    createStoryController = new CreateStoryController(createStoryView);
+    CreateStoryView createStoryView = new CreateStoryView();
+    CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
     Scene newScene = menuView.getScene();
     onCloseSource(event);
     newScene.setRoot(createStoryView);
   }
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
-  }
-
   public void onLoadGameButtonPressed() {
-    loadGameDialog = new LoadGameDialog(this);
+    LoadGameDialog loadGameDialog = new LoadGameDialog(this);
     loadGameDialog.initOwner(menuView.getScene().getWindow());
     loadGameDialog.showAndWait();
   }
@@ -92,12 +80,5 @@ public class MainMenuController {
     ExitDialog exitDialog = new ExitDialog(this);
     exitDialog.initOwner(menuView.getScene().getWindow());
     exitDialog.showAndWait();
-  }
-
-  public void onExitApplication(ActionEvent event) {
-    GameDAO.getInstance().close();
-    Platform.exit();
-    System.exit(0);
-
   }
 }

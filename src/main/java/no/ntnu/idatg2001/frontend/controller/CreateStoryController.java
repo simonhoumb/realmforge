@@ -1,29 +1,16 @@
 package no.ntnu.idatg2001.frontend.controller;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import no.ntnu.idatg2001.backend.gameinformation.Link;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
-import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.AddRoomDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
@@ -31,10 +18,10 @@ import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
-public class CreateStoryController {
+public class CreateStoryController extends Controller<CreateStoryController> {
   private CreateStoryView createStoryView;
   private AddRoomDialog addRoomDialog;
-  private NewStoryDialog newStoryDialog;
+
 
   public CreateStoryController(CreateStoryView createStoryView) {
     this.createStoryView = createStoryView;
@@ -87,16 +74,10 @@ public class CreateStoryController {
     newScene.setRoot(mainMenuView);
   }
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
-  }
-
   public void onNewStory() {
     // Create a new dialog that opens the new story dialog, this story will be
     // saved in the StoryDao.
-    newStoryDialog = new NewStoryDialog(this);
+    NewStoryDialog newStoryDialog = new NewStoryDialog(this);
     newStoryDialog.initOwner(createStoryView.getScene().getWindow());
     newStoryDialog.showAndWait();
     populateTableView();
@@ -138,5 +119,10 @@ public class CreateStoryController {
       return;
     }
     System.out.println(selectedStory);
+  }
+
+  @Override
+  public void onSettingsViewButtonPressed() {
+    throw new UnsupportedOperationException();
   }
 }

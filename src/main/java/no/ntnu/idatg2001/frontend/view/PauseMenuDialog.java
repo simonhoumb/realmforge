@@ -18,12 +18,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.GameController;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class PauseMenuDialog extends Dialog<ButtonType> {
+public class PauseMenuDialog extends Dialog<ButtonType> implements View {
   private ResourceBundle resourceBundle;
-  private final GameController controller;
+  private GameController controller;
   private JFXButton resumeButton;
   private JFXButton saveButton;
   private JFXButton loadButton;
@@ -86,8 +87,7 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
 
     private void createSettingsButton() {
       settingsButton = new JFXButton("Settings");
-      settingsButton.setOnAction(event -> {//TODO make it open settings dialog
-        });
+      settingsButton.setOnAction(event -> controller.onSettingsViewButtonPressed());
     }
 
     private void createExitToMenuButton() {
@@ -107,4 +107,18 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
       exitToDesktopButton.setOnAction(controller::onExitApplication);
     }
 
+    public void update() {
+      resourceBundle = ResourceBundle.getBundle("languages/pauseMenuDialog", SettingsModel.getInstance().getLocale());
+      resumeButton.setText(resourceBundle.getString("pauseMenu.resume"));
+      saveButton.setText(resourceBundle.getString("pauseMenu.save"));
+      loadButton.setText(resourceBundle.getString("pauseMenu.load"));
+      settingsButton.setText(resourceBundle.getString("pauseMenu.settings"));
+      exitToMenuButton.setText(resourceBundle.getString("pauseMenu.exitToMenu"));
+      exitToDesktopButton.setText(resourceBundle.getString("pauseMenu.exitToDesktop"));
+    }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (GameController) controller;
+  }
 }

@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -15,9 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class NewGameDialog extends Dialog {
+public class NewGameDialog extends Dialog implements View {
   private ResourceBundle resourceBundle;
   private Label newGameLabel;
   private Button playNewStoryButton;
@@ -86,6 +88,11 @@ public class NewGameDialog extends Dialog {
     newGameLabel.setText(resourceBundle.getString("newGameHeaderText"));
     newGameLabel.setPadding(new Insets(5,0,0,10));
     newGameLabel.setWrapText(true);
+  }
+
+  @Override
+  public void setController(Controller controller) {
+    this.controller = (MainMenuController) controller;
   }
 }
 
