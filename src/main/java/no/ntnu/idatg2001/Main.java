@@ -24,6 +24,7 @@ public class Main {
      */
     ArrayList<Goal> goals = new ArrayList<>();
     goals.add(new ScoreGoal(1000));
+
     GameDAO.getInstance().add(new Game(
         new Ranger("Legolas"),
         new Story("myStory", new Passage("openingPassage", "this is the opening passage")),
