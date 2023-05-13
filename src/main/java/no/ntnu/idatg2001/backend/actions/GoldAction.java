@@ -5,10 +5,10 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class GoldAction extends Action {
-  int gold;
 
   public GoldAction(int gold) {
-    this.gold = gold;
+    this.value = gold;
+    this.setActionType(ActionType.GOLD);
   }
 
   public GoldAction() {
@@ -16,6 +16,6 @@ public class GoldAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.setGold(unit.getGold() + gold);
+    unit.setGold(unit.getGold() + (Integer) value);
   }
 }

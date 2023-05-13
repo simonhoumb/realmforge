@@ -5,10 +5,10 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class HealthAction extends Action {
-  int health;
 
   public HealthAction(int health) {
-    this.health = health;
+    this.value = health;
+    this.setActionType(ActionType.HEALTH);
   }
 
   public HealthAction() {
@@ -16,6 +16,6 @@ public class HealthAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.setUnitHealth(unit.getUnitHealth() + health);
+    unit.setUnitHealth(unit.getUnitHealth() + (Integer) value);
   }
 }
