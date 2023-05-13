@@ -26,5 +26,6 @@ public abstract class Action {
     this.id = id;
   }
 
+  //Maybe add executePositive and executeNegative
   public abstract void execute(Unit unit);
 }
