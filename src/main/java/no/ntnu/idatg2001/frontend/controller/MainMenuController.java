@@ -1,9 +1,9 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
@@ -12,14 +12,12 @@ import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewGameDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
-import no.ntnu.idatg2001.dao.GameDAO;
 
-public class MainMenuController extends Controller<MainMenuController> {
-  private MainMenuView menuView;
+public class MainMenuController extends Controller<MainMenuView> {
   private SettingsDialog settingsDialog;
 
-  public MainMenuController(MainMenuView menuView) throws IOException {
-    this.menuView =  menuView;
+  public MainMenuController(MainMenuView view) {
+    this.view = view;
   }
 
   public void onStartGameButtonPressed(ActionEvent event) {
@@ -28,14 +26,14 @@ public class MainMenuController extends Controller<MainMenuController> {
     gameView = new GameView();
     gameController = new GameController(gameView);
     gameView.setController(gameController);
-    Scene newScene = menuView.getScene();
+    Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(gameView);
   }
 
   public void onNewGameButtonPressed() {
     NewGameDialog newGameDialog = new NewGameDialog(this);
-    newGameDialog.initOwner(menuView.getScene().getWindow());
+    newGameDialog.initOwner(view.getScene().getWindow());
     newGameDialog.showAndWait();
   }
 
@@ -43,23 +41,24 @@ public class MainMenuController extends Controller<MainMenuController> {
     CreateStoryView createStoryView = new CreateStoryView();
     CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
-    Scene newScene = menuView.getScene();
+    Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(createStoryView);
   }
 
   public void onLoadGameButtonPressed() {
     LoadGameDialog loadGameDialog = new LoadGameDialog(this);
-    loadGameDialog.initOwner(menuView.getScene().getWindow());
+    loadGameDialog.initOwner(view.getScene().getWindow());
     loadGameDialog.showAndWait();
   }
 
   public void onSettingsViewButtonPressed() {
     settingsDialog = new SettingsDialog(this);
-    settingsDialog.initOwner(menuView.getScene().getWindow());
+    settingsDialog.initOwner(view.getScene().getWindow());
     settingsDialog.showAndWait();
   }
 
+  @Override
   public void onSettingSaveButtonPressed(ActionEvent event) {
     // Update the model with new settings data
     SettingsModel.getInstance().setLanguageSelection(settingsDialog.getLanguageSelection());
@@ -70,15 +69,17 @@ public class MainMenuController extends Controller<MainMenuController> {
     SettingsModel.getInstance().saveSettings();
 
     //updates Main Menu.
-    menuView.updateMainMenu();
+    view.update();
 
     // Close the settings dialog.
     onCloseSource(event);
   }
 
-  public void onExitViewButtonPressed() {
+  //TODO fix so all onSomething methods takes an event as a parameter and consume if not used.
+  public void onExitViewButtonPressed(ActionEvent event) {
+    event.consume();
     ExitDialog exitDialog = new ExitDialog(this);
-    exitDialog.initOwner(menuView.getScene().getWindow());
+    exitDialog.initOwner(view.getScene().getWindow());
     exitDialog.showAndWait();
   }
 }

@@ -18,13 +18,12 @@ import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
 
-public class CreateStoryController extends Controller<CreateStoryController> {
-  private CreateStoryView createStoryView;
+public class CreateStoryController extends Controller<CreateStoryView> {
+
   private AddRoomDialog addRoomDialog;
 
-
-  public CreateStoryController(CreateStoryView createStoryView) {
-    this.createStoryView = createStoryView;
+  public CreateStoryController(CreateStoryView view) {
+    this.view = view;
     init();
   }
 
@@ -60,7 +59,7 @@ public class CreateStoryController extends Controller<CreateStoryController> {
    */
   public void onEditButton() {
     EditStoryView editStoryView = new EditStoryView();
-    Scene newScene = createStoryView.getScene();
+    Scene newScene = view.getScene();
     EditStoryController editStoryController = new EditStoryController(editStoryView);
     editStoryView.setController(editStoryController);
     newScene.setRoot(editStoryView);
@@ -68,7 +67,7 @@ public class CreateStoryController extends Controller<CreateStoryController> {
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
     MainMenuView mainMenuView = new MainMenuView();
-    Scene newScene = createStoryView.getScene();
+    Scene newScene = view.getScene();
     MainMenuController menuController = new MainMenuController(mainMenuView);
     mainMenuView.setController(menuController);
     newScene.setRoot(mainMenuView);
@@ -78,7 +77,7 @@ public class CreateStoryController extends Controller<CreateStoryController> {
     // Create a new dialog that opens the new story dialog, this story will be
     // saved in the StoryDao.
     NewStoryDialog newStoryDialog = new NewStoryDialog(this);
-    newStoryDialog.initOwner(createStoryView.getScene().getWindow());
+    newStoryDialog.initOwner(view.getScene().getWindow());
     newStoryDialog.showAndWait();
     populateTableView();
   }
@@ -88,19 +87,19 @@ public class CreateStoryController extends Controller<CreateStoryController> {
   }
 
   private void populateTableView() {
-    createStoryView.getStoryTableView().getItems().clear();
+    view.getStoryTableView().getItems().clear();
     List<Story> storylist = StoryDAO.getInstance().getAll();
     ObservableList<Story> list = FXCollections.observableArrayList(storylist);
-    createStoryView.getStoryTableView().setItems(list);
+    view.getStoryTableView().setItems(list);
   }
   public void configureTableView() {
-    createStoryView.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
-    createStoryView.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
+    view.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
+    view.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
       int passageAmount = story.getTotalAmountOfPassages();
       return new SimpleIntegerProperty(passageAmount).asObject();
     });
-    createStoryView.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
+    view.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
       int linkAmount = story.getTotalAmountOfPassagesLinks();
       return new SimpleIntegerProperty(linkAmount).asObject();
@@ -109,20 +108,15 @@ public class CreateStoryController extends Controller<CreateStoryController> {
 
   public void getSelectedItemInTableView() {
     // Get the selected item from the table view
-    Story selectedStory = createStoryView.getStoryTableView().getSelectionModel().getSelectedItem();
+    Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
 
 // If no item is selected, show an error message and return
     if (selectedStory == null) {
       Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
-      alert.initOwner(createStoryView.getScene().getWindow());
+      alert.initOwner(view.getScene().getWindow());
       alert.showAndWait();
       return;
     }
     System.out.println(selectedStory);
-  }
-
-  @Override
-  public void onSettingsViewButtonPressed() {
-    throw new UnsupportedOperationException();
   }
 }

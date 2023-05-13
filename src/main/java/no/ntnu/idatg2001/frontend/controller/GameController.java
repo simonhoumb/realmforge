@@ -1,31 +1,29 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.PauseMenuDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
 
-public class GameController extends Controller<GameController> {
-  private GameView gameView;
-  PauseMenuDialog pauseMenuDialog;
+public class GameController extends Controller<GameView> {
+  private PauseMenuDialog pauseMenuDialog;
+  private SettingsDialog settingsDialog;
 
   public GameController(GameView gameView) {
-    this.gameView = gameView;
+    this.view = gameView;
   }
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
+    event.consume();
     MainMenuView mainMenuView = new MainMenuView();
-    Scene newScene = gameView.getScene();
+    Scene newScene = view.getScene();
     MainMenuController menuController = new MainMenuController(mainMenuView);
     mainMenuView.setController(menuController);
     newScene.setRoot(mainMenuView);
@@ -34,17 +32,19 @@ public class GameController extends Controller<GameController> {
   public void onEscapeButtonPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.ESCAPE) {
       pauseMenuDialog = new PauseMenuDialog(this);
-      pauseMenuDialog.initOwner(gameView.getScene().getWindow());
+      pauseMenuDialog.initOwner(view.getScene().getWindow());
       pauseMenuDialog.showAndWait();
     }
   }
 
   public void onSettingsViewButtonPressed() {
-    SettingsDialog settingsDialog = new SettingsDialog(this);
+    settingsDialog = new SettingsDialog(this);
+    System.out.println(pauseMenuDialog.getDialogPane().getScene().getWindow());
     settingsDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
     settingsDialog.showAndWait();
   }
 
+  @Override
   public void onSettingSaveButtonPressed(ActionEvent event) {
     // Update the model with new settings data
     SettingsModel.getInstance().setLanguageSelection(settingsDialog.getLanguageSelection());
@@ -55,9 +55,16 @@ public class GameController extends Controller<GameController> {
     SettingsModel.getInstance().saveSettings();
 
     pauseMenuDialog.update();
-    gameView.update();
+    view.update();
 
     // Close the settings dialog.
     onCloseSource(event);
+  }
+
+  public void onExitViewButtonPressed(ActionEvent event) {
+    event.consume();
+    ExitDialog exitDialog = new ExitDialog(this);
+    exitDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
+    exitDialog.showAndWait();
   }
 }

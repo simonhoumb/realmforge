@@ -4,10 +4,10 @@ import javafx.scene.Scene;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 
-public class EditStoryController extends Controller {
+public class EditStoryController extends Controller<EditStoryView> {
 
   public EditStoryController(EditStoryView editStoryView) {
-
+    this.view = editStoryView;
   }
 
   private void onBackButtonPressed() {
@@ -16,10 +16,5 @@ public class EditStoryController extends Controller {
     CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
     newScene.setRoot(createStoryView);
-  }
-
-  @Override
-  public void onSettingsViewButtonPressed() {
-    throw new UnsupportedOperationException();
   }
 }
