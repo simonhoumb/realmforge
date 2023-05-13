@@ -17,16 +17,16 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class ExitDialog extends Dialog implements View {
+public class ExitDialog<T extends Controller<T>> extends Dialog {
   private ResourceBundle resourceBundle;
   private Label titleLabel;
   private Label messageLabel;
   private Button confirmButton;
   private Button cancelButton;
   private StackPane layout;
-  private Controller controller;
+  private T controller;
 
-  public ExitDialog(MainMenuController controller) {
+  public ExitDialog(T controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
@@ -67,14 +67,10 @@ public class ExitDialog extends Dialog implements View {
 
   private void createCancelButton() {
     cancelButton = new Button(resourceBundle.getString("exit.cancelButton"));
+    cancelButton.setCancelButton(true);
     cancelButton.setOnAction(event -> {
       controller.onCloseSource(event);
     });
-  }
-
-  @Override
-  public void setController(Controller controller) {
-    this.controller = controller;
   }
 }
 
