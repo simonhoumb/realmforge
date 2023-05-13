@@ -10,18 +10,17 @@ import javafx.stage.*;
 import no.ntnu.idatg2001.backend.MusicPlayer;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.controller.Controller;
-import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class SettingsDialog extends Dialog implements View {
+public class SettingsDialog<T extends Controller<T>> extends Dialog<ButtonType> {
   private ChoiceBox<String> languageSelection;
   private Slider volumeSlider;
   private CheckBox muteCheckBox;
   private Button saveButton;
   private Button cancelButton;
   private ResourceBundle resourceBundle;
-  private Controller controller;
+  private T controller;
 
-  public SettingsDialog(Controller controller) {
+  public SettingsDialog(T controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     initModality(Modality.APPLICATION_MODAL);
@@ -145,11 +144,6 @@ public class SettingsDialog extends Dialog implements View {
 
   public ChoiceBox<String> getLanguage() {
     return languageSelection;
-  }
-
-  @Override
-  public void setController(Controller controller) {
-    this.controller = controller;
   }
 }
 
