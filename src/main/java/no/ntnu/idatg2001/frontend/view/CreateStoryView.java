@@ -2,6 +2,7 @@ package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,12 +17,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
-import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
 public class CreateStoryView extends BorderPane {
 
-  private static final String CSS_FILE = "/CSS/NewStoryView.css";
+  private static final String cssFile = "/CSS/NewStoryView.css";
   private ButtonBar buttonBar;
   private TableView<Story> storyTableView;
   private TableColumn<Story, String> columnStoryName;
@@ -32,14 +32,15 @@ public class CreateStoryView extends BorderPane {
   private JFXButton editStoryButton;
   private JFXButton loadButton;
   private JFXButton backButton;
-  private final ResourceBundle resourceBundle;
+  private ResourceBundle resourceBundle;
 
   public CreateStoryView() {
-    resourceBundle = ResourceBundle.getBundle("languages/createStoryView", SettingsModel.getInstance().getLocale());
+    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
+    resourceBundle = ResourceBundle.getBundle("languages/createStoryView", locale);
     setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.8), null, null)));
     this.setController(controller);
     // Initialize the view
-    getStylesheets().add(CSS_FILE);
+    getStylesheets().add(cssFile);
     init();
   }
 
@@ -104,9 +105,7 @@ public class CreateStoryView extends BorderPane {
   private void createEditStoryButton() {
     editStoryButton = new JFXButton(resourceBundle.getString("newStoryView.editStoryButton"));
     editStoryButton.setOnAction(event -> {
-      controller.getSelectedItemInTableView();
-      //TODO this is where i want the user to select the story it wants to edit open new View where
-      // user edits the current selected story.
+      controller.onEditButton();
     });
   }
 
@@ -128,8 +127,8 @@ public class CreateStoryView extends BorderPane {
     });
   }
 
-  public void setController(CreateStoryController controller) {
-    this.controller = controller;
+  public void setController(CreateStoryController createStoryController) {
+    this.controller = createStoryController;
   // Add any additional methods, event handlers, or getters/setters as needed
   }
 

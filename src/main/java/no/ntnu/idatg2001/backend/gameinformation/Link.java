@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001.backend.gameinformation;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Link {
 
   private String text;
   private String reference;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "link_id")
   private List<Action> actions;
 

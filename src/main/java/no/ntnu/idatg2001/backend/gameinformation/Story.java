@@ -31,19 +31,14 @@ public class Story {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
-  private String title;
 
-  public void setOpeningPassage(Passage openingPassage) {
-    this.openingPassage = openingPassage;
-  }
+
+  private String title;
 
   public Story(String title, Passage openingPassage) {
     this.title = title;
     this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
-  }
-  public Story(String title) {
-    this.title = title;
   }
 
   public Story() {}
@@ -63,6 +58,11 @@ public class Story {
 
   public String getTitle() {
     return title;
+  }
+
+
+  public void setOpeningPassage(Passage openingPassage) {
+    this.openingPassage = openingPassage;
   }
 
   public Passage getOpeningPassage() {

@@ -8,6 +8,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
 import no.ntnu.idatg2001.backend.goals.ScoreGoal;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.ApplicationStart;
 import no.ntnu.idatg2001.dao.GameDAO;
 
@@ -23,10 +24,12 @@ public class Main {
      */
     ArrayList<Goal> goals = new ArrayList<>();
     goals.add(new ScoreGoal(1000));
+
     GameDAO.getInstance().add(new Game(
         new Ranger("Legolas"),
         new Story("myStory", new Passage("openingPassage", "this is the opening passage")),
         goals));
+
     GameDAO.getInstance().printAllDetails();
     ApplicationStart.startApplication(args);
   }

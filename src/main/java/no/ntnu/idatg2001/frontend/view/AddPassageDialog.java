@@ -13,11 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.util.Pair;
-import no.ntnu.idatg2001.frontend.controller.Controller;
-import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
-public class AddRoomDialog extends Dialog<Pair<String, String>> {
+public class AddPassageDialog extends Dialog<Pair<String, String>> {
 
   private final TextField roomNameTextField;
   private final TextArea roomContentTextArea;
@@ -30,7 +28,7 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
    *
    * @param controller the controller of the class.
    */
-  public AddRoomDialog(EditStoryController controller) {
+  public AddPassageDialog(EditStoryController controller) {
     this.controller = controller;
     setTitle("Add Room");
     setHeaderText("Enter Room Name and Content");
@@ -90,6 +88,7 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
         alert.setContentText("The Content Can't be Empty!");
         alert.showAndWait();
       } else {
+       controller.onAddPassageAddButtonPressed();
        controller.onCloseSource(event);
       }
     });
@@ -114,5 +113,4 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> {
   public TextArea getRoomContentTextArea() {
     return roomContentTextArea;
   }
-
 }

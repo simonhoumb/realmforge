@@ -6,10 +6,10 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class InventoryAction extends Action {
-  String item;
 
   public InventoryAction(String item) {
-    this.item = item;
+    this.value = item;
+    this.setActionType(ActionType.ITEM);
   }
 
   public InventoryAction() {
@@ -17,6 +17,6 @@ public class InventoryAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.addToInventory(item);
+    unit.addToInventory((String) value);
   }
 }
