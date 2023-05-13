@@ -161,8 +161,6 @@ public class EditStoryController {
     return editStoryView.getLinkTableView().getSelectionModel().getSelectedItem();
   }
 
-
-
   private void configurePassageList() {
     editStoryView.getPassageTableView().getSelectionModel().selectedItemProperty()
         .addListener((observable, oldValue, newValue) -> {
