@@ -38,4 +38,31 @@ class LinkTest {
       assertTrue(link.getActions().isEmpty());
     }
   }
+
+  @Nested
+  class equalsTest {
+    @Test
+    void equalsReturnsTrueWhenTextAndReferenceIsSame() {
+      Link link2 = new Link("testText", "testReference");
+      assertEquals(link, link2);
+    }
+
+    @Test
+    void equalsReturnsTrueWhenOnlyReferenceIsSame() {
+      Link link2 = new Link("notSameText", "testReference");
+      assertEquals(link, link2);
+    }
+
+    @Test
+    void equalsReturnsFalseWhenOnlyTextIsSame() {
+      Link link2 = new Link("testText", "notSameReference");
+      assertNotEquals(link, link2);
+    }
+
+    @Test
+    void equalsReturnsTrueWhenTextAndReferenceIsNotSame() {
+      Link link2 = new Link("notSameText", "notSameReference");
+      assertNotEquals(link, link2);
+    }
+  }
 }

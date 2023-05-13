@@ -105,7 +105,7 @@ public class Passage {
 
   /**
    * checks if a passage has a link that is equals to the link parameter.
-   * @param o
+   * @param o the object to check if is equal.
    * @return true if passage has link, false if not.
    */
   @Override

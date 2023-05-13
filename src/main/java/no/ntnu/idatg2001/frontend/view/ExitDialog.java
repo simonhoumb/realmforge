@@ -14,18 +14,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
-public class ExitDialog extends Dialog {
+public class ExitDialog<T extends Controller<T>> extends Dialog {
   private ResourceBundle resourceBundle;
   private Label titleLabel;
   private Label messageLabel;
   private Button confirmButton;
   private Button cancelButton;
   private StackPane layout;
-  private MainMenuController controller;
+  private T controller;
 
-  public ExitDialog(MainMenuController controller) {
+  public ExitDialog(T controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
@@ -66,6 +67,7 @@ public class ExitDialog extends Dialog {
 
   private void createCancelButton() {
     cancelButton = new Button(resourceBundle.getString("exit.cancelButton"));
+    cancelButton.setCancelButton(true);
     cancelButton.setOnAction(event -> {
       controller.onCloseSource(event);
     });

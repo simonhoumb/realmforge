@@ -9,18 +9,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.*;
 import no.ntnu.idatg2001.backend.MusicPlayer;
 import no.ntnu.idatg2001.backend.SettingsModel;
-import no.ntnu.idatg2001.frontend.controller.MainMenuController;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 
-public class SettingsDialog extends Dialog {
+public class SettingsDialog<T extends Controller<T>> extends Dialog<ButtonType> {
   private ChoiceBox<String> languageSelection;
   private Slider volumeSlider;
   private CheckBox muteCheckBox;
   private Button saveButton;
   private Button cancelButton;
   private ResourceBundle resourceBundle;
-  private MainMenuController controller;
+  private T controller;
 
-  public SettingsDialog(MainMenuController controller) {
+  public SettingsDialog(T controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     initModality(Modality.APPLICATION_MODAL);
@@ -44,12 +44,13 @@ public class SettingsDialog extends Dialog {
 
   private void createCancelButton() {
     cancelButton = new Button(resourceBundle.getString("settings.cancel"));
-    getDialogPane().getChildren().add(cancelButton);
+    cancelButton.setCancelButton(true);
     cancelButton.setOnAction(event -> {
       setVolumeSliderValue(SettingsModel.getInstance().getVolumeSliderValue());
       getMuteCheckBox().setSelected(SettingsModel.getInstance().isMuted());
       controller.onCloseSource(event);
     });
+    getDialogPane().getChildren().add(cancelButton);
   }
 
   private void createMuteCheckBox() {

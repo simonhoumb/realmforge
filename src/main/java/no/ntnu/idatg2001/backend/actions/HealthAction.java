@@ -14,7 +14,6 @@ public class HealthAction extends Action {
   public HealthAction() {
 
   }
-
   public void execute(Unit unit) {
     unit.setUnitHealth(unit.getUnitHealth() + health);
   }

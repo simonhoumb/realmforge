@@ -1,11 +1,9 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.control.Dialog;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
@@ -14,64 +12,53 @@ import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewGameDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
-import no.ntnu.idatg2001.dao.GameDAO;
 
-public class MainMenuController {
-  private MainMenuView menuView;
-  private NewGameDialog newGameDialog;
-  private LoadGameDialog loadGameDialog;
+public class MainMenuController extends Controller<MainMenuView> {
   private SettingsDialog settingsDialog;
-  private CreateStoryView createStoryView;
-  private CreateStoryController createStoryController;
-  private GameView gameView;
-  private GameController gameController;
 
-  public MainMenuController(MainMenuView menuView) throws IOException {
-    this.menuView =  menuView;
+  public MainMenuController(MainMenuView view) {
+    this.view = view;
   }
 
   public void onStartGameButtonPressed(ActionEvent event) {
+    GameController gameController;
+    GameView gameView;
     gameView = new GameView();
     gameController = new GameController(gameView);
     gameView.setController(gameController);
-    Scene newScene = menuView.getScene();
+    Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(gameView);
   }
 
   public void onNewGameButtonPressed() {
-    newGameDialog = new NewGameDialog(this);
-    newGameDialog.initOwner(menuView.getScene().getWindow());
+    NewGameDialog newGameDialog = new NewGameDialog(this);
+    newGameDialog.initOwner(view.getScene().getWindow());
     newGameDialog.showAndWait();
   }
 
   public void onCreateStoryButtonPressed(ActionEvent event) throws IOException {
-    createStoryView = new CreateStoryView();
-    createStoryController = new CreateStoryController(createStoryView);
+    CreateStoryView createStoryView = new CreateStoryView();
+    CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
-    Scene newScene = menuView.getScene();
+    Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(createStoryView);
   }
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
-  }
-
   public void onLoadGameButtonPressed() {
-    loadGameDialog = new LoadGameDialog(this);
-    loadGameDialog.initOwner(menuView.getScene().getWindow());
+    LoadGameDialog loadGameDialog = new LoadGameDialog(this);
+    loadGameDialog.initOwner(view.getScene().getWindow());
     loadGameDialog.showAndWait();
   }
 
   public void onSettingsViewButtonPressed() {
     settingsDialog = new SettingsDialog(this);
-    settingsDialog.initOwner(menuView.getScene().getWindow());
+    settingsDialog.initOwner(view.getScene().getWindow());
     settingsDialog.showAndWait();
   }
 
+  @Override
   public void onSettingSaveButtonPressed(ActionEvent event) {
     // Update the model with new settings data
     SettingsModel.getInstance().setLanguageSelection(settingsDialog.getLanguageSelection());
@@ -82,22 +69,17 @@ public class MainMenuController {
     SettingsModel.getInstance().saveSettings();
 
     //updates Main Menu.
-    menuView.updateMainMenu();
+    view.update();
 
     // Close the settings dialog.
     onCloseSource(event);
   }
 
-  public void onExitViewButtonPressed() {
+  //TODO fix so all onSomething methods takes an event as a parameter and consume if not used.
+  public void onExitViewButtonPressed(ActionEvent event) {
+    event.consume();
     ExitDialog exitDialog = new ExitDialog(this);
-    exitDialog.initOwner(menuView.getScene().getWindow());
+    exitDialog.initOwner(view.getScene().getWindow());
     exitDialog.showAndWait();
-  }
-
-  public void onExitApplication(ActionEvent event) {
-    GameDAO.getInstance().close();
-    Platform.exit();
-    System.exit(0);
-
   }
 }

@@ -4,10 +4,10 @@ import javafx.scene.Scene;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 
-public class EditStoryController {
+public class EditStoryController extends Controller<EditStoryView> {
 
   public EditStoryController(EditStoryView editStoryView) {
-
+    this.view = editStoryView;
   }
 
   private void onBackButtonPressed() {

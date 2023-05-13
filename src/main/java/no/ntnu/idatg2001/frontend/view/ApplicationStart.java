@@ -4,17 +4,19 @@ import java.io.IOException;
 import java.util.Objects;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 public class ApplicationStart extends Application {
-    private MainMenuController mainMenuController;
-  private MainMenuView menuView;
+  private MainMenuController mainMenuController;
+  private MainMenuView view;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -24,15 +26,15 @@ public class ApplicationStart extends Application {
       double screenHeight = screen.getBounds().getWidth();
       // Create the MainMenuView object
       try {
-        menuView = new MainMenuView();
-        mainMenuController = new MainMenuController(menuView);
-        menuView.setController(mainMenuController);
+        view = new MainMenuView();
+        mainMenuController = new MainMenuController(view);
+        view.setController(mainMenuController);
 
       } catch (IOException e) {
         e.printStackTrace();
       }
       // Create a new Scene with the MainMenuView as its root
-      Scene mainMenuScene = new Scene(menuView);
+      Scene mainMenuScene = new Scene((Parent) view);
 
       //Set up the Primary View
       Image icon = new Image(Objects.requireNonNull(getClass().getResource("/images/fantasy.png")).toExternalForm());

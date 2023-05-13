@@ -1,12 +1,10 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
@@ -15,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class NewGameDialog extends Dialog {
@@ -31,8 +30,8 @@ public class NewGameDialog extends Dialog {
     initStyle(StageStyle.TRANSPARENT);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/newGameDialog.css"));
-    Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    this.resourceBundle = ResourceBundle.getBundle("languages/newGameDialog", locale);
+    this.resourceBundle = ResourceBundle.getBundle("languages/newGameDialog",
+        SettingsModel.getInstance().getLocale());
     createNewGameLabel();
     createNewGameButton();
     createNewStoryButton();

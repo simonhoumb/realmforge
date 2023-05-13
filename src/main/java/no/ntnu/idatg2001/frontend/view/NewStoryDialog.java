@@ -17,6 +17,7 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
 public class NewStoryDialog extends Dialog<Story> {
@@ -98,6 +99,10 @@ public class NewStoryDialog extends Dialog<Story> {
 
   public TextArea getPassageContentArea() {
     return passageContentArea;
+  }
+
+  public void setController(CreateStoryController controller) {
+    this.controller = controller;
   }
 }
 
