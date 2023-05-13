@@ -44,12 +44,13 @@ public class SettingsDialog<T extends Controller<T>> extends Dialog<ButtonType> 
 
   private void createCancelButton() {
     cancelButton = new Button(resourceBundle.getString("settings.cancel"));
-    getDialogPane().getChildren().add(cancelButton);
+    cancelButton.setCancelButton(true);
     cancelButton.setOnAction(event -> {
       setVolumeSliderValue(SettingsModel.getInstance().getVolumeSliderValue());
       getMuteCheckBox().setSelected(SettingsModel.getInstance().isMuted());
       controller.onCloseSource(event);
     });
+    getDialogPane().getChildren().add(cancelButton);
   }
 
   private void createMuteCheckBox() {
