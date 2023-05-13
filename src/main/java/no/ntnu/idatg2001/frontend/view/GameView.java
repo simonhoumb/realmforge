@@ -20,7 +20,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.GameController;
 
-public class GameView extends BorderPane implements View<GameView> {
+public class GameView extends BorderPane {
   private TextFlow gameTextFlow;
   private VBox gameVBox;
   private ResourceBundle resourceBundle;
@@ -72,13 +72,12 @@ public class GameView extends BorderPane implements View<GameView> {
     gameTextFlow.getChildren().clear();
   }
 
+  public void setController(GameController controller) {
+    this.controller = controller;
+  }
+
   public void update() {
     resourceBundle = ResourceBundle.getBundle("languages/gameView", SettingsModel.getInstance().getLocale());
     choiceText.setText(String.format("%s:%n", resourceBundle.getString("game.choices")));
-  }
-
-  @Override
-  public void setController(Controller controller) {
-    this.controller = (GameController) controller;
   }
 }

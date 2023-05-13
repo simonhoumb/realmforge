@@ -1,7 +1,6 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXButton.ButtonType;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
@@ -21,7 +20,7 @@ import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.backend.SettingsModel;
 
 
-public class MainMenuView extends BorderPane implements View {
+public class MainMenuView extends BorderPane {
 
   private static final String CSS_FILE = "/CSS/MainMenuStyleSheet.css";
   private JFXButton newGameButton;
@@ -58,9 +57,9 @@ public class MainMenuView extends BorderPane implements View {
 
     exitGameButton = new JFXButton();
     exitGameButton.setCancelButton(true);
-    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed());
+    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed(event1));
 
-    updateMainMenu();
+    update();
 
     //a box to hold the buttons
     HBox buttonBox = new HBox(10, newGameButton, loadGameButton, settingsButton, exitGameButton);
@@ -87,11 +86,7 @@ public class MainMenuView extends BorderPane implements View {
         -> imageView.setFitHeight(newValue.doubleValue() * 0.9)));
   }
 
-  public void setController(MainMenuController menuController) {
-    this.controller = menuController;
-  }
-
-  public void updateMainMenu() {
+  public void update() {
     resourceBundle = ResourceBundle.getBundle("languages/mainMenu", SettingsModel.getInstance().getLocale());
     newGameButton.setText(resourceBundle.getString("menu.newGame"));
     loadGameButton.setText(resourceBundle.getString("menu.loadGame"));
@@ -99,8 +94,7 @@ public class MainMenuView extends BorderPane implements View {
     exitGameButton.setText(resourceBundle.getString("menu.exitGame"));
   }
 
-  @Override
-  public void setController(Controller controller) {
-    this.controller = (MainMenuController) controller;
+  public void setController(MainMenuController controller) {
+    this.controller = controller;
   }
 }

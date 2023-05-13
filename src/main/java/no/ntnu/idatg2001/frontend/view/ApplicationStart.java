@@ -15,8 +15,8 @@ import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.dao.GameDAO;
 
 public class ApplicationStart extends Application {
-  private Controller mainMenuController;
-  private View view;
+  private MainMenuController mainMenuController;
+  private MainMenuView view;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -27,7 +27,7 @@ public class ApplicationStart extends Application {
       // Create the MainMenuView object
       try {
         view = new MainMenuView();
-        mainMenuController = new MainMenuController((MainMenuView) view);
+        mainMenuController = new MainMenuController(view);
         view.setController(mainMenuController);
 
       } catch (IOException e) {

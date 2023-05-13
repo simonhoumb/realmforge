@@ -2,7 +2,6 @@ package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,7 +19,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
-public class CreateStoryView extends BorderPane implements View {
+public class CreateStoryView extends BorderPane {
 
   private static final String CSS_FILE = "/CSS/NewStoryView.css";
   private ButtonBar buttonBar;
@@ -129,9 +128,8 @@ public class CreateStoryView extends BorderPane implements View {
     });
   }
 
-  @Override
-  public void setController(Controller controller) {
-    this.controller = (CreateStoryController) controller;
+  public void setController(CreateStoryController controller) {
+    this.controller = controller;
   // Add any additional methods, event handlers, or getters/setters as needed
   }
 

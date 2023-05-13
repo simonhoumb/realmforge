@@ -22,7 +22,7 @@ import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.GameSave;
 
-public class LoadGameDialog extends Dialog implements View {
+public class LoadGameDialog extends Dialog {
 
   private ResourceBundle resourceBundle;
   private Button backButton;
@@ -119,10 +119,5 @@ public class LoadGameDialog extends Dialog implements View {
     loadGameButton.setOnAction(event -> {
       throw new UnsupportedOperationException();
     });
-  }
-
-  @Override
-  public void setController(Controller controller) {
-    this.controller = (MainMenuController) controller;
   }
 }

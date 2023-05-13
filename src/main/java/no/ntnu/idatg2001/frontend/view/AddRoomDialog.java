@@ -1,15 +1,11 @@
 package no.ntnu.idatg2001.frontend.view;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -19,21 +15,22 @@ import javafx.stage.Modality;
 import javafx.util.Pair;
 import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
+import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
-public class AddRoomDialog extends Dialog<Pair<String, String>> implements View {
+public class AddRoomDialog extends Dialog<Pair<String, String>> {
 
   private final TextField roomNameTextField;
   private final TextArea roomContentTextArea;
   private Button addButton;
   private Button cancelButton;
-  private Controller controller;
+  private EditStoryController controller;
 
   /**
    * The constructor of the class.
    *
    * @param controller the controller of the class.
    */
-  public AddRoomDialog(CreateStoryController controller) {
+  public AddRoomDialog(EditStoryController controller) {
     this.controller = controller;
     setTitle("Add Room");
     setHeaderText("Enter Room Name and Content");
@@ -118,8 +115,4 @@ public class AddRoomDialog extends Dialog<Pair<String, String>> implements View 
     return roomContentTextArea;
   }
 
-  @Override
-  public void setController(Controller controller) {
-    this.controller = controller;
-  }
 }

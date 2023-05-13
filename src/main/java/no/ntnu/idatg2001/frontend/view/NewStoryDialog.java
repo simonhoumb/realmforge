@@ -20,7 +20,7 @@ import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.Controller;
 import no.ntnu.idatg2001.frontend.controller.CreateStoryController;
 
-public class NewStoryDialog extends Dialog<Story> implements View {
+public class NewStoryDialog extends Dialog<Story> {
 
   private CreateStoryController controller;
   private TextField storyTitleField;
@@ -101,9 +101,8 @@ public class NewStoryDialog extends Dialog<Story> implements View {
     return passageContentArea;
   }
 
-  @Override
-  public void setController(Controller controller) {
-    this.controller = (CreateStoryController) controller;
+  public void setController(CreateStoryController controller) {
+    this.controller = controller;
   }
 }
 
