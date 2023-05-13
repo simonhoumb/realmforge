@@ -69,7 +69,7 @@ public class MainMenuController extends Controller<MainMenuView> {
     SettingsModel.getInstance().saveSettings();
 
     //updates Main Menu.
-    view.update();
+    view.updateMainMenu();
 
     // Close the settings dialog.
     onCloseSource(event);

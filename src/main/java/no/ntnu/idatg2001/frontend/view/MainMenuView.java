@@ -57,7 +57,7 @@ public class MainMenuView extends BorderPane {
 
     exitGameButton = new JFXButton();
     exitGameButton.setCancelButton(true);
-    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed());
+    exitGameButton.setOnAction(event1 -> controller.onExitViewButtonPressed(event1));
 
     updateMainMenu();
 
