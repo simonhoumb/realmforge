@@ -1,8 +1,6 @@
 package no.ntnu.idatg2001.frontend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,23 +23,22 @@ import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 
-public class EditStoryController {
+public class EditStoryController extends Controller<EditStoryView> {
 
-  private EditStoryView editStoryView;
   private AddPassageDialog addPassageDialog;
   private AddLinkDialog addLinkDialog;
   private AddActionDialog addActionDialog;
   private Story selectedStory;
 
-  public EditStoryController(EditStoryView editStoryView) {
-    this.editStoryView = editStoryView;
+  public EditStoryController(EditStoryView view) {
+    this.view = view;
     configurePassageList();
     configureLinkTableView();
   }
 
   public void onBackButtonPressed() {
     CreateStoryView createStoryView = new CreateStoryView();
-    Scene newScene = editStoryView.getScene();
+    Scene newScene = view.getScene();
     CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
     newScene.setRoot(createStoryView);
@@ -55,7 +52,7 @@ public class EditStoryController {
 
   public void onAddPassageButtonPressed() {
     addPassageDialog = new AddPassageDialog(this);
-    addPassageDialog.initOwner(editStoryView.getScene().getWindow());
+    addPassageDialog.initOwner(view.getScene().getWindow());
     addPassageDialog.showAndWait();
   }
 
@@ -67,7 +64,7 @@ public class EditStoryController {
 
   public void onAddLinkButtonPressed() {
     addLinkDialog = new AddLinkDialog(this);
-    addLinkDialog.initOwner(editStoryView.getScene().getWindow());
+    addLinkDialog.initOwner(view.getScene().getWindow());
     addLinkDialog.showAndWait();
     getSelectedPassageInPassageList();
   }
@@ -75,7 +72,7 @@ public class EditStoryController {
 
   public void onAddActingButtonPressed() {
     addActionDialog = new AddActionDialog(this);
-    addActionDialog.initOwner(editStoryView.getScene().getWindow());
+    addActionDialog.initOwner(view.getScene().getWindow());
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
   }
@@ -118,51 +115,51 @@ public class EditStoryController {
   }
 
   private void populateTableView() {
-    editStoryView.getPassageTableView().getItems().clear();
+    view.getPassageTableView().getItems().clear();
     List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
     ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
     if (selectedStory.getOpeningPassage() != null) {
       list.add(selectedStory.getOpeningPassage());
     }
-    editStoryView.getPassageTableView().setItems(list);
+    view.getPassageTableView().setItems(list);
   }
 
   private void populateLinkTableView() {
-    editStoryView.getLinkTableView().getItems().clear();
+    view.getLinkTableView().getItems().clear();
     List<Link> linkList = getSelectedPassageInPassageList().getLinks().stream().toList();
     ObservableList<Link> list = FXCollections.observableArrayList(linkList);
-    editStoryView.getLinkTableView().setItems(list);
+    view.getLinkTableView().setItems(list);
   }
 
   private void populateActionTableView() {
-    editStoryView.getActionTableView().getItems().clear();
+    view.getActionTableView().getItems().clear();
     if (getSelectedLinkInLinkList() != null) {
       List<Action> actionList = getSelectedLinkInLinkList().getActions().stream().toList();
       ObservableList<Action> list = FXCollections.observableArrayList(actionList);
-      editStoryView.getActionTableView().setItems(list);
+      view.getActionTableView().setItems(list);
     }
   }
 
   public void configureTableView() {
-    editStoryView.getPassageTableColumn().setCellValueFactory(new PropertyValueFactory<>("title"));
-    editStoryView.getLinkTableLinkNameColumn().setCellValueFactory(new PropertyValueFactory<>("text"));
-    editStoryView.getLinkTableLinkReferenceColumn().setCellValueFactory(new PropertyValueFactory<>("reference"));
-    editStoryView.getActionTableColumn().setCellValueFactory(new PropertyValueFactory<>("actionType"));
-    editStoryView.getActionTableActionColumn().setCellValueFactory(new PropertyValueFactory<>("value"));
+    view.getPassageTableColumn().setCellValueFactory(new PropertyValueFactory<>("title"));
+    view.getLinkTableLinkNameColumn().setCellValueFactory(new PropertyValueFactory<>("text"));
+    view.getLinkTableLinkReferenceColumn().setCellValueFactory(new PropertyValueFactory<>("reference"));
+    view.getActionTableColumn().setCellValueFactory(new PropertyValueFactory<>("actionType"));
+    view.getActionTableActionColumn().setCellValueFactory(new PropertyValueFactory<>("value"));
   }
 
 
 
   private Passage getSelectedPassageInPassageList() {
-    return editStoryView.getPassageTableView().getSelectionModel().getSelectedItem();
+    return view.getPassageTableView().getSelectionModel().getSelectedItem();
   }
 
   private Link getSelectedLinkInLinkList() {
-    return editStoryView.getLinkTableView().getSelectionModel().getSelectedItem();
+    return view.getLinkTableView().getSelectionModel().getSelectedItem();
   }
 
   private void configurePassageList() {
-    editStoryView.getPassageTableView().getSelectionModel().selectedItemProperty()
+    view.getPassageTableView().getSelectionModel().selectedItemProperty()
         .addListener((observable, oldValue, newValue) -> {
       if (newValue != null) {
         setPassageContentTextInTextArea();
@@ -173,7 +170,7 @@ public class EditStoryController {
   }
 
   private void configureLinkTableView() {
-    editStoryView.getLinkTableView().getSelectionModel().selectedItemProperty()
+    view.getLinkTableView().getSelectionModel().selectedItemProperty()
         .addListener((observable, oldValue, newValue) -> {
       if (newValue != null) {
         populateActionTableView();
@@ -184,7 +181,7 @@ public class EditStoryController {
 
 
   private void setPassageContentTextInTextArea() {
-    editStoryView.getPassageContentTextArea().setText(getSelectedPassageInPassageList().getContent());
+    view.getPassageContentTextArea().setText(getSelectedPassageInPassageList().getContent());
   }
 
 }
