@@ -10,9 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import no.ntnu.idatg2001.frontend.controller.Controller;
-import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class ApplicationStart extends Application {
   private MainMenuController mainMenuController;

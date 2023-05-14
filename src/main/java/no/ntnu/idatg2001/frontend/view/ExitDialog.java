@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.controller.Controller;
-import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class ExitDialog<T extends Controller<T>> extends Dialog {
   private ResourceBundle resourceBundle;
