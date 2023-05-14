@@ -1,21 +1,29 @@
 package no.ntnu.idatg2001.frontend.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
 public class AddLinkDialog extends Dialog {
 
   private TextField linkTextField;
-  private TextField referenceTextField;
   private Button addButton;
   private Button cancelButton;
   private EditStoryController controller;
+  private TableView<Passage> passageTableView;
+  TableColumn<Passage, String> addLinkPassageColumn;
 
   public AddLinkDialog(EditStoryController controller) {
     this.controller = controller;
@@ -32,17 +40,15 @@ public class AddLinkDialog extends Dialog {
     Label linkLabel = new Label("Link Text:");
     linkTextField = new TextField();
 
-    Label referenceLabel = new Label("Reference Passage:");
-    referenceTextField = new TextField();
-
-    gridPane.addRow(0, linkLabel, linkTextField);
-    gridPane.addRow(1, referenceLabel, referenceTextField);
+    gridPane.addRow(0, linkLabel);
+    gridPane.addRow(1, linkTextField);
+    gridPane.addRow(2, createTableView());
 
     HBox buttonBox = new HBox();
     buttonBox.setAlignment(javafx.geometry.Pos.CENTER);
     buttonBox.setSpacing(10);
     buttonBox.getChildren().addAll(addButton, cancelButton);
-    gridPane.addRow(2, buttonBox);
+    gridPane.addRow(3, buttonBox);
     getDialogPane().setContent(gridPane);
 
     // Enable/disable Add button based on input validation
@@ -54,11 +60,25 @@ public class AddLinkDialog extends Dialog {
     setResultConverter(dialogButton -> null);
   }
 
+  private TableView<Passage> createTableView() {
+    createAddLinkPassageColumn();
+    passageTableView = new TableView<>();
+    passageTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    passageTableView.getColumns().add(addLinkPassageColumn);
+    passageTableView.setPrefHeight(150);
+
+    return passageTableView;
+  }
+
+  private void createAddLinkPassageColumn() {
+    addLinkPassageColumn = new TableColumn<>("Passage");
+  }
+
   private void createAddButton() {
     addButton = new Button("Add");
     addButton.setOnAction(e -> {
-      controller.onAddLinkToPassageAddButton();
-      controller.onCloseSource(e);
+      controller.onAddLinkToPassageAddButton(e);
+      System.out.println("Add button pressed");
     });
   }
 
@@ -73,8 +93,12 @@ public class AddLinkDialog extends Dialog {
     return linkTextField;
   }
 
-  public TextField getReferenceTextField() {
-    return referenceTextField;
+  public TableView<Passage> getPassageTableView() {
+    return passageTableView;
+  }
+
+  public TableColumn<Passage, String> getAddLinkPassageColumn() {
+    return addLinkPassageColumn;
   }
 
   public Button getAddButton() {

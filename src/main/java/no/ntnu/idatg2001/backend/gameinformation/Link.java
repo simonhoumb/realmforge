@@ -34,8 +34,8 @@ public class Link {
    * @param reference The reference to the passage that the link leads to.
    */
   public Link(String text, String reference) {
-    this.text = text;
-    this.reference = reference;
+    setText(text);
+    setReference(reference);
     actions = new ArrayList<>(); //vet ikke om denne skal være her
   }
 
@@ -66,11 +66,28 @@ public class Link {
   }
 
   /**
+   * setText sets the text of the link.
+   * @param text
+   * @return text in link.
+   */
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  /**
    * getReference returns the reference of the link.
    * @return link reference.
    */
   public String getReference() {
     return reference;
+  }
+
+  /**
+   * setReference sets the reference of the link.
+   * @param reference
+   */
+  public void setReference(String reference) {
+    this.reference = reference;
   }
 
   /**
@@ -91,6 +108,21 @@ public class Link {
     }
     return actionAdded;
   }
+
+  public boolean removeAction(Action action) {
+    boolean actionRemoved = false;
+    try {
+      if(action == null) {
+        throw new IllegalArgumentException();
+      } else {
+        getActions().remove(action);
+      }
+    } catch (Exception exception) {
+      actionRemoved = true;
+    }
+    return actionRemoved;
+  }
+
 
   /**
    * getActions returns the actions of the link.

@@ -50,7 +50,7 @@ class StoryTest {
     @Test
     void passageIsNotLinkedToOtherPassages() {
       Map<Link, Passage> testPassages = new HashMap<>(story.getPassages());
-      story.removePassage(dungeonLink1);
+      story.removePassage(testPassages.get(dungeonLink1));
       assertFalse(testPassages.containsValue(openingPassage));
     }
   }

@@ -79,6 +79,7 @@ public class Story {
   }
 
   //TODO må sjekke om detter rett.
+  /*
   public void removePassage(Link link) {
     for (Entry<Link, Passage> entry : passages.entrySet()) {
       if (entry.getValue().getLinks().size() == 1
@@ -86,6 +87,24 @@ public class Story {
         passages.remove(link);
       }
     }
+  }
+   */
+
+  public void removePassage(Passage passage) {
+    List<Link> linksToRemove = new ArrayList<>();
+
+    for (Entry<Link, Passage> entry : passages.entrySet()) {
+      Passage currentPassage = entry.getValue();
+      if (currentPassage.equals(passage)) {
+        linksToRemove.addAll(currentPassage.getLinks());
+      }
+    }
+
+    for (Link link : linksToRemove) {
+      passages.remove(link);
+    }
+    // Remove the passage from the passages map
+    passages.values().remove(passage);
   }
 
   //TODO må sjekke om detter rett.
@@ -96,6 +115,7 @@ public class Story {
         brokenLinks.add(entry.getKey());
       }
     }
+    System.out.println(brokenLinks);
     return brokenLinks;
   }
 

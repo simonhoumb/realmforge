@@ -113,28 +113,28 @@ public class EditStoryView extends BorderPane {
   private void createEditButton() {
     editButton = new JFXButton("Edit");
     editButton.setOnAction(event -> {
-      //controller.edit();
+      controller.onEditButtonIsPressed();
     });
   }
 
   private void createDeleteButton() {
     deleteButton = new JFXButton("Delete");
     deleteButton.setOnAction(event -> {
-      //controller.delete();
+      controller.onDeletePassageButtonPressed(event);
     });
   }
 
   private void createMapButton() {
     mapButton = new JFXButton("Map");
     mapButton.setOnAction(event -> {
-      //controller.map();
+      controller.onMapPressed();
     });
   }
 
   private void createSaveButton() {
     saveButton = new JFXButton("Save");
     saveButton.setOnAction(event -> {
-      //controller.save();
+      controller.onSavePress();
     });
   }
 
@@ -158,12 +158,17 @@ public class EditStoryView extends BorderPane {
     passageTableView = new TableView<>();
     passageTableView.setPrefWidth(400);
     passageTableView.getColumns().add(passageTableColumn);
+    passageTableView.setOnMouseClicked(event -> {
+      controller.clearSelectedItemInLinkList();
+      controller.clearSelectedItemInActionList();
+    });
     setLeft(passageTableView);
   }
 
   private void createPassageTableColumn() {
     passageTableColumn = new TableColumn<>("Passage Name");
     passageTableColumn.setPrefWidth(400);
+    passageTableColumn.setReorderable(false);
   }
 
   private void createLinkTableView() {
@@ -173,14 +178,19 @@ public class EditStoryView extends BorderPane {
     linkTableView.setPrefWidth(400);
     linkTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     linkTableView.getColumns().addAll(linkTableLinkNameColumn, linkTableLinkReferenceColumn);
+    linkTableView.setOnMouseClicked(event -> {
+      controller.clearSelectedItemInActionList();
+    });
   }
 
   private void createLinkTableLinkNameColumn() {
     linkTableLinkNameColumn = new TableColumn<>("Link Name");
+    linkTableLinkNameColumn.setReorderable(false);
   }
 
   private void createLinkTableLinkReferenceColumn() {
     linkTableLinkReferenceColumn = new TableColumn<>("Link Reference");
+    linkTableLinkReferenceColumn.setReorderable(false);
   }
 
   private void createActionTableView() {
@@ -188,16 +198,20 @@ public class EditStoryView extends BorderPane {
     createActionTableActionColumn();
     actionTableView = new TableView<>();
     actionTableView.setPrefWidth(400);
+    actionTableView.setEditable(false);
     actionTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     actionTableView.getColumns().addAll(actionTableColumn, actionTableActionColumn);
   }
 
   private void createActionTableColum() {
     actionTableColumn = new TableColumn<>("Action Name");
+    actionTableColumn.setReorderable(false);
+
   }
 
   private void createActionTableActionColumn() {
     actionTableActionColumn = new TableColumn<>("Action");
+    actionTableActionColumn.setReorderable(false);
   }
 
   private void createPassageContentTextArea() {
