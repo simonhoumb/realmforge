@@ -103,6 +103,8 @@ public class Story {
     for (Link link : linksToRemove) {
       passages.remove(link);
     }
+    // Remove the passage from the passages map
+    passages.values().remove(passage);
   }
 
   //TODO må sjekke om detter rett.

@@ -2,9 +2,12 @@ package no.ntnu.idatg2001.frontend.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -12,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.actions.Action;
@@ -40,8 +42,8 @@ public class EditStoryController extends Controller<EditStoryView> {
   public EditStoryController(EditStoryView view) {
     this.view = view;
     configurePassageList();
-    configureLinkTableView();
-    configureActionTableView();
+    //configureLinkTableView();
+    //configureActionTableView();
 
   }
 
@@ -192,6 +194,7 @@ public class EditStoryController extends Controller<EditStoryView> {
     }
   }
 
+
   public void configureTableView() {
     view.getPassageTableColumn().setCellValueFactory(new PropertyValueFactory<>("title"));
     view.getLinkTableLinkNameColumn().setCellValueFactory(new PropertyValueFactory<>("text"));
@@ -235,6 +238,7 @@ public class EditStoryController extends Controller<EditStoryView> {
         .addListener((observable, oldValue, newValue) -> {
           if (newValue != null) {
             setPassageContentTextInTextArea();
+            configureLinkTableView();
             populateLinkTableView(); // Pass the selected passage to the method
           } else {
             view.getPassageContentTextArea().clear();
@@ -269,15 +273,67 @@ public class EditStoryController extends Controller<EditStoryView> {
         });
   }
 
+
+  public void onDeletePassageButtonPressed(ActionEvent event) {
+    Passage selectedPassage = getSelectedPassageInPassageList();
+    Link selectedLink = getSelectedLinkInLinkList();
+    Action selectedAction = getSelectedActionInActionList();
+
+    String confirmationMessage = "";
+    String title = "";
+    if (selectedPassage != null && selectedLink == null && selectedAction == null) {
+      confirmationMessage = "Are you sure you want to delete this passage?" +
+          "\n\nTitle: " + selectedPassage.getTitle();
+      title = "Delete Passage";
+    } else if (selectedLink != null && selectedAction == null) {
+      confirmationMessage = "Are you sure you want to delete this link?" +
+          "\n\nDescription: " + selectedLink.getText();
+      title = "Delete Link";
+    } else if (selectedAction != null) {
+      confirmationMessage = "Are you sure you want to delete this action?" +
+          "\n\nDescription: " + selectedAction.getActionType();
+      title = "Delete Action";
+    }
+
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.initOwner(view.getScene().getWindow());
+    alert.setTitle("Confirmation");
+    alert.setHeaderText(title);
+    alert.setContentText(confirmationMessage);
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+      if (selectedPassage != null && selectedLink == null && selectedAction == null) {
+        selectedStory.removePassage(selectedPassage);
+        StoryDAO.getInstance().update(selectedStory);
+        populateTableView();
+        clearSelectedItemInPassageList();
+        view.getPassageContentTextArea().clear();
+        view.getLinkTableView().getItems().clear();
+        view.getActionTableView().getItems().clear();
+      } else if (selectedLink != null && selectedAction == null) {
+        selectedPassage.removeLink(selectedLink);
+        StoryDAO.getInstance().update(selectedStory);
+        populateLinkTableView();
+        clearSelectedItemInLinkList();
+        view.getActionTableView().getItems().clear();
+      } else if (selectedAction != null) {
+        selectedLink.removeAction(selectedAction);
+        StoryDAO.getInstance().update(selectedStory);
+        populateActionTableView();
+      }
+    }
+  }
+
   private void clearSelectedItemInPassageList() {
     view.getPassageTableView().getSelectionModel().clearSelection();
   }
 
-  private void clearSelectedItemInLinkList() {
+  public void clearSelectedItemInLinkList() {
     view.getLinkTableView().getSelectionModel().clearSelection();
   }
 
-  private void clearSelectedItemInActionList() {
+  public void clearSelectedItemInActionList() {
     view.getActionTableView().getSelectionModel().clearSelection();
   }
 

@@ -120,7 +120,7 @@ public class EditStoryView extends BorderPane {
   private void createDeleteButton() {
     deleteButton = new JFXButton("Delete");
     deleteButton.setOnAction(event -> {
-      //controller.delete();
+      controller.onDeletePassageButtonPressed(event);
     });
   }
 
@@ -158,6 +158,10 @@ public class EditStoryView extends BorderPane {
     passageTableView = new TableView<>();
     passageTableView.setPrefWidth(400);
     passageTableView.getColumns().add(passageTableColumn);
+    passageTableView.setOnMouseClicked(event -> {
+      controller.clearSelectedItemInLinkList();
+      controller.clearSelectedItemInActionList();
+    });
     setLeft(passageTableView);
   }
 
@@ -174,6 +178,9 @@ public class EditStoryView extends BorderPane {
     linkTableView.setPrefWidth(400);
     linkTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     linkTableView.getColumns().addAll(linkTableLinkNameColumn, linkTableLinkReferenceColumn);
+    linkTableView.setOnMouseClicked(event -> {
+      controller.clearSelectedItemInActionList();
+    });
   }
 
   private void createLinkTableLinkNameColumn() {
