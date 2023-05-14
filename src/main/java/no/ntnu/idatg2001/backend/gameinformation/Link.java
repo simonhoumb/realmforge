@@ -68,7 +68,6 @@ public class Link {
   /**
    * setText sets the text of the link.
    * @param text
-   * @return text in link.
    */
   public void setText(String text) {
     this.text = text;
