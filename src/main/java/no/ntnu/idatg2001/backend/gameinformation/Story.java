@@ -79,12 +79,29 @@ public class Story {
   }
 
   //TODO må sjekke om detter rett.
+  /*
   public void removePassage(Link link) {
     for (Entry<Link, Passage> entry : passages.entrySet()) {
       if (entry.getValue().getLinks().size() == 1
       && entry.getValue().getLinks().contains(link)) {
         passages.remove(link);
       }
+    }
+  }
+   */
+
+  public void removePassage(Passage passage) {
+    List<Link> linksToRemove = new ArrayList<>();
+
+    for (Entry<Link, Passage> entry : passages.entrySet()) {
+      Passage currentPassage = entry.getValue();
+      if (currentPassage.equals(passage)) {
+        linksToRemove.addAll(currentPassage.getLinks());
+      }
+    }
+
+    for (Link link : linksToRemove) {
+      passages.remove(link);
     }
   }
 

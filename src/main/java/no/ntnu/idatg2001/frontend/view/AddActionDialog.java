@@ -1,6 +1,5 @@
 package no.ntnu.idatg2001.frontend.view;
 
-import java.util.EnumMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -11,7 +10,7 @@ import javafx.scene.layout.HBox;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class AddActionDialog extends Dialog<Void> {
@@ -52,7 +51,13 @@ public class AddActionDialog extends Dialog<Void> {
     buttonBox.setAlignment(Pos.CENTER);
     buttonBox.setSpacing(10);
     buttonBox.getChildren().addAll(createAddButton(), createCancelButton());
+
+    // Add the buttons row to the grid pane
     gridPane.addRow(2, buttonBox);
+
+    // Set the grid pane as the content of the dialog pane
+    DialogPane dialogPane = getDialogPane();
+    dialogPane.setContent(gridPane);
 
     return gridPane;
   }
@@ -107,8 +112,7 @@ public class AddActionDialog extends Dialog<Void> {
   private Button createAddButton() {
     Button addButton = new Button("Add");
     addButton.setOnAction(e -> {
-      controller.onAddActionOnAddButtonPressed();
-      controller.onCloseSource(e);
+      controller.onAddActionOnAddButtonPressed(e);
     });
     return addButton;
   }
@@ -120,10 +124,10 @@ public class AddActionDialog extends Dialog<Void> {
     });
     return cancelButton;
   }
+
   private Node getComponentForActionType(ActionType actionType) {
     return actionTypeComponents.get(actionType);
   }
-
   private Node getCurrentComponent() {
     ActionType actionType = actionTypeComboBox.getSelectionModel().getSelectedItem();
     return getComponentForActionType(actionType);
@@ -140,7 +144,7 @@ public class AddActionDialog extends Dialog<Void> {
       TextField textField = (TextField) currentComponent;
       return textField.getText();
     } else if (currentComponent instanceof ComboBox) {
-      ComboBox<?> comboBox = (ComboBox<?>) currentComponent;
+      ComboBox<ActionType> comboBox = (ComboBox<ActionType>) currentComponent;
       Object selectedItem = comboBox.getSelectionModel().getSelectedItem();
 
       if (selectedItem instanceof String) {
@@ -156,19 +160,22 @@ public class AddActionDialog extends Dialog<Void> {
       ActionType selectedActionType = getSelectedActionType();
       Node component = getComponentForActionType(selectedActionType);
       updateComponent(component);
+
+      // Adjust dialog size
+      getDialogPane().getScene().getWindow().sizeToScene();
     });
   }
 
   private void updateComponent(Node component) {
     GridPane gridPane = (GridPane) getDialogPane().getContent();
-    int row = GridPane.getRowIndex(actionTypeComboBox) + 1;
+    int actionTypeRow = GridPane.getRowIndex(actionTypeComboBox);
 
-    // Clear the grid pane from the current component
-    gridPane.getChildren().remove(component);
+    // Remove the previous dynamic component if present
+    gridPane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == actionTypeRow + 1);
 
+    // Add the new component to the grid pane
     if (component != null) {
-      // Add the new component to the grid pane
-      gridPane.addRow(row, component);
+      gridPane.add(component, 1, actionTypeRow + 1);
     }
   }
 }

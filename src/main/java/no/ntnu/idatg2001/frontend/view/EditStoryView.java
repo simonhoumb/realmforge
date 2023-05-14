@@ -164,6 +164,7 @@ public class EditStoryView extends BorderPane {
   private void createPassageTableColumn() {
     passageTableColumn = new TableColumn<>("Passage Name");
     passageTableColumn.setPrefWidth(400);
+    passageTableColumn.setReorderable(false);
   }
 
   private void createLinkTableView() {
@@ -177,10 +178,12 @@ public class EditStoryView extends BorderPane {
 
   private void createLinkTableLinkNameColumn() {
     linkTableLinkNameColumn = new TableColumn<>("Link Name");
+    linkTableLinkNameColumn.setReorderable(false);
   }
 
   private void createLinkTableLinkReferenceColumn() {
     linkTableLinkReferenceColumn = new TableColumn<>("Link Reference");
+    linkTableLinkReferenceColumn.setReorderable(false);
   }
 
   private void createActionTableView() {
@@ -188,16 +191,20 @@ public class EditStoryView extends BorderPane {
     createActionTableActionColumn();
     actionTableView = new TableView<>();
     actionTableView.setPrefWidth(400);
+    actionTableView.setEditable(false);
     actionTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     actionTableView.getColumns().addAll(actionTableColumn, actionTableActionColumn);
   }
 
   private void createActionTableColum() {
     actionTableColumn = new TableColumn<>("Action Name");
+    actionTableColumn.setReorderable(false);
+
   }
 
   private void createActionTableActionColumn() {
     actionTableActionColumn = new TableColumn<>("Action");
+    actionTableActionColumn.setReorderable(false);
   }
 
   private void createPassageContentTextArea() {

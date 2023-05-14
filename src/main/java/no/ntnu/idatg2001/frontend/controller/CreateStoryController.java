@@ -110,7 +110,8 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     });
     view.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
-      int linkAmount = story.getTotalAmountOfPassagesLinks();
+      int linkAmount = story.getTotalAmountOfPassagesLinks()  +
+          story.getOpeningPassage().getLinks().size();
       return new SimpleIntegerProperty(linkAmount).asObject();
     });
   }

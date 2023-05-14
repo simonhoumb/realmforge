@@ -88,6 +88,26 @@ public class Passage {
   }
 
   /**
+   * removeLink removes a link from a passage.
+   * @param link
+   * @return true if link is removed, false if not.
+   */
+  public boolean removeLink(Link link) {
+    boolean linkRemoved = false;
+    try {
+      if(link == null) {
+        throw new IllegalArgumentException();
+      } else {
+        getLinks().remove(link);
+      }
+    } catch (Exception exception) {
+      linkRemoved = true;
+    }
+    return linkRemoved;
+  }
+
+
+  /**
    * getLinks returns the links in a passage.
    * @return links
    */

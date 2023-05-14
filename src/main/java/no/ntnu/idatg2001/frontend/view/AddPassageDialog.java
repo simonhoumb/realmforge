@@ -90,7 +90,7 @@ public class AddPassageDialog extends Dialog<Pair<String, String>> {
       } else {
        controller.onAddPassageAddButtonPressed();
        controller.onCloseSource(event);
-      }
+       }
     });
   }
 
@@ -101,16 +101,22 @@ public class AddPassageDialog extends Dialog<Pair<String, String>> {
         controller.onCloseSource(event));
   }
 
+  private String fixTextForTitle() {
+    String title = roomNameTextField.getText();
+    return title.replaceAll("\\s+", " ").trim();
+  }
+
+
   private String fixTextForContent() {
     String content = roomContentTextArea.getText();
     return content.replaceAll("\\s+", " ").trim();
   }
 
-  public TextField getRoomNameTextField() {
-    return roomNameTextField;
+  public String getRoomNameTextField() {
+    return fixTextForTitle();
   }
 
-  public TextArea getRoomContentTextArea() {
-    return roomContentTextArea;
+  public String getRoomContentTextArea() {
+    return fixTextForContent();
   }
 }

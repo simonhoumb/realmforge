@@ -92,6 +92,20 @@ public class Link {
     return actionAdded;
   }
 
+  public boolean removeAction(Action action) {
+    boolean actionRemoved = false;
+    try {
+      if(action == null) {
+        throw new IllegalArgumentException();
+      } else {
+        getActions().remove(action);
+      }
+    } catch (Exception exception) {
+      actionRemoved = true;
+    }
+    return actionRemoved;
+  }
+
   /**
    * getActions returns the actions of the link.
    * @return actions in link.

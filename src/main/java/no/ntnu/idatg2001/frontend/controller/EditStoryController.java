@@ -1,11 +1,18 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.util.List;
+import java.util.Optional;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.actions.Action;
@@ -34,6 +41,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     this.view = view;
     configurePassageList();
     configureLinkTableView();
+    configureActionTableView();
+
   }
 
   public void onBackButtonPressed() {
@@ -57,37 +66,74 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   public void onAddPassageAddButtonPressed() {
-    selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField().getText(),
-        addPassageDialog.getRoomContentTextArea().getText()));
+    selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField(),
+        addPassageDialog.getRoomContentTextArea()));
     StoryDAO.getInstance().update(selectedStory);
+    populateTableView();
   }
 
   public void onAddLinkButtonPressed() {
-    addLinkDialog = new AddLinkDialog(this);
-    addLinkDialog.initOwner(view.getScene().getWindow());
-    addLinkDialog.showAndWait();
-    getSelectedPassageInPassageList();
+    if (getSelectedPassageInPassageList() != null) {
+      addLinkDialog = new AddLinkDialog(this);
+      addLinkDialog.initOwner(view.getScene().getWindow());
+      configureAddLinkTableView();
+      populateAddLinkPassageTableView();
+      getSelectedPassageInPassageList();
+      addLinkDialog.showAndWait();
+    }
+    else {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText(null);
+      alert.initOwner(view.getScene().getWindow());
+      alert.setContentText("You have to select a passage to add a link");
+      alert.showAndWait();
+    }
   }
 
 
   public void onAddActingButtonPressed() {
+    if (getSelectedLinkInLinkList() != null && view.getLinkTableView() != null) {
     addActionDialog = new AddActionDialog(this);
     addActionDialog.initOwner(view.getScene().getWindow());
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
+    }
+    else {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText(null);
+      alert.initOwner(view.getScene().getWindow());
+      alert.setContentText("You have to select a link to add an action");
+      alert.showAndWait();
+    }
   }
 
-  public void onAddLinkToPassageAddButton() {
-    getSelectedPassageInPassageList().addLink(new Link(addLinkDialog.getLinkTextField().getText(),
-        addLinkDialog.getReferenceTextField().getText()));
+  public void onAddLinkToPassageAddButton(ActionEvent event) {
+    Passage selectedPassage = addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem();
+    if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+      getSelectedPassageInPassageList().addLink(new Link(addLinkDialog.getLinkTextField().getText(),
+          addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem().getTitle()));
       StoryDAO.getInstance().update(selectedStory);
+      populateLinkTableView();
+      onCloseSource(event);
+    }
+    else {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText(null);
+      alert.initOwner(addLinkDialog.getDialogPane().getScene().getWindow());
+      alert.setContentText("You can't link to the same passage");
+      alert.showAndWait();
+    }
   }
 
-  public void onAddActionOnAddButtonPressed() {
-
-    System.out.println((getSelectedLinkInLinkList().addAction(createActionInstance(addActionDialog.getSelectedActionType(),
-        addActionDialog.getSelectedValue()))));
+  public void onAddActionOnAddButtonPressed(ActionEvent event) {
+    getSelectedLinkInLinkList().addAction(createActionInstance(addActionDialog.getSelectedActionType(),
+        addActionDialog.getSelectedValue()));
     StoryDAO.getInstance().update(selectedStory);
+    populateActionTableView();
+    onCloseSource(event);
   }
 
   private Action createActionInstance(ActionType actionType, String selectedValue) {
@@ -114,8 +160,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     populateTableView();
   }
 
-  private void populateTableView() {
-    view.getPassageTableView().getItems().clear();
+  public void populateTableView() {
+    view.getPassageTableView().getItems().clear();// Clear the selection
     List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
     ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
     if (selectedStory.getOpeningPassage() != null) {
@@ -124,17 +170,23 @@ public class EditStoryController extends Controller<EditStoryView> {
     view.getPassageTableView().setItems(list);
   }
 
+
+
   private void populateLinkTableView() {
     view.getLinkTableView().getItems().clear();
+    clearSelectedItemInActionList();
+    clearSelectedItemInLinkList();// Clear the selection
     List<Link> linkList = getSelectedPassageInPassageList().getLinks().stream().toList();
-    ObservableList<Link> list = FXCollections.observableArrayList(linkList);
-    view.getLinkTableView().setItems(list);
+    if (!linkList.isEmpty()) {
+      ObservableList<Link> list = FXCollections.observableArrayList(linkList);
+      view.getLinkTableView().setItems(list);
+    }
   }
 
   private void populateActionTableView() {
-    view.getActionTableView().getItems().clear();
-    if (getSelectedLinkInLinkList() != null) {
-      List<Action> actionList = getSelectedLinkInLinkList().getActions().stream().toList();
+    view.getActionTableView().getItems().clear();// Clear the selection
+    List<Action> actionList = getSelectedLinkInLinkList().getActions().stream().toList();
+    if (!actionList.isEmpty()) {
       ObservableList<Action> list = FXCollections.observableArrayList(actionList);
       view.getActionTableView().setItems(list);
     }
@@ -149,6 +201,22 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
 
+  private void populateAddLinkPassageTableView() {
+    addLinkDialog.getPassageTableView().getItems().clear();
+    List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
+    ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
+    if (selectedStory.getOpeningPassage() != null) {
+      list.add(selectedStory.getOpeningPassage());
+    }
+    addLinkDialog.getPassageTableView().setItems(list);
+  }
+
+
+
+  private void configureAddLinkTableView() {
+    addLinkDialog.getAddLinkPassageColumn().setCellValueFactory(new PropertyValueFactory<>("title"));
+  }
+
 
   private Passage getSelectedPassageInPassageList() {
     return view.getPassageTableView().getSelectionModel().getSelectedItem();
@@ -158,30 +226,65 @@ public class EditStoryController extends Controller<EditStoryView> {
     return view.getLinkTableView().getSelectionModel().getSelectedItem();
   }
 
+  private Action getSelectedActionInActionList() {
+    return view.getActionTableView().getSelectionModel().getSelectedItem();
+  }
+
   private void configurePassageList() {
     view.getPassageTableView().getSelectionModel().selectedItemProperty()
         .addListener((observable, oldValue, newValue) -> {
-      if (newValue != null) {
-        setPassageContentTextInTextArea();
-        populateLinkTableView();
-        populateActionTableView();
-      }
-    });
+          if (newValue != null) {
+            setPassageContentTextInTextArea();
+            populateLinkTableView(); // Pass the selected passage to the method
+          } else {
+            view.getPassageContentTextArea().clear();
+            view.getLinkTableView().getItems().clear();
+            view.getActionTableView().getItems().clear();
+          }
+        });
   }
 
   private void configureLinkTableView() {
-    view.getLinkTableView().getSelectionModel().selectedItemProperty()
-        .addListener((observable, oldValue, newValue) -> {
-      if (newValue != null) {
-        populateActionTableView();
+    final ReadOnlyIntegerProperty selectedIndex = view.getLinkTableView().getSelectionModel().selectedIndexProperty();
+    selectedIndex.addListener((observable, oldValue, newValue) -> {
+      if (newValue.intValue() != -1 && !newValue.equals(oldValue)) {
+        configureActionTableView();
+        populateActionTableView(); // Update the action table view
+        System.out.println("Link selected");
+      } else {
+        view.getActionTableView().getItems().clear(); // Clear the action table view if no link is selected
       }
     });
   }
 
+  private void configureActionTableView() {
+    view.getActionTableView().getSelectionModel().selectedItemProperty()
+        .addListener((observable, oldValue, newValue) -> {
+          // No need to clear the items when a new action is selected
+          if (newValue != null) {
+            // Perform any necessary actions when a new action is selected
+          } else {
+            view.getActionTableView().getItems().clear();
+          }
+        });
+  }
+
+  private void clearSelectedItemInPassageList() {
+    view.getPassageTableView().getSelectionModel().clearSelection();
+  }
+
+  private void clearSelectedItemInLinkList() {
+    view.getLinkTableView().getSelectionModel().clearSelection();
+  }
+
+  private void clearSelectedItemInActionList() {
+    view.getActionTableView().getSelectionModel().clearSelection();
+  }
 
 
   private void setPassageContentTextInTextArea() {
     view.getPassageContentTextArea().setText(getSelectedPassageInPassageList().getContent());
   }
+
 
 }
