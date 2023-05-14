@@ -115,6 +115,7 @@ public class Story {
         brokenLinks.add(entry.getKey());
       }
     }
+    System.out.println(brokenLinks);
     return brokenLinks;
   }
 

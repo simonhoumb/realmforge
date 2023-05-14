@@ -1,21 +1,27 @@
 package no.ntnu.idatg2001.frontend.controller;
 
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
+import guru.nidi.graphviz.attribute.Label;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.Graph;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.ActionType;
@@ -30,21 +36,23 @@ import no.ntnu.idatg2001.frontend.view.AddActionDialog;
 import no.ntnu.idatg2001.frontend.view.AddLinkDialog;
 import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
+import no.ntnu.idatg2001.frontend.view.EditLinkDialog;
+import no.ntnu.idatg2001.frontend.view.EditPassageDialog;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
+import no.ntnu.idatg2001.frontend.view.MapGenerator;
 
 public class EditStoryController extends Controller<EditStoryView> {
 
   private AddPassageDialog addPassageDialog;
   private AddLinkDialog addLinkDialog;
   private AddActionDialog addActionDialog;
+  private EditPassageDialog editPassageDialog;
+  private EditLinkDialog editLinkDialog;
   private Story selectedStory;
 
   public EditStoryController(EditStoryView view) {
     this.view = view;
     configurePassageList();
-    //configureLinkTableView();
-    //configureActionTableView();
-
   }
 
   public void onBackButtonPressed() {
@@ -130,6 +138,47 @@ public class EditStoryController extends Controller<EditStoryView> {
     }
   }
 
+  public void onEditButtonIsPressed() {
+    if (getSelectedPassageInPassageList() != null && getSelectedLinkInLinkList() == null
+    && getSelectedActionInActionList() == null) {
+      editPassageDialog = new EditPassageDialog(getSelectedPassageInPassageList(), this);
+      editPassageDialog.initOwner(view.getScene().getWindow());
+      editPassageDialog.showAndWait();
+    } else if (getSelectedLinkInLinkList() != null && getSelectedActionInActionList() == null) {
+      editLinkDialog = new EditLinkDialog(getSelectedLinkInLinkList(),this);
+      editLinkDialog.initOwner(view.getScene().getWindow());
+      editLinkDialog.showAndWait();
+    } else if (getSelectedActionInActionList() != null) {
+    //TODO: Add edit action dialog if needed.
+    } else {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText(null);
+      alert.initOwner(view.getScene().getWindow());
+      alert.setContentText("You have to select a passage to edit");
+      alert.showAndWait();
+    }
+  }
+
+  public void onEditPassageSaveButtonPressed(ActionEvent event) {
+      String newName = editPassageDialog.getRoomNameTextField();
+      editLinkReference(getSelectedPassageInPassageList(), newName);
+      getSelectedPassageInPassageList().setTitle(editPassageDialog.getRoomNameTextField());
+      getSelectedPassageInPassageList().setContent(editPassageDialog.getRoomContentTextArea());
+      StoryDAO.getInstance().update(selectedStory);
+      populateTableView();
+      onCloseSource(event);
+  }
+
+  public void onEditLinkSaveButtonPressed(ActionEvent event) {
+    getSelectedLinkInLinkList().setText(editLinkDialog.getLinkText());
+    StoryDAO.getInstance().update(selectedStory);
+    populateLinkTableView();
+    onCloseSource(event);
+  }
+
+
+
   public void onAddActionOnAddButtonPressed(ActionEvent event) {
     getSelectedLinkInLinkList().addAction(createActionInstance(addActionDialog.getSelectedActionType(),
         addActionDialog.getSelectedValue()));
@@ -153,6 +202,16 @@ public class EditStoryController extends Controller<EditStoryView> {
       default:
         return null;
     }
+  }
+
+  public void onSavePress() {
+    //toeffe
+  }
+
+  public void onMapPressed() {
+    Pane pane = new Pane();
+    MapGenerator mapGenerator = new MapGenerator(pane);
+    mapGenerator.generateMap(selectedStory);
   }
 
 
@@ -273,7 +332,6 @@ public class EditStoryController extends Controller<EditStoryView> {
         });
   }
 
-
   public void onDeletePassageButtonPressed(ActionEvent event) {
     Passage selectedPassage = getSelectedPassageInPassageList();
     Link selectedLink = getSelectedLinkInLinkList();
@@ -305,6 +363,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     if (result.isPresent() && result.get() == ButtonType.OK) {
       if (selectedPassage != null && selectedLink == null && selectedAction == null) {
         selectedStory.removePassage(selectedPassage);
+        getLinksByReference(getSelectedPassageInPassageList().getTitle());
+        removePassage(getSelectedPassageInPassageList());
         StoryDAO.getInstance().update(selectedStory);
         populateTableView();
         clearSelectedItemInPassageList();
@@ -325,6 +385,40 @@ public class EditStoryController extends Controller<EditStoryView> {
     }
   }
 
+  public List<Link> getLinksByReference(String passageTitle) {
+    List<Link> linksWithReference = new ArrayList<>();
+
+    for (Entry<Link, Passage> entry : selectedStory.getPassages().entrySet()) {
+      Passage passage = entry.getValue();
+      for (Link link : passage.getLinks()) {
+        if (link.getReference().equals(passageTitle)) {
+          linksWithReference.add(link);
+        }
+      }
+    }
+    System.out.println(linksWithReference);
+    return linksWithReference;
+  }
+
+
+  private void removePassage(Passage passage) {
+    List<Link> linksToRemove = getLinksByReference(passage.getTitle());
+
+    for (Link link : linksToRemove) {
+      selectedStory.getPassages().values().forEach(p -> p.removeLink(link));
+    }
+
+    selectedStory.getPassages().values().remove(passage);
+  }
+
+
+  private void editLinkReference(Passage passage, String newName) {
+    List<Link> linksToEdit = getLinksByReference(passage.getTitle());
+    for (Link link : linksToEdit) {
+      link.setReference(newName);
+    }
+  }
+
   private void clearSelectedItemInPassageList() {
     view.getPassageTableView().getSelectionModel().clearSelection();
   }
@@ -341,6 +435,4 @@ public class EditStoryController extends Controller<EditStoryView> {
   private void setPassageContentTextInTextArea() {
     view.getPassageContentTextArea().setText(getSelectedPassageInPassageList().getContent());
   }
-
-
 }

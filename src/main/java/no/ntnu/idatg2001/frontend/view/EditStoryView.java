@@ -113,7 +113,7 @@ public class EditStoryView extends BorderPane {
   private void createEditButton() {
     editButton = new JFXButton("Edit");
     editButton.setOnAction(event -> {
-      //controller.edit();
+      controller.onEditButtonIsPressed();
     });
   }
 
@@ -127,14 +127,14 @@ public class EditStoryView extends BorderPane {
   private void createMapButton() {
     mapButton = new JFXButton("Map");
     mapButton.setOnAction(event -> {
-      //controller.map();
+      controller.onMapPressed();
     });
   }
 
   private void createSaveButton() {
     saveButton = new JFXButton("Save");
     saveButton.setOnAction(event -> {
-      //controller.save();
+      controller.onSavePress();
     });
   }
 
