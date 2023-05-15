@@ -54,7 +54,6 @@ public class StartNewGameView extends BorderPane {
     vBox2.setAlignment(javafx.geometry.Pos.CENTER);
     vBox2.setPrefSize(100, 200);
     vBox2.setSpacing(10);
-    vBox1.getChildren().add(vBox2);
 
     // Add separator, name label, and text field
     Separator separator1 = new Separator();
@@ -82,6 +81,7 @@ public class StartNewGameView extends BorderPane {
 
     vBox1.getChildren().add(playerLabel);
     vBox2.getChildren().add(separator1);
+    vBox1.getChildren().add(vBox2);
 
     vBox2.getChildren().add(nameLabel);
     vBox2.getChildren().add(nameField);
@@ -97,6 +97,7 @@ public class StartNewGameView extends BorderPane {
 
     vBox2.getChildren().add(separator3);
   }
+
 
   private void createCheckBoxes() {
     healthGoalCheckbox = new CheckBox("Health Goal");
