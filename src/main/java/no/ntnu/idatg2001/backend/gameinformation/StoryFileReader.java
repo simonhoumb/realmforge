@@ -24,10 +24,11 @@ public class StoryFileReader{
         if (currentLine.startsWith("::")) {
           Passage passageToAdd;
           String passageTitle = currentLine.replace(":", "");
-          String passageContent = reader.readLine();
+          //String passageContent = reader.readLine();
+          String passageContent = findPassageContent(reader);
           passageToAdd = new Passage(passageTitle, passageContent);
           while ((currentLine = reader.readLine()) != null && !currentLine.trim().isEmpty()) {
-            Link linkToAdd = new Link(findLinkText(currentLine), findLinkReference(currentLine));
+            Link linkToAdd = new Link(findLinkTextFromLine(currentLine), findLinkReferenceFromLine(currentLine));
             passageToAdd.addLink(linkToAdd);
           }
           passagesToAdd.add(passageToAdd);
@@ -44,25 +45,32 @@ public class StoryFileReader{
     return stories;
   }
 
+  private String findPassageContent(BufferedReader reader) {
+    Scanner scanner = new Scanner(reader);
+    String passageContent = scanner.findWithinHorizon("[^\\[]*(?=\\[)", 0);
+    System.out.println(passageContent);
+    return passageContent.trim();
+  }
+
   //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
-  private String findLinkText(String currentLine) {
+  private String findLinkTextFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String linkText = "";
     for (String s; (s = scanner.findWithinHorizon("(?<=\\[).*?(?=\\])", 0)) != null;) {
       linkText = s;
     }
     scanner.close();
-    return linkText;
+    return linkText.trim();
   }
 
   //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
-  private String findLinkReference(String currentLine) {
+  private String findLinkReferenceFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String linkReference = "";
     for (String s; (s = scanner.findWithinHorizon("(?<=\\().*?(?=\\))", 0)) != null;) {
       linkReference = s;
     }
     scanner.close();
-    return linkReference;
+    return linkReference.trim();
   }
 }
