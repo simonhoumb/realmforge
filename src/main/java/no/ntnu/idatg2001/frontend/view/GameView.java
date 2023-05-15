@@ -62,6 +62,7 @@ public class GameView extends BorderPane {
   }
 
   public void addToGameTextFlow(Passage currentPassage) {
+    //TODO: vurder å bruk begin() og go() fra Game klassen
     String passageString = String.format("%s: %s%n",
         currentPassage.getTitle(), currentPassage.getContent());
     gameTextFlow.getChildren().add(new Text(passageString));
