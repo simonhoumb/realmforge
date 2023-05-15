@@ -1,0 +1,11 @@
+no.ntnu.idatg2001
+no.ntnu.idatg2001.backend
+no.ntnu.idatg2001.backend.actions
+no.ntnu.idatg2001.backend.entityinformation
+no.ntnu.idatg2001.backend.entityinformation.playerclasses
+no.ntnu.idatg2001.backend.gameinformation
+no.ntnu.idatg2001.backend.goals
+no.ntnu.idatg2001.backend.utility
+no.ntnu.idatg2001.dao
+no.ntnu.idatg2001.frontend.controller
+no.ntnu.idatg2001.frontend.view

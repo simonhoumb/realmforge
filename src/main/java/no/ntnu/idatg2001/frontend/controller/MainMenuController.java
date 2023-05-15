@@ -3,7 +3,6 @@ package no.ntnu.idatg2001.frontend.controller;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
