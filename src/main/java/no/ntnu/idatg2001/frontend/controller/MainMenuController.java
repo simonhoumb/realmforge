@@ -12,6 +12,7 @@ import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.NewGameDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
+import no.ntnu.idatg2001.frontend.view.StartNewGameView;
 
 public class MainMenuController extends Controller<MainMenuView> {
   private SettingsDialog settingsDialog;
@@ -21,6 +22,16 @@ public class MainMenuController extends Controller<MainMenuView> {
   }
 
   public void onStartGameButtonPressed(ActionEvent event) {
+    StartNewGameController startNewGameController;
+    StartNewGameView startNewGameView;
+    startNewGameView = new StartNewGameView();
+    startNewGameController = new StartNewGameController(startNewGameView);
+    startNewGameView.setController(startNewGameController);
+    Scene newScene = view.getScene();
+    onCloseSource(event);
+    newScene.setRoot(startNewGameView);
+
+    /* Starter selve spillet, skal flyttes
     GameController gameController;
     GameView gameView;
     gameView = new GameView();
@@ -29,6 +40,7 @@ public class MainMenuController extends Controller<MainMenuView> {
     Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(gameView);
+     */
   }
 
   public void onNewGameButtonPressed() {
