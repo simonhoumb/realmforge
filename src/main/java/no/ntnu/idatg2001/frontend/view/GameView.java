@@ -30,10 +30,13 @@ public class GameView extends BorderPane {
 
   public GameView() {
     //TODO: slett denne test story og passage
-    Passage testPassage1 = new Passage("OpeningPassage", "This is a test passage and the opening passage.");
-    Passage testPassage2 = new Passage("Dungeon", "This is the dungeon.");
-    Passage testPassage3 = new Passage("The end", "This is the end, you win... nothing.");
-    Passage testPassage4 = new Passage("Dragon", "Oh no! A dragon! You died I guess...");
+    Passage testPassage1 = new Passage("OpeningPassage",
+        new StringBuilder("This is a test passage and the opening passage."));
+    Passage testPassage2 = new Passage("Dungeon", new StringBuilder("This is the dungeon."));
+    Passage testPassage3 = new Passage("The end",
+        new StringBuilder("This is the end, you win... nothing."));
+    Passage testPassage4 = new Passage("Dragon",
+        new StringBuilder("Oh no! A dragon! You died I guess..."));
     testPassage1.addLink(new Link("Go to dungeon", "Dungeon"));
     testPassage2.addLink(new Link("Go right", "The end"));
     testPassage2.addLink(new Link("Go left", "Dragon"));

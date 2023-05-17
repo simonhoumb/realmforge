@@ -45,7 +45,7 @@ public class EditPassageDialog extends Dialog<Pair<String, String>> {
     Label roomNameLabel = new Label("Room Name:");
     Label roomContentLabel = new Label("Room Content:");
     roomNameTextField = new TextField(passage.getTitle());
-    roomContentTextArea = new TextArea(passage.getContent());
+    roomContentTextArea = new TextArea(passage.getContent().toString());
 
     // Create a grid pane to hold the labels and text fields.
     GridPane grid = new GridPane();

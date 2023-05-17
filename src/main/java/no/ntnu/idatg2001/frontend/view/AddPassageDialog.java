@@ -43,6 +43,7 @@ public class AddPassageDialog extends Dialog<Pair<String, String>> {
     Label roomContentLabel = new Label("Room Content:");
     roomNameTextField = new TextField();
     roomContentTextArea = new TextArea();
+    roomContentTextArea.setWrapText(true);
 
     // Create a grid pane to hold the labels and text fields.
     GridPane grid = new GridPane();

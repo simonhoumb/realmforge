@@ -81,7 +81,7 @@ public class NewStoryDialog extends Dialog<Story> {
         String passageTitle = passageTitleField.getText();
         String passageContent = passageContentArea.getText();
 
-        Passage openingPassage = new Passage(passageTitle, passageContent);
+        Passage openingPassage = new Passage(passageTitle, new StringBuilder(passageContent));
         Story newStory = new Story(storyTitle, openingPassage);
         StoryDAO.getInstance().add(newStory);
         return newStory;

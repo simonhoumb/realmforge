@@ -217,6 +217,7 @@ public class EditStoryView extends BorderPane {
     passageContentTextArea = new JFXTextArea();
     passageContentTextArea.setPrefHeight(380);
     passageContentTextArea.setEditable(false);
+    passageContentTextArea.setWrapText(true);
     passageContentTextArea.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     passageContentTextArea.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
   }

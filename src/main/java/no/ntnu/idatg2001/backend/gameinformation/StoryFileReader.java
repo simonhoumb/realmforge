@@ -25,7 +25,7 @@ public class StoryFileReader{
           Passage passageToAdd;
           String passageTitle = currentLine.replace(":", "");
           String passageContent = reader.readLine();
-          passageToAdd = new Passage(passageTitle, passageContent);
+          passageToAdd = new Passage(passageTitle, new StringBuilder(passageContent));
           while ((currentLine = reader.readLine()) != null && !currentLine.trim().isEmpty()) {
             Link linkToAdd = new Link(findLinkText(currentLine), findLinkReference(currentLine));
             passageToAdd.addLink(linkToAdd);

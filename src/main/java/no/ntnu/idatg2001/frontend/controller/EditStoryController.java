@@ -12,9 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.actions.GoldAction;
@@ -23,6 +27,7 @@ import no.ntnu.idatg2001.backend.actions.InventoryAction;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.gameinformation.StoryWriter;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.AddActionDialog;
 import no.ntnu.idatg2001.frontend.view.AddLinkDialog;
@@ -31,7 +36,8 @@ import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditLinkDialog;
 import no.ntnu.idatg2001.frontend.view.EditPassageDialog;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
-import no.ntnu.idatg2001.frontend.view.MapGenerator;
+import no.ntnu.idatg2001.frontend.view.StoryMapCanvas;
+
 
 public class EditStoryController extends Controller<EditStoryView> {
 
@@ -69,7 +75,7 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onAddPassageAddButtonPressed() {
     selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField(),
-        addPassageDialog.getRoomContentTextArea()));
+        new StringBuilder(addPassageDialog.getRoomContentTextArea())));
     StoryDAO.getInstance().update(selectedStory);
     populateTableView();
   }
@@ -82,8 +88,7 @@ public class EditStoryController extends Controller<EditStoryView> {
       populateAddLinkPassageTableView();
       getSelectedPassageInPassageList();
       addLinkDialog.showAndWait();
-    }
-    else {
+    } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning");
       alert.setHeaderText(null);
@@ -100,8 +105,7 @@ public class EditStoryController extends Controller<EditStoryView> {
     addActionDialog.initOwner(view.getScene().getWindow());
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
-    }
-    else {
+    } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning");
       alert.setHeaderText(null);
@@ -119,8 +123,7 @@ public class EditStoryController extends Controller<EditStoryView> {
       StoryDAO.getInstance().update(selectedStory);
       populateLinkTableView();
       onCloseSource(event);
-    }
-    else {
+    } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning");
       alert.setHeaderText(null);
@@ -156,7 +159,8 @@ public class EditStoryController extends Controller<EditStoryView> {
       String newName = editPassageDialog.getRoomNameTextField();
       editLinkReference(getSelectedPassageInPassageList(), newName);
       getSelectedPassageInPassageList().setTitle(editPassageDialog.getRoomNameTextField());
-      getSelectedPassageInPassageList().setContent(editPassageDialog.getRoomContentTextArea());
+      getSelectedPassageInPassageList().setContent(
+          new StringBuilder(editPassageDialog.getRoomContentTextArea()));
       StoryDAO.getInstance().update(selectedStory);
       populateTableView();
       onCloseSource(event);
@@ -197,13 +201,38 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   public void onSavePress() {
-    //toeffe
+    StoryWriter storyWriter = new StoryWriter();
+    storyWriter.writeStoryToFile(selectedStory);
   }
 
+
   public void onMapPressed() {
-    Pane pane = new Pane();
-    MapGenerator mapGenerator = new MapGenerator(pane);
-    mapGenerator.generateMap(selectedStory);
+    // Create a ScrollPane and set the canvas as its content
+    ScrollPane scrollPane = new ScrollPane();
+    // Create an instance of your StoryMapCanvas
+    StoryMapCanvas storyMapCanvas = new StoryMapCanvas(100, 100, scrollPane);
+
+    // Set the size of the canvas (optional)
+    storyMapCanvas.setWidth(800);
+    storyMapCanvas.setHeight(600);
+
+    scrollPane.setContent(storyMapCanvas);
+
+    // Call the drawStoryMap method to draw the story map on the canvas
+    storyMapCanvas.setStory(selectedStory, scrollPane);
+
+    // Set the preferred size of the ScrollPane
+    scrollPane.setPrefSize(800, 600);
+
+    // Create a new stage and set the ScrollPane as the root of your application's scene
+    Scene scene = new Scene(scrollPane);
+
+    // Create a new stage and set the scene
+    Stage stage = new Stage();
+    stage.setScene(scene);
+
+    // Show the stage
+    stage.show();
   }
 
 
@@ -244,7 +273,6 @@ public class EditStoryController extends Controller<EditStoryView> {
       view.getActionTableView().setItems(list);
     }
   }
-
 
   public void configureTableView() {
     view.getPassageTableColumn().setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -423,8 +451,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     view.getActionTableView().getSelectionModel().clearSelection();
   }
 
-
   private void setPassageContentTextInTextArea() {
-    view.getPassageContentTextArea().setText(getSelectedPassageInPassageList().getContent());
+    view.getPassageContentTextArea().setText(
+        String.valueOf(getSelectedPassageInPassageList().getContent()));
   }
 }

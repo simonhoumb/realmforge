@@ -75,6 +75,7 @@ public class Link {
 
   /**
    * getReference returns the reference of the link.
+   *
    * @return link reference.
    */
   public String getReference() {
@@ -125,6 +126,7 @@ public class Link {
 
   /**
    * getActions returns the actions of the link.
+   *
    * @return actions in link.
    */
   public List<Action> getActions() {
