@@ -71,14 +71,12 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
 
     private void createSaveButton() {
       saveButton = new JFXButton(resourceBundle.getString("pauseMenu.save"));
-      saveButton.setOnAction(event -> {//TODO add save game dialog
-        });
+      saveButton.setOnAction(event -> controller.onSaveButtonPressed());
     }
 
     private void createLoadButton() {
       loadButton = new JFXButton(resourceBundle.getString("pauseMenu.load"));
-      loadButton.setOnAction(event -> {//TODO add load game dialog
-      });
+      loadButton.setOnAction(event -> controller.onLoadGameButtonPressed(event));
     }
 
     private void createSettingsButton() {
