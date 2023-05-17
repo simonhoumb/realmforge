@@ -14,10 +14,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import no.ntnu.idatg2001.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
-import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.frontend.controller.GameController;
 
 public class GameView extends BorderPane {
@@ -25,28 +25,18 @@ public class GameView extends BorderPane {
   private VBox gameVBox;
   private ResourceBundle resourceBundle;
   private GameController controller;
-  private Story story;
   private Text choiceText;
+  private GameSave currentGameSave;
+  private Passage currentPassage;
 
-  public GameView() {
-    //TODO: slett denne test story og passage
-    Passage testPassage1 = new Passage("OpeningPassage", "This is a test passage and the opening passage.");
-    Passage testPassage2 = new Passage("Dungeon", "This is the dungeon.");
-    Passage testPassage3 = new Passage("The end", "This is the end, you win... nothing.");
-    Passage testPassage4 = new Passage("Dragon", "Oh no! A dragon! You died I guess...");
-    testPassage1.addLink(new Link("Go to dungeon", "Dungeon"));
-    testPassage2.addLink(new Link("Go right", "The end"));
-    testPassage2.addLink(new Link("Go left", "Dragon"));
-    this.story = new Story("myStory", testPassage1);
-    this.story.addPassage(testPassage2);
-    this.story.addPassage(testPassage3);
-    this.story.addPassage(testPassage4);
+  public GameView(GameSave currentGameSave) {
     createLayout();
-    addToGameTextFlow(story.getOpeningPassage());
+    loadGameSave(currentGameSave);
   }
 
   private void createLayout() {
-    resourceBundle = ResourceBundle.getBundle("languages/GameView", SettingsModel.getInstance().getLocale());
+    resourceBundle = ResourceBundle
+        .getBundle("languages/GameView", SettingsModel.getInstance().getLocale());
     gameVBox = new VBox();
     gameVBox.setAlignment(Pos.CENTER);
     gameTextFlow = new TextFlow();
@@ -60,6 +50,7 @@ public class GameView extends BorderPane {
   }
 
   public void addToGameTextFlow(Passage currentPassage) {
+    this.currentPassage = currentPassage;
     //TODO: vurder å bruk begin() og go() fra Game klassen
     String passageString = String.format("%s: %s%n",
         currentPassage.getTitle(), currentPassage.getContent());
@@ -68,10 +59,7 @@ public class GameView extends BorderPane {
     gameTextFlow.getChildren().add(choiceText);
     for (Link link : currentPassage.getLinks()) {
       Hyperlink hyperLink = new Hyperlink(String.format("%s ",link.getText()));
-      hyperLink.setOnAction(event -> {
-        clearGameTextFlow();
-        addToGameTextFlow(story.getPassage(link));
-      });
+      hyperLink.setOnAction(event -> controller.onLinkPressed(event, link));
       gameTextFlow.getChildren().add(hyperLink);
     }
   }
@@ -85,7 +73,31 @@ public class GameView extends BorderPane {
   }
 
   public void update() {
-    resourceBundle = ResourceBundle.getBundle("languages/gameView", SettingsModel.getInstance().getLocale());
+    resourceBundle = ResourceBundle
+        .getBundle("languages/gameView", SettingsModel.getInstance().getLocale());
     choiceText.setText(String.format("%s:%n", resourceBundle.getString("game.choices")));
+  }
+
+  public GameSave getCurrentGameSave() {
+    return this.currentGameSave;
+  }
+
+  public Passage getCurrentPassage() {
+    return this.currentPassage;
+  }
+
+  public void setCurrentPassage(Passage passage) {
+    this.currentPassage = passage;
+  }
+
+  public void loadGameSave(GameSave gameSaveToLoad) {
+    this.currentGameSave = gameSaveToLoad;
+    if (currentGameSave.getLastSavedPassage() == null) {
+      this.currentPassage = currentGameSave.getGame().begin();
+    } else {
+      this.currentPassage = currentGameSave.getLastSavedPassage();
+    }
+    clearGameTextFlow();
+    addToGameTextFlow(this.currentPassage);
   }
 }

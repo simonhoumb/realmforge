@@ -1,13 +1,22 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import no.ntnu.idatg2001.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.backend.gameinformation.Link;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
+import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.PauseMenuDialog;
 import no.ntnu.idatg2001.frontend.view.SettingsDialog;
@@ -15,6 +24,8 @@ import no.ntnu.idatg2001.frontend.view.SettingsDialog;
 public class GameController extends Controller<GameView> {
   private PauseMenuDialog pauseMenuDialog;
   private SettingsDialog settingsDialog;
+  private LoadGameDialog loadGameDialog;
+
 
   public GameController(GameView gameView) {
     this.view = gameView;
@@ -66,5 +77,55 @@ public class GameController extends Controller<GameView> {
     ExitDialog exitDialog = new ExitDialog(this);
     exitDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
     exitDialog.showAndWait();
+  }
+
+  public void onLinkPressed(ActionEvent event, Link link) {
+    Passage passageToGoTo = view.getCurrentGameSave().getGame().go(link);
+    view.clearGameTextFlow();
+    view.addToGameTextFlow(passageToGoTo);
+    event.consume();
+  }
+
+  public void onSaveButtonPressed() {
+    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
+        view.getCurrentGameSave().getGame().getUnit().getUnitName());
+    newGameSave.savePassage(view.getCurrentPassage());
+    GameSaveDAO.getInstance()
+        .add(newGameSave);
+  }
+
+  @Override
+  public void onLoadGameButtonPressed(ActionEvent event) {
+    loadGameDialog = new LoadGameDialog(this);
+    configureSavedGamesTableView(event);
+    populateSavedGamesTableView(event);
+    loadGameDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
+    loadGameDialog.showAndWait();
+  }
+
+  @Override
+  public void onLoadSelectedGame(ActionEvent event) {
+    GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
+    view.loadGameSave(selectedGameSave);
+    pauseMenuDialog.close();
+    onCloseSource(event);
+  }
+
+  @Override
+  public void populateSavedGamesTableView(ActionEvent event) {
+    event.consume();
+    loadGameDialog.getSavedGamesTableView().getItems().clear();
+    List<GameSave> gameSaves = GameSaveDAO.getInstance().getAll();
+    Collections.reverse(gameSaves);
+    loadGameDialog.getSavedGamesTableView()
+        .setItems(FXCollections.observableArrayList(gameSaves));
+  }
+
+  @Override
+  public void configureSavedGamesTableView(ActionEvent event) {
+    event.consume();
+    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("saveName"));
+    loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
+    loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
 }
