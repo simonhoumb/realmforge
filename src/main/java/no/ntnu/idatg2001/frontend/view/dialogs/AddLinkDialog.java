@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.view;
+package no.ntnu.idatg2001.frontend.view.dialogs;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;

@@ -20,8 +20,9 @@ class StoryTest {
 
   @BeforeEach
   void setUp() {
-    openingPassage = new Passage("testOpeningPassage", "This is the opening passage");
-    dungeonPassage = new Passage("Dungeon", "This is the dungeon");
+    openingPassage = new Passage("testOpeningPassage",
+        new StringBuilder("This is the opening passage"));
+    dungeonPassage = new Passage("Dungeon", new StringBuilder("This is the dungeon"));
     dungeonLink1 = new Link("Open Dungeon Door", "Dungeon");
     openingPassage.addLink(dungeonLink1);
     story = new Story("MyStory", openingPassage);
@@ -39,7 +40,7 @@ class StoryTest {
   @Test
   void addPassageTest() {
     Map<Link, Passage> testPassages = new HashMap<>(story.getPassages());
-    Passage courtyard = new Passage("Courtyard", "This is the courtyard");
+    Passage courtyard = new Passage("Courtyard", new StringBuilder("This is the courtyard"));
     assertTrue(story.addPassage(courtyard));
     assertNotEquals(testPassages, story.getPassages());
     assertEquals(testPassages.size() + 1, story.getPassages().size());

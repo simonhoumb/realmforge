@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.view;
+package no.ntnu.idatg2001.frontend.view.dialogs;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.util.Pair;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
 public class AddPassageDialog extends Dialog<Pair<String, String>> {
@@ -43,6 +44,7 @@ public class AddPassageDialog extends Dialog<Pair<String, String>> {
     Label roomContentLabel = new Label("Room Content:");
     roomNameTextField = new TextField();
     roomContentTextArea = new TextArea();
+    roomContentTextArea.setWrapText(true);
 
     // Create a grid pane to hold the labels and text fields.
     GridPane grid = new GridPane();
@@ -82,11 +84,8 @@ public class AddPassageDialog extends Dialog<Pair<String, String>> {
     addButton.setPrefSize(100,50);
     addButton.setOnAction(event -> {
       if (roomContentTextArea.getText().isEmpty() || roomContentTextArea.getText().isBlank()) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(getDialogPane().getScene().getWindow());
-        alert.setContentText("The Content Can't be Empty!");
-        alert.showAndWait();
+        AlertHelper.showWarningAlert(getDialogPane().getScene().getWindow(), "Room content cannot be empty",
+            "Please enter room content");
       } else {
        controller.onAddPassageAddButtonPressed();
        controller.onCloseSource(event);

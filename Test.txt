@@ -1,0 +1,42 @@
+Test
+
+::Read this Story please
+deiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufew
+[go to room one](room one)
+[go to room two](this is the second room)
+{HEALTH}<-100>
+[go to room three](this is the third room)
+
+::this is the forth foor
+Welcome to the forth floor, what do you want to do here?
+
+::this is the third room
+this is the third room
+[got back to the start](Read this Story please)
+{GOLD}<1>
+[Go to the Forth](this is the forth foor)
+
+::room one
+this is the first room
+[go to room two](this is the second room)
+{GOLD}<100>
+{HEALTH}<100>
+[Go back to Start](Read this Story please)
+[got to the test](This is a test pasages)
+[go ther](Welcome to the fifth floor)
+
+::Welcome to the fifth floor
+Welcome to the town of the fifth floor you are going to
+[go to the end](Go to the End)
+
+::this is the second room
+second room
+[go to room three](this is the third room)
+{GOLD}<10>
+
+::This is a test pasages
+go here to die
+
+::Go to the End
+Welcome to the end
+
