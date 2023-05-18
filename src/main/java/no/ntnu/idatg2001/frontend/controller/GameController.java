@@ -9,8 +9,8 @@ import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
-import no.ntnu.idatg2001.frontend.view.PauseMenuDialog;
-import no.ntnu.idatg2001.frontend.view.SettingsDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.PauseMenuDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
 
 public class GameController extends Controller<GameView> {
   private PauseMenuDialog pauseMenuDialog;

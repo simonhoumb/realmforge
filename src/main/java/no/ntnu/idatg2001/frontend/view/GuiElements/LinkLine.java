@@ -1,10 +1,7 @@
 package no.ntnu.idatg2001.frontend.view.GuiElements;
 
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
 
 public class LinkLine extends Line {
   private Link link;

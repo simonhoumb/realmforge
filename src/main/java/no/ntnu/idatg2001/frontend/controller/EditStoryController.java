@@ -8,17 +8,16 @@ import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
+import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.actions.GoldAction;
@@ -29,14 +28,14 @@ import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryWriter;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.AddActionDialog;
-import no.ntnu.idatg2001.frontend.view.AddLinkDialog;
-import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddActionDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddLinkDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
-import no.ntnu.idatg2001.frontend.view.EditLinkDialog;
-import no.ntnu.idatg2001.frontend.view.EditPassageDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.EditLinkDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.EditPassageDialog;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
-import no.ntnu.idatg2001.frontend.view.StoryMapCanvas;
+import no.ntnu.idatg2001.frontend.view.GuiElements.StoryMapCanvas;
 
 
 public class EditStoryController extends Controller<EditStoryView> {
@@ -53,12 +52,13 @@ public class EditStoryController extends Controller<EditStoryView> {
     configurePassageList();
   }
 
-  public void onBackButtonPressed() {
+  public EventHandler<ActionEvent> onBackButtonPressed() {
     CreateStoryView createStoryView = new CreateStoryView();
     Scene newScene = view.getScene();
     CreateStoryController createStoryController = new CreateStoryController(createStoryView);
     createStoryView.setController(createStoryController);
     newScene.setRoot(createStoryView);
+    return null;
   }
 
   public void onCloseSource(ActionEvent event) {
@@ -211,26 +211,21 @@ public class EditStoryController extends Controller<EditStoryView> {
     ScrollPane scrollPane = new ScrollPane();
     // Create an instance of your StoryMapCanvas
     StoryMapCanvas storyMapCanvas = new StoryMapCanvas(100, 100, scrollPane);
-
-    // Set the size of the canvas (optional)
-
-
+    // Set the content of the ScrollPane to the canvas
     scrollPane.setContent(storyMapCanvas);
-
     // Call the drawStoryMap method to draw the story map on the canvas
     storyMapCanvas.setStory(selectedStory, scrollPane);
-
     // Set the preferred size of the ScrollPane
     scrollPane.setPrefSize(800, 600);
-
     // Create a new stage and set the ScrollPane as the root of your application's scene
     Scene scene = new Scene(scrollPane);
-
     // Create a new stage and set the scene
     Stage stage = new Stage();
     stage.setScene(scene);
-
-    // Show the stage
+    stage.setTitle("Story Map");
+    stage.initOwner(view.getScene().getWindow());
+    stage.initStyle(StageStyle.DECORATED);
+    stage.initModality(Modality.APPLICATION_MODAL);
     stage.show();
   }
 
@@ -242,7 +237,10 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   public void populateTableView() {
-    view.getPassageTableView().getItems().clear();// Clear the selection
+    if (selectedStory == null) {
+      return; // Do nothing if selectedStory is null
+    }
+    view.getPassageTableView().getItems().clear(); // Clear the selection
     List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
     ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
     if (selectedStory.getOpeningPassage() != null) {

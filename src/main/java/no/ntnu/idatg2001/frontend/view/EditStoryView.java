@@ -2,6 +2,9 @@ package no.ntnu.idatg2001.frontend.view;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
@@ -18,6 +21,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
@@ -27,7 +34,6 @@ public class EditStoryView extends BorderPane {
 
   private EditStoryController controller;
   private String cssFile = "/CSS/EditStoryView.css";
-
   private JFXButton addPassageButton;
   private JFXButton addLinkButton;
   private JFXButton addActionButton;
@@ -46,10 +52,13 @@ public class EditStoryView extends BorderPane {
   private TableColumn<Action, String> actionTableActionColumn;
   private ButtonBar buttonBar;
   private JFXTextArea passageContentTextArea;
+  private ResourceBundle resourceBundle;
 
 
 
   public EditStoryView() {
+    resourceBundle = ResourceBundle.getBundle("languages/editStoryView"
+        , SettingsModel.getInstance().getLocale());
     init();
   }
 
@@ -90,55 +99,63 @@ public class EditStoryView extends BorderPane {
   }
 
   private void createNewPassageButton() {
-    addPassageButton = new JFXButton("Add passage");
+    addPassageButton = new JFXButton(resourceBundle.getString("addPassageButton"));
+    addPassageButton.setWrapText(true);
     addPassageButton.setOnAction(event -> {
       controller.onAddPassageButtonPressed();
     });
   }
 
   private void  createNewLinkButton() {
-    addLinkButton = new JFXButton("Add link");
+    addLinkButton = new JFXButton(resourceBundle.getString("addLinkButton"));
+    addLinkButton.setWrapText(true);
     addLinkButton.setOnAction(event -> {
       controller.onAddLinkButtonPressed();
     });
   }
   private void createNewActionButton() {
-    addActionButton = new JFXButton("Add action");
+    addActionButton = new JFXButton(resourceBundle.getString("addActionButton"));
+    addActionButton.setWrapText(true);
     addActionButton.setOnAction(event -> {
       controller.onAddActingButtonPressed();
     });
   }
 
   private void createEditButton() {
-    editButton = new JFXButton("Edit");
+    editButton = new JFXButton(resourceBundle.getString("editButton"));
+    editButton.setWrapText(true);
     editButton.setOnAction(event -> {
       controller.onEditButtonIsPressed();
     });
   }
 
   private void createDeleteButton() {
-    deleteButton = new JFXButton("Delete");
+    deleteButton = new JFXButton(resourceBundle.getString("deleteButton"));
+    deleteButton.setWrapText(true);
     deleteButton.setOnAction(event -> {
       controller.onDeletePassageButtonPressed(event);
     });
   }
 
   private void createMapButton() {
-    mapButton = new JFXButton("Map");
+    mapButton = new JFXButton(resourceBundle.getString("mapButton"));
+    mapButton.setWrapText(true);
     mapButton.setOnAction(event -> {
       controller.onMapPressed();
     });
   }
 
   private void createSaveButton() {
-    saveButton = new JFXButton("Save");
+    saveButton = new JFXButton(resourceBundle.getString("saveButton"));
+    saveButton.setWrapText(true);
     saveButton.setOnAction(event -> {
       controller.onSavePress();
     });
   }
 
   private void createBackButton() {
-    backButton = new JFXButton("Back");
+    backButton = new JFXButton(resourceBundle.getString("backButton"));
+    backButton.setWrapText(true);
     backButton.setOnAction(event1 -> {
       controller.onBackButtonPressed();
     });
@@ -165,7 +182,7 @@ public class EditStoryView extends BorderPane {
   }
 
   private void createPassageTableColumn() {
-    passageTableColumn = new TableColumn<>("Passage Name");
+    passageTableColumn = new TableColumn<>(resourceBundle.getString("passageTableColumn"));
     passageTableColumn.setPrefWidth(400);
     passageTableColumn.setReorderable(false);
   }
@@ -183,12 +200,12 @@ public class EditStoryView extends BorderPane {
   }
 
   private void createLinkTableLinkNameColumn() {
-    linkTableLinkNameColumn = new TableColumn<>("Link Name");
+    linkTableLinkNameColumn = new TableColumn<>(resourceBundle.getString("linkTableLinkNameColumn"));
     linkTableLinkNameColumn.setReorderable(false);
   }
 
   private void createLinkTableLinkReferenceColumn() {
-    linkTableLinkReferenceColumn = new TableColumn<>("Link Reference");
+    linkTableLinkReferenceColumn = new TableColumn<>(resourceBundle.getString("linkTableLinkReferenceColumn"));
     linkTableLinkReferenceColumn.setReorderable(false);
   }
 
@@ -203,13 +220,13 @@ public class EditStoryView extends BorderPane {
   }
 
   private void createActionTableColum() {
-    actionTableColumn = new TableColumn<>("Action Name");
+    actionTableColumn = new TableColumn<>(resourceBundle.getString("actionTableColumn"));
     actionTableColumn.setReorderable(false);
 
   }
 
   private void createActionTableActionColumn() {
-    actionTableActionColumn = new TableColumn<>("Action");
+    actionTableActionColumn = new TableColumn<>(resourceBundle.getString("actionTableActionColumn"));
     actionTableActionColumn.setReorderable(false);
   }
 

@@ -6,11 +6,10 @@ import javafx.scene.Scene;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
-import no.ntnu.idatg2001.frontend.view.GameView;
-import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
-import no.ntnu.idatg2001.frontend.view.NewGameDialog;
-import no.ntnu.idatg2001.frontend.view.SettingsDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.NewGameDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
 import no.ntnu.idatg2001.frontend.view.StartNewGameView;
 
 public class MainMenuController extends Controller<MainMenuView> {

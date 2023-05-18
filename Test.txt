@@ -6,7 +6,6 @@ deiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewufibweiufewdeiefbwiufgweiufhewu
 [go to room two](this is the second room)
 {HEALTH}<-100>
 [go to room three](this is the third room)
-[Go to The end](Go to the End)
 
 ::this is the forth foor
 Welcome to the forth floor, what do you want to do here?
@@ -15,6 +14,7 @@ Welcome to the forth floor, what do you want to do here?
 this is the third room
 [got back to the start](Read this Story please)
 {GOLD}<1>
+[Go to the Forth](this is the forth foor)
 
 ::room one
 this is the first room

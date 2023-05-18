@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.view;
+package no.ntnu.idatg2001.frontend.view.dialogs;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
