@@ -64,4 +64,14 @@ public class GameSave {
   public void savePassage(Passage lastSavedPassage) {
     this.lastSavedPassage = lastSavedPassage;
   }
+
+  public String getStoryAndLastPassage() {
+    StringBuilder location = new StringBuilder(this.saveName + " - ");
+    if (this.lastSavedPassage == null) {
+      location.append(this.game.begin().getTitle());
+    } else {
+      location.append(this.lastSavedPassage.getTitle());
+    }
+    return location.toString();
+  }
 }
