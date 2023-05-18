@@ -19,4 +19,8 @@ public class CheckIfValid {
   public boolean checkIfNumberIsNotLowerThanZero(int intToCheck) {
     return intToCheck >= 0;
   }
+
+  public boolean isInteger(String value) {
+    return value.matches("[0-9]+") && !value.isEmpty() && !value.isBlank();
+  }
 }
