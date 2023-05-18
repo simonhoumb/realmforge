@@ -213,8 +213,7 @@ public class EditStoryController extends Controller<EditStoryView> {
     StoryMapCanvas storyMapCanvas = new StoryMapCanvas(100, 100, scrollPane);
 
     // Set the size of the canvas (optional)
-    storyMapCanvas.setWidth(800);
-    storyMapCanvas.setHeight(600);
+
 
     scrollPane.setContent(storyMapCanvas);
 
