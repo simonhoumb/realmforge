@@ -81,7 +81,7 @@ public class MainMenuController extends Controller<MainMenuView> {
   @Override
   public void configureSavedGamesTableView(ActionEvent event) {
     event.consume();
-    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("saveName"));
+    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
     loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
     loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }

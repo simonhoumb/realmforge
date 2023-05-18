@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import no.ntnu.idatg2001.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -124,7 +125,7 @@ public class GameController extends Controller<GameView> {
   @Override
   public void configureSavedGamesTableView(ActionEvent event) {
     event.consume();
-    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("saveName"));
+    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
     loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
     loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
