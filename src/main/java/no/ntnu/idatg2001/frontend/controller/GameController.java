@@ -17,7 +17,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
-import no.ntnu.idatg2001.frontend.view.LoadGameDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.dialogs.PauseMenuDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
