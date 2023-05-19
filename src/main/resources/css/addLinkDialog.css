@@ -1,5 +1,7 @@
-/* Styles for the EditStoryView */
-
+.dialog-pane{
+  -fx-background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 2); /* Drop shadow effect */
+}
 
 /* Styles for .button elements */
 .button {
@@ -77,10 +79,8 @@
   -fx-max-height: 0;
   -fx-background-color: transparent;
 }
-
-.text-area {
+.text-field {
   -fx-background-color: #1E1E1E; /* Background color */
-  -fx-control-inner-background: #1E1E1E; /* Background color */
   -fx-text-fill: #FFFFFF; /* Text color */
   -fx-prompt-text-fill: #A9A9A9; /* Placeholder text color */
   -fx-border-color: #808080; /* Border color */
@@ -88,48 +88,15 @@
   -fx-border-radius: 5px; /* Border radius */
   -fx-padding: 5px; /* Padding */
 }
-
-/* Styles for .scroll-bar:vertical elements */
-.scroll-bar:vertical {
-  -fx-background-color: #1E1E1E;
-  -fx-padding: 0 0 0 1px;
+.dialog-close-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-font-size: 12px;
+  -fx-pref-width: 20px;
+  -fx-pref-height: 20px;
+  -fx-border-width: 0;
 }
 
-/* Styles for .scroll-bar:vertical thumb elements */
-.scroll-bar:vertical thumb {
-  -fx-background-color: #808080;
+.dialog-close-button:hover {
+  -fx-background-color: #808080; /* Customize the hover color for the close button */
 }
-
-.scroll-bar:vertical thumb:hover {
-  -fx-background-color: #A9A9A9;
-}
-
-/* Styles for .scroll-bar:vertical .increment-button elements */
-.scroll-bar:vertical .increment-button {
-  -fx-background-color: #1E1E1E;
-}
-
-/* Styles for .scroll-bar:vertical .increment-arrow elements */
-.scroll-bar:vertical .increment-arrow {
-  -fx-background-color: #808080;
-}
-
-.scroll-bar:vertical .increment-arrow:hover {
-  -fx-background-color: #A9A9A9;
-}
-
-/* Styles for .scroll-bar:vertical .decrement-button elements */
-.scroll-bar:vertical .decrement-button {
-  -fx-background-color: #1E1E1E;
-}
-
-/* Styles for .scroll-bar:vertical .decrement-arrow elements */
-.scroll-bar:vertical .decrement-arrow {
-  -fx-background-color: #808080;
-}
-
-.scroll-bar:vertical .decrement-arrow:hover {
-  -fx-background-color: #A9A9A9;
-}
-
-/* Add more styles for other elements in the view as needed */

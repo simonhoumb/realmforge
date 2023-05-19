@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
@@ -89,6 +90,7 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     // saved in the StoryDao.
     newStoryDialog = new NewStoryDialog(this);
     newStoryDialog.initOwner(view.getScene().getWindow());
+    newStoryDialog.initStyle(StageStyle.UNDECORATED);
     newStoryDialog.showAndWait();
     populateTableView();
   }

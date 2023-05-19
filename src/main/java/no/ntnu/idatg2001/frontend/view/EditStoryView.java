@@ -81,6 +81,7 @@ public class EditStoryView extends BorderPane {
     HBox buttonBox = new HBox();
     buttonBox.getChildren().add(buttonBar);
     buttonBox.setAlignment(Pos.CENTER);
+    setBackground(new Background(new BackgroundFill(Color.rgb(25, 25, 25, 0.9), null, null)));
     buttonBox.setPadding(new Insets(5,0,10,0));
     setTop(buttonBox);
 

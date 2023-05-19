@@ -39,7 +39,7 @@ public class MainMenuView extends BorderPane {
   }
 
   private void menuView() throws IOException {
-    resourceBundle = ResourceBundle.getBundle("languages/exitDialog", SettingsModel.getInstance().getLocale());
+    resourceBundle = ResourceBundle.getBundle("languages/mainMenu", SettingsModel.getInstance().getLocale());
     //Buttons for the menu
     newGameButton = new JFXButton();
     newGameButton.setId("newGameButton");

@@ -1,53 +1,53 @@
 .dialog-pane {
-  -fx-background-color: rgba(255,255,255,0.9);
+  -fx-background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+  -fx-text-fill: white; /* Text color */
+  -fx-border-color: transparent; /* Border color */
   -fx-background-radius: 22px;
   -fx-border-width: 3px;
   -fx-border-radius: 20px;
-  -fx-border-color: #d4af37;
 }
 
 .dialog-pane .label {
-  -fx-text-fill: #7F5539;
+  -fx-text-fill: #FFFFFF; /* Set the text color to the same as button text */
   -fx-font-size: 20px;
   -fx-font-family: "Times New Roman";
   -fx-text-alignment: center;
   -fx-background-radius: 20px;
 }
-
 .dialog-pane .button {
-  -fx-background-color: #FFE0BD;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
   -fx-background-radius: 50px;
-  -fx-text-fill: #7F5539;
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-family: "Times New Roman";
-  -fx-font-size: 16px;
+  -fx-font-size: 18px; /* Adjust the font size as desired */
   -fx-border-radius: 50px;
   -fx-padding: 8px 16px;
-  -fx-alignment: center;
-}
-
-.dialog-pane .button:focused {
-  -fx-border-color: black;
 }
 
 .dialog-pane .button:hover {
-  -fx-background-color: #FFC799;
+  -fx-background-color: #808080; /* Light gray background color on hover */
 }
 
 .dialog-pane .button:pressed {
-  -fx-background-color: #FFA940;
+  -fx-background-color: #666666; /* Medium gray background color on press */
 }
 
 .dialog-pane .button:default {
-  -fx-background-color: #FFE0BD;
-  -fx-text-fill: #7F5539;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-weight: bold;
 }
 
 .dialog-pane .button:default:hover {
-  -fx-background-color: #FFC799;
-  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 1);
+  -fx-background-color: #808080; /* Light gray background color on hover */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 1);
 }
 
 .dialog-pane .button:default:focused {
   -fx-border-color: black;
 }
+
+.dialog-pane .button:default:focused {
+  -fx-border-color: black;
+}
+
