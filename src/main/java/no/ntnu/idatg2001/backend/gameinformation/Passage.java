@@ -64,7 +64,6 @@
      * setTitle sets the title of the passage.
      *
      * @param title
-     * @return the title of the passage.
      */
     public void setTitle(String title) {
       this.title = title;

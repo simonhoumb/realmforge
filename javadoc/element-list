@@ -9,3 +9,5 @@ no.ntnu.idatg2001.backend.utility
 no.ntnu.idatg2001.dao
 no.ntnu.idatg2001.frontend.controller
 no.ntnu.idatg2001.frontend.view
+no.ntnu.idatg2001.frontend.view.dialogs
+no.ntnu.idatg2001.frontend.view.GuiElements
