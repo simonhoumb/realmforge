@@ -1,12 +1,14 @@
   package no.ntnu.idatg2001.backend.gameinformation;
 
   import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+  import jakarta.persistence.CascadeType;
   import jakarta.persistence.Column;
   import jakarta.persistence.Entity;
   import jakarta.persistence.GeneratedValue;
   import jakarta.persistence.GenerationType;
   import jakarta.persistence.Id;
   import jakarta.persistence.JoinColumn;
+  import jakarta.persistence.ManyToMany;
   import jakarta.persistence.OneToMany;
   import jakarta.persistence.Table;
   import java.util.ArrayList;
@@ -14,7 +16,7 @@
   import java.util.Objects;
 
   @Entity
-  @Table
+  @Table(name = "passage")
   public class Passage {
 
     @Id
@@ -24,7 +26,7 @@
 
     private String title;
     private String content;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "passage_id")
     private List<Link> links;
 
