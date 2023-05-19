@@ -75,7 +75,7 @@ public class StoryFileReader{
         passageContent.append(currentLine);
       }
     }
-    passageToAdd = new Passage(passageTitle, passageContent.toString());
+    passageToAdd = new Passage(passageTitle, passageContent);
     for (Link link : linksToAdd) {
       passageToAdd.addLink(link);
     }
