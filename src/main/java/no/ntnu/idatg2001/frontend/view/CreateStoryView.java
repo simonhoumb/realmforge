@@ -30,7 +30,7 @@ public class CreateStoryView extends BorderPane {
   private CreateStoryController controller;
   private JFXButton storyNameButton;
   private JFXButton editStoryButton;
-  private JFXButton loadButton;
+  private JFXButton importButton;
   private JFXButton backButton;
   private ResourceBundle resourceBundle;
 
@@ -48,13 +48,13 @@ public class CreateStoryView extends BorderPane {
     // Set up the Objects in the View
     createNewStoryNameButton();
     createEditStoryButton();
-    createLoadStoryButton();
+    createImportStoryButton();
     createBackButton();
     createStoryTableView();
 
     buttonBar = new ButtonBar();
     buttonBar.setButtonMinWidth(10);
-    buttonBar.getButtons().addAll(storyNameButton,editStoryButton,loadButton, backButton);
+    buttonBar.getButtons().addAll(storyNameButton,editStoryButton, importButton, backButton);
     HBox buttonHbox = new HBox(buttonBar);
     buttonHbox.setAlignment(Pos.BOTTOM_CENTER);
     buttonHbox.setPadding(new Insets(25,0,0,0));
@@ -112,20 +112,19 @@ public class CreateStoryView extends BorderPane {
     });
   }
 
-  private void createLoadStoryButton() {
-    loadButton = new JFXButton(resourceBundle.getString("newStoryView.loadStoryButton"));
-    loadButton.setOnAction(event -> {
-      //TODO want to add it sso the user can load a text file and then add it all to the DAO.
-    });
+  private void createImportStoryButton() {
+    importButton = new JFXButton(resourceBundle.getString("newStoryView.loadStoryButton"));
+    importButton.setOnAction(event -> controller.onImportButtonPressed());
   }
 
   private void createBackButton() {
     backButton = new JFXButton(resourceBundle.getString("newStoryView.backButton"));
+    backButton.setCancelButton(true);
     backButton.setOnAction(event -> {
       try {
         controller.onBackToMainMenuButtonPressed(event);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
     });
   }
@@ -138,8 +137,8 @@ public class CreateStoryView extends BorderPane {
   public JFXButton getBackButton() {
     return backButton;
   }
-  public JFXButton getLoadButton() {
-    return loadButton;
+  public JFXButton getImportButton() {
+    return importButton;
   }
   public JFXButton getStoryNameButton() {
     return storyNameButton;

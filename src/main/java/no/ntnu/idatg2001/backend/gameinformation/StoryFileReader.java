@@ -39,6 +39,9 @@ public class StoryFileReader{
           }
         }
       }
+      if (storyTitle == null || openingPassage == null) {
+        return null;
+      }
       story = new Story(storyTitle, openingPassage);
       for (Passage passage : passagesToAdd) {
         story.addPassage(passage);

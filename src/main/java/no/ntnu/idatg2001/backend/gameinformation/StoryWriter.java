@@ -10,11 +10,8 @@ import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 public class StoryWriter {
-  public static void writeStoryToFile(Story selectedStory) {
-    String fileName = selectedStory.getTitle() + ".txt";
-    File file = new File(fileName);
-
-    try (PrintWriter writer = new PrintWriter(file)) {
+  public static void writeStoryToFile(Story selectedStory, File file) {
+    try (PrintWriter writer = new PrintWriter(file )) {
       // Write the story title
       writer.println(selectedStory.getTitle());
       writer.println();
@@ -69,7 +66,8 @@ public class StoryWriter {
     } else {
       StringBuilder sb = new StringBuilder();
       for (Action actionType : actionTypes) {
-        sb.append("{" + actionType.getActionType() + "}" + "<" + actionType.getValue() + ">\n");
+        sb.append("{").append(actionType.getActionType()).append("}").append("<")
+            .append(actionType.getValue()).append(">\n");
       }
       return sb.toString().trim();
     }
