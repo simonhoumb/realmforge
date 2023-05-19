@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001.frontend.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -15,6 +16,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -35,7 +38,6 @@ import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.GuiElements.StoryMapCanvas;
-
 
 public class EditStoryController extends Controller<EditStoryView> {
 
@@ -74,6 +76,9 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onAddPassageAddButtonPressed() {
     if (isPassageBeingEdited) {
+      getSelectedPassageInPassageList().setTitle(addPassageDialog.getRoomNameTextField());
+      getSelectedPassageInPassageList()
+          .setContent(new StringBuilder(addPassageDialog.getRoomContentTextArea()));
       StoryDAO.getInstance().update(selectedStory);
       populateTableView();
       isPassageBeingEdited = false;
@@ -228,9 +233,17 @@ public class EditStoryController extends Controller<EditStoryView> {
     }
   }
 
-  public void onSavePress() {
-    StoryWriter storyWriter = new StoryWriter();
-    storyWriter.writeStoryToFile(selectedStory);
+  public void onExportPress() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Export Story");
+    fileChooser.setInitialFileName(selectedStory.getTitle() + ".Paths");
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Paths Files (*.Paths)", "*.Paths"));
+    File file = fileChooser.showSaveDialog(view.getScene().getWindow());
+    if (file != null) {
+      System.out.println("inside" + file.getAbsolutePath());
+      StoryWriter.writeStoryToFile(selectedStory, file.getAbsoluteFile());
+    }
   }
 
 

@@ -3,8 +3,6 @@ package no.ntnu.idatg2001.frontend.view;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
@@ -21,9 +19,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -40,7 +35,7 @@ public class EditStoryView extends BorderPane {
   private JFXButton editButton;
   private JFXButton deleteButton;
   private JFXButton mapButton;
-  private JFXButton saveButton;
+  private JFXButton exportButton;
   private JFXButton backButton;
   private TableView<Passage> passageTableView;
   private TableColumn<Passage, String> passageTableColumn;
@@ -147,16 +142,15 @@ public class EditStoryView extends BorderPane {
   }
 
   private void createSaveButton() {
-    saveButton = new JFXButton(resourceBundle.getString("saveButton"));
-    saveButton.setWrapText(true);
-    saveButton.setOnAction(event -> {
-      controller.onSavePress();
-    });
+    exportButton = new JFXButton(resourceBundle.getString("exportButton"));
+    exportButton.setWrapText(true);
+    exportButton.setOnAction(event -> controller.onExportPress());
   }
 
   private void createBackButton() {
     backButton = new JFXButton(resourceBundle.getString("backButton"));
     backButton.setWrapText(true);
+    backButton.setCancelButton(true);
     backButton.setOnAction(event1 -> {
       controller.onBackButtonPressed();
     });
@@ -166,7 +160,7 @@ public class EditStoryView extends BorderPane {
     buttonBar = new ButtonBar();
     buttonBar.setPrefHeight(40.0);
     buttonBar.getButtons().addAll(addPassageButton, addLinkButton, addActionButton,
-        editButton,deleteButton, mapButton, saveButton, backButton);
+        editButton,deleteButton, mapButton, exportButton, backButton);
   }
 
 
