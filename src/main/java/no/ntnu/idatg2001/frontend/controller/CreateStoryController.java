@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.StoryDAO;
