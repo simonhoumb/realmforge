@@ -126,6 +126,10 @@ public class Game {
    * @return story.getPassages().get(link)
    */
   public Passage go(Link link) {
-    return story.getPassages().get(link);
+    if (story.getOpeningPassage().getTitle().equals(link.getReference())) {
+      return story.getOpeningPassage();
+    } else {
+      return story.getPassages().get(link);
+    }
   }
 }
