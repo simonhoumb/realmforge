@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
@@ -125,6 +126,8 @@ public class CreateStoryController extends Controller<CreateStoryView> {
      Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
 // If no item is selected, show an error message and return
     if (selectedStory == null) {
+      AlertHelper.showErrorAlert(view.getScene().getWindow(), view.getResourceBundle().getString("error"),
+          view.getResourceBundle().getString("error_select_story"));
       Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
       alert.initOwner(view.getScene().getWindow());
       alert.showAndWait();

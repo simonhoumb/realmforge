@@ -17,26 +17,27 @@ import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.frontend.controller.Controller;
+import no.ntnu.idatg2001.frontend.controller.GameController;
 
-public class LoadGameDialog<T extends Controller<T>> extends Dialog {
+public class SaveGameDialog<T extends Controller<T>> extends Dialog {
 
   private ResourceBundle resourceBundle;
   private Button backButton;
-  private Button loadGameButton;
+  private Button saveGameButton;
   private VBox layout;
-  private Controller<T> controller;
+  private GameController controller;
   private TableView<GameSave> savedGamesTableView;
   private TableColumn<GameSave, String> nameColumn;
   private TableColumn<GameSave, LocalDateTime> dateTimeColumn;
   private TableColumn<GameSave, String> playerColumn;
 
-  public LoadGameDialog(Controller<T> controller) {
+  public SaveGameDialog(GameController controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
-    resourceBundle = ResourceBundle.getBundle("languages/loadGameDialog", locale);
+    resourceBundle = ResourceBundle.getBundle("languages/saveGameDialog", locale);
     createTableView();
-    createLoadGameButton();
+    createSaveGameButton();
     createBackToMainMenuButton();
     createLayout();
     getDialogPane().setContent(layout);
@@ -52,13 +53,13 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     buttonBox.setSpacing(20);
     buttonBox.setAlignment(Pos.CENTER);
     buttonBox.setPadding(new Insets(10));
-    buttonBox.getChildren().addAll(loadGameButton, backButton);
+    buttonBox.getChildren().addAll(saveGameButton, backButton);
     layout.getChildren().add(buttonBox);
     layout.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
     layout.setAlignment(Pos.CENTER);
     layout.setSpacing(20);
     layout.setPadding(new Insets(20));
-    layout.setPrefSize(644,350);
+    layout.setPrefSize(644, 350);
   }
 
   private void createTableView() {
@@ -67,21 +68,21 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     savedGamesTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     nameColumn = new TableColumn<>(
-        resourceBundle.getString("loadGameTableName"));
+        resourceBundle.getString("saveGameTableName"));
     nameColumn.setResizable(false);
     nameColumn.setSortable(false);
     nameColumn.setReorderable(false);
     nameColumn.setPrefWidth(200);
 
     dateTimeColumn = new TableColumn<>(
-        resourceBundle.getString("loadGameTableDate"));
+        resourceBundle.getString("saveGameTableDate"));
     dateTimeColumn.setResizable(false);
     dateTimeColumn.setSortable(false);
     dateTimeColumn.setReorderable(false);
     dateTimeColumn.setPrefWidth(250);
 
     playerColumn = new TableColumn<>(
-        resourceBundle.getString("loadGameTablePlayer"));
+        resourceBundle.getString("saveGameTablePlayer"));
     playerColumn.setResizable(false);
     playerColumn.setSortable(false);
     playerColumn.setReorderable(false);
@@ -100,11 +101,11 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     backButton.setOnAction(event -> controller.onCloseSource(event));
   }
 
-  private void createLoadGameButton() {
-    loadGameButton = new Button(resourceBundle.getString("loadGameButton"));
-    loadGameButton.setAlignment(Pos.CENTER);
-    loadGameButton.setWrapText(true);
-    loadGameButton.setOnAction(event -> controller.onLoadSelectedGame(event));
+  private void createSaveGameButton() {
+    saveGameButton = new Button(resourceBundle.getString("saveGameButton"));
+    saveGameButton.setAlignment(Pos.CENTER);
+    saveGameButton.setWrapText(true);
+    saveGameButton.setOnAction(event -> controller.onSaveSelectedGame(event));
   }
 
   public GameSave getSelectedGameSave() {
@@ -118,13 +119,12 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
   public TableColumn<GameSave, String> getNameColumn() {
     return nameColumn;
   }
+
   public TableColumn<GameSave, LocalDateTime> getDateTimeColumn() {
     return dateTimeColumn;
   }
+
   public TableColumn<GameSave, String> getPlayerColumn() {
     return playerColumn;
-  }
-  public ResourceBundle getResourceBundle() {
-    return resourceBundle;
   }
 }

@@ -9,23 +9,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
-import no.ntnu.idatg2001.GameSave;
+import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
-import no.ntnu.idatg2001.frontend.view.ExitDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.dialogs.PauseMenuDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.SaveGameDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
 
 public class GameController extends Controller<GameView> {
   private PauseMenuDialog pauseMenuDialog;
   private SettingsDialog settingsDialog;
   private LoadGameDialog loadGameDialog;
+  private SaveGameDialog saveGameDialog;
 
 
   public GameController(GameView gameView) {
@@ -87,13 +88,31 @@ public class GameController extends Controller<GameView> {
     event.consume();
   }
 
-  public void onSaveButtonPressed() {
-    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
-        view.getCurrentGameSave().getGame().getUnit().getUnitName());
-    newGameSave.savePassage(view.getCurrentPassage());
-    GameSaveDAO.getInstance()
-        .add(newGameSave);
+  public void onSaveButtonPressed(ActionEvent event) {
+    saveGameDialog = new SaveGameDialog(this);
+    saveGameDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
+    configureSavedGameTableViewForSavedGame();
+    populateSavedGameTableViewForSavedGames();
+    saveGameDialog.showAndWait();
   }
+
+  public void onSaveSelectedGame(ActionEvent event) {
+    Object selectedItem =saveGameDialog.getSavedGamesTableView().getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      GameSave selectedGameSave = (GameSave) selectedItem;
+      selectedGameSave.savePassage(view.getCurrentPassage());
+      GameSaveDAO.getInstance().update(selectedGameSave);
+      onCloseSource(event);
+    } else {
+      GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
+          view.getCurrentGameSave().getGame().getUnit().getUnitName());
+      newGameSave.savePassage(view.getCurrentPassage());
+      GameSaveDAO.getInstance()
+          .add(newGameSave);
+      onCloseSource(event);
+    }
+  }
+
 
   @Override
   public void onLoadGameButtonPressed(ActionEvent event) {
@@ -122,11 +141,27 @@ public class GameController extends Controller<GameView> {
         .setItems(FXCollections.observableArrayList(gameSaves));
   }
 
+
+  private void populateSavedGameTableViewForSavedGames() {
+    saveGameDialog.getSavedGamesTableView().getItems().clear();
+    List<GameSave> gameSaves = GameSaveDAO.getInstance().getAll();
+    Collections.reverse(gameSaves);
+    saveGameDialog.getSavedGamesTableView()
+        .setItems(FXCollections.observableArrayList(gameSaves));
+  }
+
   @Override
   public void configureSavedGamesTableView(ActionEvent event) {
     event.consume();
     loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
     loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
     loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
+  }
+
+
+  public void configureSavedGameTableViewForSavedGame() {
+    saveGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
+    saveGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
+    saveGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
 }

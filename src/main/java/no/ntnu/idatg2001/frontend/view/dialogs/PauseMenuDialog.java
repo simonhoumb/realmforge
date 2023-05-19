@@ -72,7 +72,7 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
 
     private void createSaveButton() {
       saveButton = new JFXButton(resourceBundle.getString("pauseMenu.save"));
-      saveButton.setOnAction(event -> controller.onSaveButtonPressed());
+      saveButton.setOnAction(event -> controller.onSaveButtonPressed(event));
     }
 
     private void createLoadButton() {

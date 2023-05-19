@@ -5,15 +5,24 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class AlertHelper {
+
+  private final String  cssFile = "/css/alerts.css";
+
+  private AlertHelper() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static void showAlert(AlertType type,Window window, String title, String message) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
+    alert.getDialogPane().getStylesheets().add("/css/alerts.css");
+    alert.initStyle(StageStyle.UNDECORATED);
     alert.initOwner(window);
     alert.initModality(Modality.APPLICATION_MODAL);
     alert.showAndWait();
