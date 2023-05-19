@@ -128,9 +128,6 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     if (selectedStory == null) {
       AlertHelper.showErrorAlert(view.getScene().getWindow(), view.getResourceBundle().getString("error"),
           view.getResourceBundle().getString("error_select_story"));
-      Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
-      alert.initOwner(view.getScene().getWindow());
-      alert.showAndWait();
       return null;
     }
     return selectedStory;

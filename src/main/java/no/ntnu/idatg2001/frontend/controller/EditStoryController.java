@@ -121,21 +121,42 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onAddLinkToPassageAddButton(ActionEvent event) {
     Passage selectedPassage = addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem();
-      if (!isPassageBeingEdited){
-        if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+
+    if (!isPassageBeingEdited) {
+      if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+        boolean passageAlreadyLinked = false;
+        for (Link link : getSelectedPassageInPassageList().getLinks()) {
+          if (link.getReference().equals(selectedPassage.getTitle())) {
+            passageAlreadyLinked = true;
+            break;
+          }
+        }
+
+        if (!passageAlreadyLinked) {
           getSelectedPassageInPassageList().addLink(
               new Link(addLinkDialog.getLinkTextField().getText(),
-                  addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem()
-                      .getTitle()));
+                  addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem().getTitle()));
           StoryDAO.getInstance().update(selectedStory);
           populateLinkTableView();
           onCloseSource(event);
         } else {
-          AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
-              view.getResourceBundle().getString("selectPassageToAddLink"));
+          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
+              view.getResourceBundle().getString("passageAlreadyLinked"));
         }
-      } else if (isPassageBeingEdited) {
-        if ((selectedPassage != null) && selectedPassage != getSelectedPassageInPassageList()){
+      } else {
+        AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
+            view.getResourceBundle().getString("selectPassageToAddLink"));
+      }
+    } else if (isPassageBeingEdited) {
+      if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+        boolean passageAlreadyLinked = false;
+        for (Link link : getSelectedPassageInPassageList().getLinks()) {
+          if (link.getReference().equals(selectedPassage.getTitle())) {
+            passageAlreadyLinked = true;
+          }
+        }
+
+        if (!passageAlreadyLinked) {
           getSelectedLinkInLinkList().setText(addLinkDialog.getLinkTextField().getText());
           getSelectedLinkInLinkList().setReference(addLinkDialog.getPassageTableView()
               .getSelectionModel().getSelectedItem().getTitle());
@@ -144,10 +165,16 @@ public class EditStoryController extends Controller<EditStoryView> {
           populateLinkTableView();
           onCloseSource(event);
         } else {
-          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
-              view.getResourceBundle().getString("selectPassageToAddLink"));
+          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
+              view.getResourceBundle().getString("warning"),
+              view.getResourceBundle().getString("passageAlreadyLinked"));
         }
+      } else {
+        AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
+            view.getResourceBundle().getString("warning"),
+            view.getResourceBundle().getString("selectPassageToAddLink"));
       }
+    }
   }
 
 

@@ -99,9 +99,12 @@ public class GameController extends Controller<GameView> {
   public void onSaveSelectedGame(ActionEvent event) {
     Object selectedItem =saveGameDialog.getSavedGamesTableView().getSelectionModel().getSelectedItem();
     if (selectedItem != null) {
-      GameSave selectedGameSave = (GameSave) selectedItem;
-      selectedGameSave.savePassage(view.getCurrentPassage());
-      GameSaveDAO.getInstance().update(selectedGameSave);
+      GameSaveDAO.getInstance().remove((GameSave) selectedItem);
+      GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
+          view.getCurrentGameSave().getGame().getUnit().getUnitName());
+      newGameSave.savePassage(view.getCurrentPassage());
+      GameSaveDAO.getInstance()
+          .add(newGameSave);
       onCloseSource(event);
     } else {
       GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
