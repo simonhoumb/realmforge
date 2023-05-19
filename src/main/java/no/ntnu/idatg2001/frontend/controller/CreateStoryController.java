@@ -1,5 +1,6 @@
 package no.ntnu.idatg2001.frontend.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -11,9 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
@@ -95,8 +99,27 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     populateTableView();
   }
 
-  public void onLoad() {
-    //TODO: Implement functionality for loading a previously saved story
+  public void onImportButtonPressed() {
+    StoryFileReader storyReader = new StoryFileReader();
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Import Story");
+    fileChooser.getExtensionFilters()
+        .add(new FileChooser.ExtensionFilter("Paths Files", "*.Paths"));
+    File selectedFile = fileChooser.showOpenDialog(view.getScene().getWindow());
+    if (selectedFile != null) {
+      try {
+        Story story = storyReader.readFile(selectedFile.getPath());
+        if (story == null) {
+          throw new IllegalArgumentException();
+        }
+        StoryDAO.getInstance().update(story);
+        populateTableView();
+      } catch (IllegalArgumentException illegalArgumentException) {
+          AlertHelper.showErrorAlert(view.getScene().getWindow(), "Error loading file",
+              "The file you tried to load is not a valid story file. Make sure format is correct.");
+      }
+
+    }
   }
 
   private void populateTableView() {
