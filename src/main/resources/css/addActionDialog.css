@@ -60,6 +60,25 @@
   -fx-border-width: 0;
 }
 
+.choice-box {
+  -fx-background-color: #1E1E1E;
+  -fx-text-fill: #FFFFFF;
+  -fx-prompt-text-fill: #A9A9A9;
+  -fx-border-color: #808080;
+  -fx-border-width: 1px;
+  -fx-border-radius: 5px;
+  -fx-padding: 5px;
+}
+
+.choice-box .arrow {
+  -fx-background-color: #808080;
+}
+
+.choice-box:hover {
+  -fx-background-color: #3A3A3A;
+}
+
+
 .dialog-close-button:hover {
   -fx-background-color: #808080; /* Customize the hover color for the close button */
 }
