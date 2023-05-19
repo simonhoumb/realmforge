@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.view;
+package no.ntnu.idatg2001.frontend.view.dialogs;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
 public class EditLinkDialog extends Dialog<Void> {
@@ -62,11 +63,8 @@ public class EditLinkDialog extends Dialog<Void> {
     saveButton = new Button("Save");
     saveButton.setOnAction(event -> {
       if (linkTextField.getText().isEmpty() || linkTextField.getText().isBlank()) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(getDialogPane().getScene().getWindow());
-        alert.setContentText("The Content Can't be Empty!");
-        alert.showAndWait();
+        AlertHelper.showWarningAlert(getDialogPane().getScene().getWindow()
+            , "The Content Can't be Empty","The Content Can't be Empty!");
       } else {
         controller.onEditLinkSaveButtonPressed(event);
         controller.onCloseSource(event);

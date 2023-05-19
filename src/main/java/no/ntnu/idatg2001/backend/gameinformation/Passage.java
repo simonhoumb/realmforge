@@ -1,7 +1,5 @@
   package no.ntnu.idatg2001.backend.gameinformation;
 
-  import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-  import jakarta.persistence.CascadeType;
   import jakarta.persistence.Column;
   import jakarta.persistence.Entity;
   import jakarta.persistence.GeneratedValue;
@@ -25,8 +23,8 @@
     private Long id;
 
     private String title;
-    private String content;
-    @OneToMany(cascade = {CascadeType.ALL})
+    private StringBuilder content;
+    @OneToMany
     @JoinColumn(name = "passage_id")
     private List<Link> links;
 
@@ -44,7 +42,7 @@
      * @param title   The title of the passage.
      * @param content The content of the passage.
      */
-    public Passage(String title, String content) {
+    public Passage(String title, StringBuilder content) {
       this.title = setTitle(title);
       this.content = setContent(content);
       this.links = new ArrayList<>();
@@ -73,13 +71,14 @@
 
     /**
      * getContent returns the content of the passage.
+     *
      * @return content in passage.
      */
-    public String getContent() {
+    public StringBuilder getContent() {
       return content;
     }
 
-    public String setContent(String content) {
+    public StringBuilder setContent(StringBuilder content) {
       return this.content = content;
     }
 

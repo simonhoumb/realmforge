@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.frontend.view;
+package no.ntnu.idatg2001.frontend.view.dialogs;
 
 import java.time.LocalDateTime;
 import java.util.Locale;

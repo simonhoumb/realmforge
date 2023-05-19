@@ -14,11 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.AddPassageDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
-import no.ntnu.idatg2001.frontend.view.NewStoryDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.NewStoryDialog;
 
 public class CreateStoryController extends Controller<CreateStoryView> {
   private AddPassageDialog addPassageDialog;
@@ -60,12 +60,14 @@ public class CreateStoryController extends Controller<CreateStoryView> {
 
    */
   public void onEditButton() {
-    EditStoryView editStoryView = new EditStoryView();
-    Scene newScene = view.getScene();
-    EditStoryController editStoryController = new EditStoryController(editStoryView);
-    editStoryView.setController(editStoryController);
-    editStoryController.setSelectedStory(getSelectedItemInTableView());
-    newScene.setRoot(editStoryView);
+    if (getSelectedItemInTableView() != null) {
+      EditStoryView editStoryView = new EditStoryView();
+      Scene newScene = view.getScene();
+      EditStoryController editStoryController = new EditStoryController(editStoryView);
+      editStoryView.setController(editStoryController);
+      editStoryController.setSelectedStory(getSelectedItemInTableView());
+      newScene.setRoot(editStoryView);
+    }
   }
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {

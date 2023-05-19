@@ -14,7 +14,7 @@ class PassageTest {
 
   @BeforeEach
   void setup() {
-    passage = new Passage("testTitle", "testContent");
+    passage = new Passage("testTitle", new StringBuilder("testContent"));
   }
 
   @AfterEach
