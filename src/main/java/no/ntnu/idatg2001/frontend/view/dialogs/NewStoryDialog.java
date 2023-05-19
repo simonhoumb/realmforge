@@ -140,6 +140,7 @@ public class NewStoryDialog extends Dialog<Story> {
 
   private void createCancelButton() {
     backButton = new JFXButton(resourceBundle.getString("createNewStory.backButton"));
+    backButton.setCancelButton(true);
     backButton.setOnAction(event -> {
       setResult(null);
       controller.onCloseSource(event);
