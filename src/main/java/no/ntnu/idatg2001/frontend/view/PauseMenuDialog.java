@@ -34,7 +34,8 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
     initModality(Modality.APPLICATION_MODAL);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
-    this.resourceBundle = ResourceBundle.getBundle("languages/pauseMenuDialog", SettingsModel.getInstance().getLocale());
+    this.resourceBundle = ResourceBundle.getBundle("languages/pauseMenuDialog",
+        SettingsModel.getInstance().getLocale());
     createExitToMenuButton();
     createExitToDesktop();
     createResumeButton();
