@@ -37,7 +37,7 @@ public class CreateStoryView extends BorderPane {
   public CreateStoryView() {
     Locale locale = new Locale(SettingsModel.getInstance().getLocale().toString());
     resourceBundle = ResourceBundle.getBundle("languages/createStoryView", locale);
-    setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.8), null, null)));
+    setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.9), null, null)));
     this.setController(controller);
     // Initialize the view
     getStylesheets().add(cssFile);
@@ -56,17 +56,17 @@ public class CreateStoryView extends BorderPane {
     buttonBar.setButtonMinWidth(10);
     buttonBar.getButtons().addAll(storyNameButton,editStoryButton,loadButton, backButton);
     HBox buttonHbox = new HBox(buttonBar);
-    buttonHbox.setAlignment(Pos.CENTER);
-    buttonHbox.setPadding(new Insets(10,0,0,0));
+    buttonHbox.setAlignment(Pos.BOTTOM_CENTER);
+    buttonHbox.setPadding(new Insets(25,0,0,0));
 
 
     // Set up the layout
-    setPadding(new Insets(50,100,0,100));
+    setPadding(new Insets(130,100,0,100));
 
     VBox centerBox = new VBox();
 
     centerBox.getChildren().addAll(storyTableView,buttonHbox);
-    centerBox.setAlignment(Pos.CENTER);
+    centerBox.setAlignment(Pos.TOP_CENTER);
     setCenter(centerBox);
   }
 
@@ -83,16 +83,19 @@ public class CreateStoryView extends BorderPane {
   private void createStoryTableColumnName() {
     columnStoryName = new TableColumn<>(resourceBundle.getString("newStoryView.tableName"));
     columnStoryName.setPrefWidth(100);
+    columnStoryName.setReorderable(false);
   }
 
   private void createStoryTableColumnPassageAmount() {
     columnStoryPassageAmount = new TableColumn<>(resourceBundle.getString("newStoryView.tablePassageAmount"));
     columnStoryPassageAmount.setPrefWidth(100);
+    columnStoryPassageAmount.setReorderable(false);
   }
 
   private void createStoryTableColumnLinkAmount() {
     columnStoryLinkAmount = new TableColumn<>(resourceBundle.getString("newStoryView.tableLinkAmount"));
     columnStoryLinkAmount.setPrefWidth(100);
+    columnStoryLinkAmount.setReorderable(false);
   }
 
   private void createNewStoryNameButton() {

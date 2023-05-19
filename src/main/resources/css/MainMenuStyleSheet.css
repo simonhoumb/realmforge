@@ -1,34 +1,30 @@
-.main-menu {
-  -fx-background-color: #7F5539;
-}
-
 .button {
-  -fx-background-color: #FFE0BD;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
   -fx-background-radius: 50px;
-  -fx-text-fill: #7F5539;
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-family: "Times New Roman";
-  -fx-font-size: 32px;
+  -fx-font-size: 32px; /* Adjust the font size as desired */
   -fx-border-radius: 50px;
   -fx-padding: 8px 16px;
 }
 
 .button:hover {
-  -fx-background-color: #FFC799;
+  -fx-background-color: #808080; /* Light gray background color on hover */
 }
 
 .button:pressed {
-  -fx-background-color: #FFA940;
+  -fx-background-color: #666666;
 }
 
 .button:default {
-  -fx-background-color: #FFE0BD;
-  -fx-text-fill: #7F5539;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-weight: bold;
 }
 
 .button:default:hover {
-  -fx-background-color: #FFC799;
-  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 1);
+  -fx-background-color: #808080; /* Light gray background color on hover */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 1);
 }
 
 .button:default:focused {

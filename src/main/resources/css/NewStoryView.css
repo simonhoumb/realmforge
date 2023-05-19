@@ -1,78 +1,106 @@
-.table-view {
-  -fx-background-color: white;
-  -fx-text-fill: white;
-}
-
-.table-row-cell {
-  -fx-background-color: #2c2c2c;
-}
-
-.table-view .column-header-background {
-  -fx-background-color: white;
-}
-
-.table-column {
-  -fx-text-fill: #fff;
-}
-
-.table-column:pressed, .table-view:focused .table-cell:selected, .table-row-cell:filled:selected {
-  -fx-background-color: #4c4c4c;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-  -fx-background-color: #7a7851;
-  -fx-text-fill: #fff;
-}
-
-.table-view:focused .table-cell {
-  -fx-text-fill: #fff;
-}
-
-.table-view:focused .table-row-cell:odd, .table-row-cell:odd {
-  -fx-background-color: #2c2c2c;
-}
-
-.table-view:focused .table-row-cell:even, .table-row-cell:even {
-  -fx-background-color: rgba(0,0,0,0.6);
-}
-
-
-.table-view .scroll-bar:horizontal {
-  -fx-opacity: 0;
-  -fx-pref-height: 0;
-  -fx-min-height: 0;
-  -fx-max-height: 0;
-}
-
 .button {
-  -fx-background-color: #FFE0BD;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
   -fx-background-radius: 50px;
-  -fx-text-fill: #7F5539;
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-family: "Times New Roman";
-  -fx-font-size: 16px;
+  -fx-font-size: 18px; /* Adjust the font size as desired */
   -fx-border-radius: 50px;
   -fx-padding: 8px 16px;
-  -fx-alignment: center;
 }
 
 .button:hover {
-  -fx-background-color: #FFC799;
+  -fx-background-color: #808080; /* Light gray background color on hover */
 }
 
 .button:pressed {
-  -fx-background-color: rgba(255, 255, 255, 1.0);
+  -fx-background-color: #666666; /* Medium gray background color on press */
 }
 
 .button:default {
-  -fx-background-color: #FFE0BD;
-  -fx-text-fill: #7F5539;
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
+  -fx-text-fill: #FFFFFF; /* White text color */
   -fx-font-weight: bold;
 }
 
 .button:default:hover {
-  -fx-background-color: rgba(255, 199, 153, 0.87);
+  -fx-background-color: #808080; /* Light gray background color on hover */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 1);
 }
 
-.button:default:pressed {
-  -fx-background-color: #FFA940;
+.button:default:focused {
+  -fx-border-color: black;
+}
+
+.label {
+  -fx-text-fill: #A9A9A9; /* Set the text color to the same as button text */
+}
+
+.table-view {
+  -fx-control-inner-background: #1E1E1E; /* Background color */
+  -fx-text-background-color: #FFFFFF; /* Text color */
+  -fx-padding: 5px; /* Padding */
+  -fx-table-cell-border-color: transparent; /* Remove border lines */
+}
+
+.table-view .column-header {
+  -fx-background-color: #1E1E1E; /* Background color */
+  -fx-text-fill: #A9A9A9; /* Text color */
+  -fx-padding: 5px; /* Padding */
+}
+
+.table-view .table-row-cell:selected {
+  -fx-background-color: #3A3A3A; /* Background color for selected row */
+  -fx-text-fill: #000000; /* Text color for selected row */
+}
+
+.table-view .table-row-cell:hover {
+  -fx-background-color: #3A3A3A; /* Hovering background color */
+}
+
+.scroll-bar:horizontal {
+  -fx-opacity: 0;
+  -fx-pref-width: 0;
+  -fx-min-width: 0;
+  -fx-max-width: 0;
+  -fx-pref-height: 0;
+  -fx-min-height: 0;
+  -fx-max-height: 0;
+  -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+  -fx-background-color: #1E1E1E; /* Background color */
+  -fx-padding: 0 0 0 1px; /* Adjust the padding to remove the space above the thumb */
+}
+
+.scroll-bar:vertical thumb {
+  -fx-background-color: #808080; /* Thumb color */
+}
+
+.scroll-bar:vertical thumb:hover {
+  -fx-background-color: #A9A9A9; /* Thumb color on hover */
+}
+
+.scroll-bar:vertical .increment-button {
+  -fx-background-color: #1E1E1E; /* Background color */
+}
+
+.scroll-bar:vertical .increment-arrow {
+  -fx-background-color: #808080; /* Arrow color */
+}
+
+.scroll-bar:vertical .increment-arrow:hover {
+  -fx-background-color: #A9A9A9; /* Arrow color on hover */
+}
+
+.scroll-bar:vertical .decrement-button {
+  -fx-background-color: #1E1E1E; /* Background color */
+}
+
+.scroll-bar:vertical .decrement-arrow {
+  -fx-background-color: #808080; /* Arrow color */
+}
+
+.scroll-bar:vertical .decrement-arrow:hover {
+  -fx-background-color: #A9A9A9; /* Arrow color on hover */
 }

@@ -1,5 +1,9 @@
 package no.ntnu.idatg2001.frontend.view.dialogs;
 
+import com.jfoenix.controls.JFXButton;
+import java.util.ResourceBundle;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -8,31 +12,37 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
 public class AddLinkDialog extends Dialog {
 
   private TextField linkTextField;
+  private Label titleLabel;
   private Button addButton;
   private Button cancelButton;
   private EditStoryController controller;
   private TableView<Passage> passageTableView;
   TableColumn<Passage, String> addLinkPassageColumn;
+  ResourceBundle resourceBundle;
 
   public AddLinkDialog(EditStoryController controller) {
     this.controller = controller;
+    resourceBundle = ResourceBundle.getBundle("languages/addLinkDialog"
+        , SettingsModel.getInstance().getLocale());
+    getDialogPane().getStylesheets().add(("css/addLinkDialog.css"));
+    createCustomTitleHeader();
     createAddButton();
     createCancelButton();
-    setTitle("Add Link");
-    setHeaderText("Enter the Link Details");
 
     // Set up the dialog content
     GridPane gridPane = new GridPane();
     gridPane.setHgap(10);
     gridPane.setVgap(10);
 
-    Label linkLabel = new Label("Link Text:");
+    Label linkLabel = new Label(resourceBundle.getString("label.linkText"));
     linkTextField = new TextField();
 
     gridPane.addRow(0, linkLabel);
@@ -55,6 +65,32 @@ public class AddLinkDialog extends Dialog {
     setResultConverter(dialogButton -> null);
   }
 
+  private void createCustomTitleHeader() {
+    titleLabel = new Label(resourceBundle.getString("dialog.title"));
+    titleLabel.getStyleClass().add("dialog-title"); // Apply CSS style class to the title label
+
+    // Create close button
+    JFXButton closeButton = new JFXButton("X");
+    closeButton.setFocusTraversable(false);
+    closeButton.getStyleClass().add("dialog-close-button");
+    closeButton.setOnAction(event -> controller.onCloseSource(event)); // Close the dialog when the close button is clicked
+
+    // Set up the layout
+    HBox headerBox = new HBox();
+    headerBox.setAlignment(Pos.CENTER_LEFT);
+    headerBox.setPadding(new Insets(0, 0, 0, 0));
+    headerBox.getChildren().add(titleLabel);
+
+    StackPane headerPane = new StackPane();
+    headerPane.setPadding(new Insets(2, 2, 0, 0));
+    headerPane.getChildren().addAll(headerBox, closeButton);
+    StackPane.setAlignment(closeButton, Pos.CENTER_RIGHT);
+
+    getDialogPane().setHeader(headerPane);
+    titleLabel.setPadding(new Insets(10, 0, 0, 10));
+  }
+
+
   private TableView<Passage> createTableView() {
     createAddLinkPassageColumn();
     passageTableView = new TableView<>();
@@ -66,20 +102,20 @@ public class AddLinkDialog extends Dialog {
   }
 
   private void createAddLinkPassageColumn() {
-    addLinkPassageColumn = new TableColumn<>("Passage");
+    addLinkPassageColumn = new TableColumn<>(resourceBundle.getString("column.name"));
   }
 
   private void createAddButton() {
-    addButton = new Button("Add");
+    addButton = new Button(resourceBundle.getString("button.add"));
     addButton.setOnAction(e -> {
       controller.onAddLinkToPassageAddButton(e);
-      System.out.println("Add button pressed");
     });
   }
 
   private void createCancelButton() {
-    cancelButton = new Button("Cancel");
+    cancelButton = new Button(resourceBundle.getString("button.cancel"));
     cancelButton.setOnAction(event -> {
+      controller.setPassageBeingEdited(false);
       controller.onCloseSource(event);
     });
   }
@@ -94,6 +130,10 @@ public class AddLinkDialog extends Dialog {
 
   public TableColumn<Passage, String> getAddLinkPassageColumn() {
     return addLinkPassageColumn;
+  }
+
+  public void setLinkTextField(String linkTextField) {
+    this.linkTextField.setText(linkTextField);
   }
 
   public Button getAddButton() {

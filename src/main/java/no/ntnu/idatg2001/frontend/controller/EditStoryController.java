@@ -27,13 +27,12 @@ import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryWriter;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddActionDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddLinkDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
-import no.ntnu.idatg2001.frontend.view.dialogs.EditLinkDialog;
-import no.ntnu.idatg2001.frontend.view.dialogs.EditPassageDialog;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.GuiElements.StoryMapCanvas;
 
@@ -43,9 +42,8 @@ public class EditStoryController extends Controller<EditStoryView> {
   private AddPassageDialog addPassageDialog;
   private AddLinkDialog addLinkDialog;
   private AddActionDialog addActionDialog;
-  private EditPassageDialog editPassageDialog;
-  private EditLinkDialog editLinkDialog;
   private Story selectedStory;
+  private boolean isPassageBeingEdited = false;
 
   public EditStoryController(EditStoryView view) {
     this.view = view;
@@ -70,20 +68,33 @@ public class EditStoryController extends Controller<EditStoryView> {
   public void onAddPassageButtonPressed() {
     addPassageDialog = new AddPassageDialog(this);
     addPassageDialog.initOwner(view.getScene().getWindow());
+    addPassageDialog.initStyle(StageStyle.UNDECORATED);
     addPassageDialog.showAndWait();
   }
 
   public void onAddPassageAddButtonPressed() {
-    selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField(),
-        new StringBuilder(addPassageDialog.getRoomContentTextArea())));
-    StoryDAO.getInstance().update(selectedStory);
-    populateTableView();
+    if (isPassageBeingEdited) {
+      StoryDAO.getInstance().update(selectedStory);
+      populateTableView();
+      isPassageBeingEdited = false;
+    } else {
+      selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField(),
+          new StringBuilder(addPassageDialog.getRoomContentTextArea())));
+      StoryDAO.getInstance().update(selectedStory);
+      populateTableView();
+    }
+  }
+
+  public void setPassageBeingEdited(boolean isBeingEdited) {
+    isPassageBeingEdited = isBeingEdited;
+    System.out.println(isPassageBeingEdited);
   }
 
   public void onAddLinkButtonPressed() {
     if (getSelectedPassageInPassageList() != null) {
       addLinkDialog = new AddLinkDialog(this);
       addLinkDialog.initOwner(view.getScene().getWindow());
+      addLinkDialog.initStyle(StageStyle.UNDECORATED);
       configureAddLinkTableView();
       populateAddLinkPassageTableView();
       getSelectedPassageInPassageList();
@@ -103,6 +114,7 @@ public class EditStoryController extends Controller<EditStoryView> {
     if (getSelectedLinkInLinkList() != null && view.getLinkTableView() != null) {
     addActionDialog = new AddActionDialog(this);
     addActionDialog.initOwner(view.getScene().getWindow());
+    addActionDialog.initStyle(StageStyle.UNDECORATED);
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
     } else {
@@ -117,32 +129,61 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onAddLinkToPassageAddButton(ActionEvent event) {
     Passage selectedPassage = addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem();
-    if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
-      getSelectedPassageInPassageList().addLink(new Link(addLinkDialog.getLinkTextField().getText(),
-          addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem().getTitle()));
-      StoryDAO.getInstance().update(selectedStory);
-      populateLinkTableView();
-      onCloseSource(event);
-    } else {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText(null);
-      alert.initOwner(addLinkDialog.getDialogPane().getScene().getWindow());
-      alert.setContentText("You can't link to the same passage");
-      alert.showAndWait();
-    }
+      if (!isPassageBeingEdited){
+        if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+          getSelectedPassageInPassageList().addLink(
+              new Link(addLinkDialog.getLinkTextField().getText(),
+                  addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem()
+                      .getTitle()));
+          StoryDAO.getInstance().update(selectedStory);
+          populateLinkTableView();
+          onCloseSource(event);
+        } else {
+          Alert alert = new Alert(Alert.AlertType.WARNING);
+          alert.setTitle("Warning");
+          alert.setHeaderText(null);
+          alert.initOwner(view.getScene().getWindow());
+          alert.setContentText("You have to select a passage to add a link to");
+          alert.showAndWait();
+        }
+      } else if (isPassageBeingEdited) {
+        if ((selectedPassage != null) && selectedPassage != getSelectedPassageInPassageList()){
+          getSelectedLinkInLinkList().setText(addLinkDialog.getLinkTextField().getText());
+          getSelectedLinkInLinkList().setReference(addLinkDialog.getPassageTableView()
+              .getSelectionModel().getSelectedItem().getTitle());
+          System.out.println("is being edited");
+          StoryDAO.getInstance().update(selectedStory);
+          setPassageBeingEdited(false);
+          populateLinkTableView();
+          onCloseSource(event);
+        } else {
+          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), "Warning",
+              "You have to select a passage to add a link to");
+        }
+      }
   }
+
 
   public void onEditButtonIsPressed() {
     if (getSelectedPassageInPassageList() != null && getSelectedLinkInLinkList() == null
     && getSelectedActionInActionList() == null) {
-      editPassageDialog = new EditPassageDialog(getSelectedPassageInPassageList(), this);
-      editPassageDialog.initOwner(view.getScene().getWindow());
-      editPassageDialog.showAndWait();
+      setPassageBeingEdited(true);
+      addPassageDialog = new AddPassageDialog(this);
+      addPassageDialog.initOwner(view.getScene().getWindow());
+      addPassageDialog.initStyle(StageStyle.UNDECORATED);
+      addPassageDialog.setRoomNameTextField(getSelectedPassageInPassageList().getTitle());
+      addPassageDialog.setRoomContentTextArea(getSelectedPassageInPassageList().getContent().toString());
+      addPassageDialog.showAndWait();
     } else if (getSelectedLinkInLinkList() != null && getSelectedActionInActionList() == null) {
-      editLinkDialog = new EditLinkDialog(getSelectedLinkInLinkList(),this);
-      editLinkDialog.initOwner(view.getScene().getWindow());
-      editLinkDialog.showAndWait();
+      setPassageBeingEdited(true);
+      addLinkDialog = new AddLinkDialog(this);
+      addLinkDialog.initOwner(view.getScene().getWindow());
+      addLinkDialog.initStyle(StageStyle.UNDECORATED);
+      addLinkDialog.setLinkTextField(getSelectedLinkInLinkList().getText());
+      configureAddLinkTableView();
+      populateAddLinkPassageTableView();
+      getSelectedPassageInPassageList();
+      addLinkDialog.showAndWait();
     } else if (getSelectedActionInActionList() != null) {
     //TODO: Add edit action dialog if needed.
     } else {
@@ -155,22 +196,9 @@ public class EditStoryController extends Controller<EditStoryView> {
     }
   }
 
-  public void onEditPassageSaveButtonPressed(ActionEvent event) {
-      String newName = editPassageDialog.getRoomNameTextField();
-      editLinkReference(getSelectedPassageInPassageList(), newName);
-      getSelectedPassageInPassageList().setTitle(editPassageDialog.getRoomNameTextField());
-      getSelectedPassageInPassageList().setContent(
-          new StringBuilder(editPassageDialog.getRoomContentTextArea()));
-      StoryDAO.getInstance().update(selectedStory);
-      populateTableView();
-      onCloseSource(event);
-  }
 
   public void onEditLinkSaveButtonPressed(ActionEvent event) {
-    getSelectedLinkInLinkList().setText(editLinkDialog.getLinkText());
-    StoryDAO.getInstance().update(selectedStory);
-    populateLinkTableView();
-    onCloseSource(event);
+
   }
 
 

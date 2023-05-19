@@ -56,6 +56,8 @@ public class SettingsDialog<T extends Controller<T>> extends Dialog<ButtonType> 
   private void createMuteCheckBox() {
     muteCheckBox = new CheckBox(resourceBundle.getString("settings.muteLable"));
     muteCheckBox.setSelected(SettingsModel.getInstance().isMuted());
+    muteCheckBox.setTextFill(Color.WHITE);//doing this in
+                                          // code and not css for does not work in css.
     muteCheckBox.selectedProperty().addListener((observable, oldValue, newValue)-> {
       if (newValue.equals(Boolean.TRUE)) {
         MusicPlayer.getInstance().pauseMusic();

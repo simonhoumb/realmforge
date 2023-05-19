@@ -1,12 +1,17 @@
 package no.ntnu.idatg2001.frontend.view.dialogs;
 
+import com.jfoenix.controls.JFXButton;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 
@@ -18,14 +23,19 @@ public class AddActionDialog extends Dialog<Void> {
   private ComboBox<ActionType> actionTypeComboBox;
   private Map<ActionType, Node> actionTypeComponents;
   private EditStoryController controller;
+  private Label titleLabel;
+  private Label actionLabel;
+  ResourceBundle resourceBundle;
 
   public AddActionDialog(EditStoryController controller) {
     this.controller = controller;
+    resourceBundle = ResourceBundle.getBundle("languages/addActionDialog"
+        , SettingsModel.getInstance().getLocale());
+    getDialogPane().getStylesheets().add(("css/addActionDialog.css"));
     createComboBox();
     createActionTypeComponents();
     createGridPane();
-    setTitle("Add Action");
-    setHeaderText("Enter the Action Details");
+    createCustomTitleHeader();
 
     DialogPane dialogPane = getDialogPane();
     dialogPane.setContent(createGridPane());
@@ -44,7 +54,7 @@ public class AddActionDialog extends Dialog<Void> {
     gridPane.setHgap(10);
     gridPane.setVgap(10);
 
-    Label actionLabel = new Label("Action Type:");
+    actionLabel = new Label(resourceBundle.getString("label.actionType"));
     gridPane.addRow(0, actionLabel, actionTypeComboBox);
 
     HBox buttonBox = new HBox();
@@ -62,9 +72,34 @@ public class AddActionDialog extends Dialog<Void> {
     return gridPane;
   }
 
+  private void createCustomTitleHeader() {
+    titleLabel = new Label(resourceBundle.getString("dialog.title"));
+    titleLabel.getStyleClass().add("dialog-title"); // Apply CSS style class to the title label
+
+    // Create close button
+    JFXButton closeButton = new JFXButton("X");
+    closeButton.setFocusTraversable(false);
+    closeButton.getStyleClass().add("dialog-close-button");
+    closeButton.setOnAction(event -> controller.onCloseSource(event)); // Close the dialog when the close button is clicked
+
+    // Set up the layout
+    HBox headerBox = new HBox();
+    headerBox.setAlignment(Pos.CENTER_LEFT);
+    headerBox.setPadding(new Insets(0, 0, 0, 0));
+    headerBox.getChildren().add(titleLabel);
+
+    StackPane headerPane = new StackPane();
+    headerPane.setPadding(new Insets(2, 2, 0, 0));
+    headerPane.getChildren().addAll(headerBox, closeButton);
+    StackPane.setAlignment(closeButton, Pos.CENTER_RIGHT);
+
+    getDialogPane().setHeader(headerPane);
+    titleLabel.setPadding(new Insets(10, 0, 0, 10));
+  }
+
   private void createComboBox() {
     actionTypeComboBox = new ComboBox<>();
-    actionTypeComboBox.setPromptText("Select Action Type");
+    actionTypeComboBox.setPromptText(resourceBundle.getString("comboBox.prompt"));
     ObservableList<ActionType> actionTypeObservableList = FXCollections.observableArrayList(
         ActionType.values());
     actionTypeComboBox.setItems(actionTypeObservableList);
@@ -110,7 +145,7 @@ public class AddActionDialog extends Dialog<Void> {
   }
 
   private Button createAddButton() {
-    Button addButton = new Button("Add");
+    Button addButton = new Button(resourceBundle.getString("button.add"));
     addButton.setOnAction(e -> {
       controller.onAddActionOnAddButtonPressed(e);
     });
@@ -118,7 +153,7 @@ public class AddActionDialog extends Dialog<Void> {
   }
 
   private Button createCancelButton() {
-    Button cancelButton = new Button("Cancel");
+    Button cancelButton = new Button(resourceBundle.getString("button.cancel"));
     cancelButton.setOnAction(event -> {
       controller.onCloseSource(event);
     });

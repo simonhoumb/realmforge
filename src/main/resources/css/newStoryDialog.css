@@ -1,0 +1,79 @@
+.new-story-dialog {
+  -fx-background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 2); /* Drop shadow effect */
+}
+
+.new-story-dialog .button {
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
+  -fx-background-radius: 50px;
+  -fx-text-fill: #FFFFFF; /* White text color */
+  -fx-font-family: "Times New Roman";
+  -fx-font-size: 18px; /* Adjust the font size as desired */
+  -fx-border-radius: 50px;
+  -fx-padding: 8px 16px;
+}
+
+.new-story-dialog .button:hover {
+  -fx-background-color: #808080; /* Light gray background color on hover */
+}
+
+.new-story-dialog .button:pressed {
+  -fx-background-color: #666666; /* Medium gray background color on press */
+}
+
+.new-story-dialog .button:default {
+  -fx-background-color: #4D4D4D; /* Dark gray background color */
+  -fx-text-fill: #FFFFFF; /* White text color */
+  -fx-font-weight: bold;
+}
+
+.new-story-dialog .button:default:hover {
+  -fx-background-color: #808080; /* Light gray background color on hover */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 1);
+}
+
+.new-story-dialog .button:default:focused {
+  -fx-border-color: black;
+}
+
+.new-story-dialog .button:default:focused {
+  -fx-border-color: black;
+}
+
+.new-story-dialog .label {
+  -fx-text-fill: #A9A9A9; /* Set the text color to the same as button text */
+}
+
+.new-story-dialog .text-field {
+  -fx-background-color: #1E1E1E; /* Background color */
+  -fx-text-fill: #FFFFFF; /* Text color */
+  -fx-prompt-text-fill: #A9A9A9; /* Placeholder text color */
+  -fx-border-color: #808080; /* Border color */
+  -fx-border-width: 1px; /* Border width */
+  -fx-border-radius: 5px; /* Border radius */
+  -fx-padding: 5px; /* Padding */
+}
+
+.new-story-dialog .text-area {
+  -fx-background-color: #1E1E1E; /* Background color */
+  -fx-control-inner-background: #1E1E1E; /* Background color */
+  -fx-text-fill: #FFFFFF; /* Text color */
+  -fx-prompt-text-fill: #A9A9A9; /* Placeholder text color */
+  -fx-border-color: #808080; /* Border color */
+  -fx-border-width: 1px; /* Border width */
+  -fx-border-radius: 5px; /* Border radius */
+  -fx-padding: 5px; /* Padding */
+}
+
+.new-story-dialog .dialog-close-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-font-size: 12px;
+  -fx-pref-width: 20px;
+  -fx-pref-height: 20px;
+  -fx-border-width: 0;
+}
+
+.new-story-dialog .dialog-close-button:hover {
+  -fx-background-color: #808080; /* Customize the hover color for the close button */
+}
