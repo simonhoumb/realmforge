@@ -22,4 +22,13 @@ public enum ActionType {
   public String getLabel() {
     return actionTypeLabel;
   }
+
+  public static ActionType valueOfLabel(String label) {
+    for (ActionType type : values()) {
+      if (type.getLabel().equalsIgnoreCase(label)) {
+        return type;
+      }
+    }
+    return null;
+  }
 }

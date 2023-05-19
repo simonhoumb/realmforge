@@ -34,7 +34,8 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
     initModality(Modality.APPLICATION_MODAL);
     getDialogPane().getScene().setFill(Color.TRANSPARENT);
     getDialogPane().getStylesheets().add(("css/settingsStyleSheet.css"));
-    this.resourceBundle = ResourceBundle.getBundle("languages/pauseMenuDialog", SettingsModel.getInstance().getLocale());
+    this.resourceBundle = ResourceBundle.getBundle("languages/pauseMenuDialog",
+        SettingsModel.getInstance().getLocale());
     createExitToMenuButton();
     createExitToDesktop();
     createResumeButton();
@@ -71,14 +72,12 @@ public class PauseMenuDialog extends Dialog<ButtonType> {
 
     private void createSaveButton() {
       saveButton = new JFXButton(resourceBundle.getString("pauseMenu.save"));
-      saveButton.setOnAction(event -> {//TODO add save game dialog
-        });
+      saveButton.setOnAction(event -> controller.onSaveButtonPressed());
     }
 
     private void createLoadButton() {
       loadButton = new JFXButton(resourceBundle.getString("pauseMenu.load"));
-      loadButton.setOnAction(event -> {//TODO add load game dialog
-      });
+      loadButton.setOnAction(event -> controller.onLoadGameButtonPressed(event));
     }
 
     private void createSettingsButton() {

@@ -73,8 +73,8 @@ public class StoryDAO implements DAO<Story>{
     return em.createQuery("SELECT s FROM Story s", Story.class).getResultList();
   }
 
-  public List<String> getAllStoryIds() {
-    return em.createQuery("SELECT s.id FROM Story s", String.class).getResultList();
+  public List<Long> getAllStoryIds() {
+    return em.createQuery("SELECT s.id FROM Story s", Long.class).getResultList();
   }
 
   @Override

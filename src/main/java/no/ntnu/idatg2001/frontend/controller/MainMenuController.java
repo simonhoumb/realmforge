@@ -1,9 +1,21 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.cell.PropertyValueFactory;
+import no.ntnu.idatg2001.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
@@ -14,6 +26,7 @@ import no.ntnu.idatg2001.frontend.view.StartNewGameView;
 
 public class MainMenuController extends Controller<MainMenuView> {
   private SettingsDialog settingsDialog;
+  private LoadGameDialog loadGameDialog;
 
   public MainMenuController(MainMenuView view) {
     this.view = view;
@@ -28,17 +41,6 @@ public class MainMenuController extends Controller<MainMenuView> {
     Scene newScene = view.getScene();
     onCloseSource(event);
     newScene.setRoot(startNewGameView);
-
-    /* Starter selve spillet, skal flyttes
-    GameController gameController;
-    GameView gameView;
-    gameView = new GameView();
-    gameController = new GameController(gameView);
-    gameView.setController(gameController);
-    Scene newScene = view.getScene();
-    onCloseSource(event);
-    newScene.setRoot(gameView);
-     */
   }
 
   public void onNewGameButtonPressed() {
@@ -56,10 +58,31 @@ public class MainMenuController extends Controller<MainMenuView> {
     newScene.setRoot(createStoryView);
   }
 
-  public void onLoadGameButtonPressed() {
-    LoadGameDialog loadGameDialog = new LoadGameDialog(this);
+  @Override
+  public void onLoadGameButtonPressed(ActionEvent event) {
+    loadGameDialog = new LoadGameDialog(this);
+    configureSavedGamesTableView(event);
+    populateSavedGamesTableView(event);
     loadGameDialog.initOwner(view.getScene().getWindow());
     loadGameDialog.showAndWait();
+  }
+
+  @Override
+  public void populateSavedGamesTableView(ActionEvent event) {
+    event.consume();
+    loadGameDialog.getSavedGamesTableView().getItems().clear();
+    List<GameSave> gameSaves = GameSaveDAO.getInstance().getAll();
+    Collections.reverse(gameSaves);
+    loadGameDialog.getSavedGamesTableView()
+        .setItems(FXCollections.observableArrayList(gameSaves));
+  }
+
+  @Override
+  public void configureSavedGamesTableView(ActionEvent event) {
+    event.consume();
+    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
+    loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
+    loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
 
   public void onSettingsViewButtonPressed() {
@@ -91,5 +114,17 @@ public class MainMenuController extends Controller<MainMenuView> {
     ExitDialog exitDialog = new ExitDialog(this);
     exitDialog.initOwner(view.getScene().getWindow());
     exitDialog.showAndWait();
+  }
+
+  @Override
+  public void onLoadSelectedGame(ActionEvent event) {
+    GameController gameController;
+    GameView gameView;
+    gameView = new GameView(loadGameDialog.getSelectedGameSave());
+    gameController = new GameController(gameView);
+    gameView.setController(gameController);
+    Scene newScene = view.getScene();
+    newScene.setRoot(gameView);
+    onCloseSource(event);
   }
 }

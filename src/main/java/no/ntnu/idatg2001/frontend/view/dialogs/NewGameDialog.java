@@ -76,6 +76,7 @@ public class NewGameDialog extends Dialog {
 
   private void createCloseNewGameDialogButton() {
     backToMainMenuButton = new Button(resourceBundle.getString("backToMainMenuButton"));
+    backToMainMenuButton.setCancelButton(true);
     backToMainMenuButton.setOnAction(controller::onCloseSource);
   }
 

@@ -18,9 +18,9 @@ public class SettingsDialog<T extends Controller<T>> extends Dialog<ButtonType> 
   private Button saveButton;
   private Button cancelButton;
   private ResourceBundle resourceBundle;
-  private T controller;
+  private Controller<T> controller;
 
-  public SettingsDialog(T controller) {
+  public SettingsDialog(Controller<T> controller) {
     this.controller = controller;
     initStyle(StageStyle.TRANSPARENT);
     initModality(Modality.APPLICATION_MODAL);

@@ -11,11 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
-import java.util.Map;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
-import no.ntnu.idatg2001.backend.gameinformation.Link;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
-import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
 
 @Entity
@@ -26,11 +22,10 @@ public class Game {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
-
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "unit_id")
   private Unit unit;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "story_id")
   private Story story;
   @OneToMany(cascade = CascadeType.ALL)

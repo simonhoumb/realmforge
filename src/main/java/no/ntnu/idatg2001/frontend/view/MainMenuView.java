@@ -49,7 +49,7 @@ public class MainMenuView extends BorderPane {
     loadGameButton = new JFXButton();
     loadGameButton.setId("loadGameButton");
     loadGameButton.setOnAction(actionEvent
-        -> controller.onLoadGameButtonPressed());
+        -> controller.onLoadGameButtonPressed(actionEvent));
 
     settingsButton = new JFXButton();
     settingsButton.setId("settingsButton");

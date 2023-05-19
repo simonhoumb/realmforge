@@ -1,26 +1,77 @@
 package no.ntnu.idatg2001;
 
-import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
 
+@Entity
 public class GameSave {
-  private String name;
-  private Date date;
-  private String PlayerName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private String saveName;
+  private LocalDateTime timeOfSave;
+  private String playerName;
+  @ManyToOne
+  private Game game;
+  @ManyToOne
+  private Passage lastSavedPassage;
 
-  public GameSave(String name, Date date, String playerName) {
-    this.name = name;
-    this.date = date;
-    this.PlayerName = playerName;
-  }
-  public String getName() {
-    return name;
+
+  public GameSave(Game gameToSave, String playerName) {
+    this.game = gameToSave;
+    this.saveName = gameToSave.getStory().getTitle();
+    this.playerName = playerName;
+    this.timeOfSave = LocalDateTime.now();
   }
 
-  public Date getDate() {
-    return date;
+  public GameSave() {}
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getSaveName() {
+    return saveName;
+  }
+
+  public LocalDateTime getTimeOfSave() {
+    return timeOfSave;
+  }
+
+  public String getTimeOfSaveFormatted() {
+    return timeOfSave.format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy"));
   }
 
   public String getPlayerName() {
-    return PlayerName;
+    return playerName;
+  }
+
+  public Game getGame() {
+    return game;
+  }
+
+  public Passage getLastSavedPassage() {
+    return lastSavedPassage;
+  }
+
+  public void savePassage(Passage lastSavedPassage) {
+    this.lastSavedPassage = lastSavedPassage;
+  }
+
+  public String getStoryAndLastPassage() {
+    StringBuilder location = new StringBuilder(this.saveName + " - ");
+    if (this.lastSavedPassage == null) {
+      location.append(this.game.begin().getTitle());
+    } else {
+      location.append(this.lastSavedPassage.getTitle());
+    }
+    return location.toString();
   }
 }

@@ -9,13 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import no.ntnu.idatg2001.backend.actions.Action;
 
 @Entity
 @Table(name = "story")
@@ -28,7 +28,7 @@ public class Story {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
 
@@ -39,6 +39,12 @@ public class Story {
     this.title = title;
     this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
+  }
+
+  public Story(Story story) {
+    this.title = story.getTitle();
+    this.openingPassage = story.getOpeningPassage();
+    this.passages = story.getPassages();
   }
 
   public Story() {}
@@ -133,11 +139,23 @@ public class Story {
    */
   @Override
   public String toString() {
-    return "Story{"
-        + "title='" + title + '\''
-        + ", openingPassage=" + openingPassage
-        + ", passages=" + passages +
-        + '}';
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(String.format("Story{"
+        + "Title=%s,"
+        + "OpeningPassage=%s", title, openingPassage));
+    for (Passage passage : passages.values()) {
+      stringBuilder.append(String.format("%nPassage{%nTitle=%s", passage.getTitle()));
+      for (Link link : passage.getLinks()) {
+        stringBuilder.append(String.format("%nLink{%nText=%s%nReference=%s%n",
+            link.getText(), link.getReference()));
+        for (Action action : link.getActions()) {
+          stringBuilder.append(String.format("%nAction{%nText=%s%nType=%s}}%n",
+              action.getActionType(), action.getValue()));
+        }
+      }
+    }
+    stringBuilder.append("}");
+    return stringBuilder.toString();
   }
 
   /**

@@ -26,4 +26,11 @@ public abstract class Controller<T> {
   public void onSettingSaveButtonPressed(ActionEvent event) {
     //Default implementation
   }
+
+  public void onLoadGameButtonPressed(ActionEvent event) {}
+
+  public void onLoadSelectedGame(ActionEvent event) {}
+
+  public void configureSavedGamesTableView(ActionEvent event) {}
+  public void populateSavedGamesTableView(ActionEvent event) {}
 }
