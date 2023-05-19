@@ -36,7 +36,7 @@ public class ApplicationStart extends Application {
       Scene mainMenuScene = new Scene((Parent) view);
 
       //Set up the Primary View
-      Image icon = new Image(Objects.requireNonNull(getClass().getResource("/images/fantasy.png")).toExternalForm());
+      Image icon = new Image(Objects.requireNonNull(getClass().getResource("/images/RFLOGO.png")).toExternalForm());
       primaryStage.setX((screenWidth - primaryStage.getWidth()) / 2);
       primaryStage.setY((screenHeight - primaryStage.getHeight()) / 2);
       primaryStage.setWidth(screenWidth * 0.8);

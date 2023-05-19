@@ -132,8 +132,8 @@ public class NewStoryDialog extends Dialog<Story> {
         StoryDAO.getInstance().add(newStory);
         setResult(newStory);
       } else {
-      AlertHelper.showWarningAlert(getDialogPane().getScene().getWindow(), "Warning",
-          "Please fill out all fields and they cant be empty or blank");
+      AlertHelper.showWarningAlert(getDialogPane().getScene().getWindow(), resourceBundle.getString("warning"),
+          resourceBundle.getString("createNewStory.warningMessage"));
       }
     });
   }

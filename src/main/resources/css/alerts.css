@@ -1,0 +1,66 @@
+.alert {
+  -fx-background-color: rgba(0, 0, 0, 0.8);
+}
+
+.alert .dialog-pane {
+  -fx-background-color: transparent;
+}
+
+.alert .header-panel {
+  -fx-background-color: transparent;
+}
+
+.alert .content {
+  -fx-text-fill: white;
+}
+
+.alert .button-bar .button {
+  -fx-background-color: #4a4a4a;
+  -fx-text-fill: white;
+}
+
+.alert .button-bar .button:hover {
+  -fx-background-color: #666666;
+}
+
+.alert .button-bar .button:pressed {
+  -fx-background-color: #333333;
+}
+
+.alert .button-bar .button:focused {
+  -fx-background-color: #666666;
+}
+
+.alert .button-bar .button:default {
+  -fx-background-color: #007bff;
+  -fx-text-fill: white;
+}
+
+.alert .button-bar .button:default:hover {
+  -fx-background-color: #0069d9;
+}
+
+.alert .button-bar .button:default:pressed {
+  -fx-background-color: #0056b3;
+}
+
+.alert .button-bar .button:default:focused {
+  -fx-background-color: #0069d9;
+}
+
+.alert .button-bar .button:cancel {
+  -fx-background-color: #6c757d;
+  -fx-text-fill: white;
+}
+
+.alert .button-bar .button:cancel:hover {
+  -fx-background-color: #5a6268;
+}
+
+.alert .button-bar .button:cancel:pressed {
+  -fx-background-color: #474e53;
+}
+
+.alert .button-bar .button:cancel:focused {
+  -fx-background-color: #5a6268;
+}

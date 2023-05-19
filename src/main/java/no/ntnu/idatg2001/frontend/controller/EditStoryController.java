@@ -100,12 +100,8 @@ public class EditStoryController extends Controller<EditStoryView> {
       getSelectedPassageInPassageList();
       addLinkDialog.showAndWait();
     } else {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText(null);
-      alert.initOwner(view.getScene().getWindow());
-      alert.setContentText("You have to select a passage to add a link");
-      alert.showAndWait();
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+          view.getResourceBundle().getString("selectPassageToAddLink"));
     }
   }
 
@@ -118,12 +114,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
     } else {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText(null);
-      alert.initOwner(view.getScene().getWindow());
-      alert.setContentText("You have to select a link to add an action");
-      alert.showAndWait();
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+          view.getResourceBundle().getString("selectLinkToAddAction"));
     }
   }
 
@@ -139,26 +131,21 @@ public class EditStoryController extends Controller<EditStoryView> {
           populateLinkTableView();
           onCloseSource(event);
         } else {
-          Alert alert = new Alert(Alert.AlertType.WARNING);
-          alert.setTitle("Warning");
-          alert.setHeaderText(null);
-          alert.initOwner(view.getScene().getWindow());
-          alert.setContentText("You have to select a passage to add a link to");
-          alert.showAndWait();
+          AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+              view.getResourceBundle().getString("selectPassageToAddLink"));
         }
       } else if (isPassageBeingEdited) {
         if ((selectedPassage != null) && selectedPassage != getSelectedPassageInPassageList()){
           getSelectedLinkInLinkList().setText(addLinkDialog.getLinkTextField().getText());
           getSelectedLinkInLinkList().setReference(addLinkDialog.getPassageTableView()
               .getSelectionModel().getSelectedItem().getTitle());
-          System.out.println("is being edited");
           StoryDAO.getInstance().update(selectedStory);
           setPassageBeingEdited(false);
           populateLinkTableView();
           onCloseSource(event);
         } else {
-          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), "Warning",
-              "You have to select a passage to add a link to");
+          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
+              view.getResourceBundle().getString("selectPassageToAddLink"));
         }
       }
   }
@@ -187,20 +174,10 @@ public class EditStoryController extends Controller<EditStoryView> {
     } else if (getSelectedActionInActionList() != null) {
     //TODO: Add edit action dialog if needed.
     } else {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText(null);
-      alert.initOwner(view.getScene().getWindow());
-      alert.setContentText("You have to select a passage to edit");
-      alert.showAndWait();
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+          view.getResourceBundle().getString("selectPassageOrLinkOrActionToEdit"));
     }
   }
-
-
-  public void onEditLinkSaveButtonPressed(ActionEvent event) {
-
-  }
-
 
 
   public void onAddActionOnAddButtonPressed(ActionEvent event) {
@@ -358,7 +335,6 @@ public class EditStoryController extends Controller<EditStoryView> {
       if (newValue.intValue() != -1 && !newValue.equals(oldValue)) {
         configureActionTableView();
         populateActionTableView(); // Update the action table view
-        System.out.println("Link selected");
       } else {
         view.getActionTableView().getItems().clear(); // Clear the action table view if no link is selected
       }
@@ -383,29 +359,21 @@ public class EditStoryController extends Controller<EditStoryView> {
     Action selectedAction = getSelectedActionInActionList();
 
     String confirmationMessage = "";
-    String title = "";
     if (selectedPassage != null && selectedLink == null && selectedAction == null) {
-      confirmationMessage = "Are you sure you want to delete this passage?" +
-          "\n\nTitle: " + selectedPassage.getTitle();
-      title = "Delete Passage";
+      confirmationMessage = view.getResourceBundle().getString("areYouSurePassage") +
+          "\n\n" + view.getResourceBundle().getString("title") + selectedPassage.getTitle();
     } else if (selectedLink != null && selectedAction == null) {
-      confirmationMessage = "Are you sure you want to delete this link?" +
-          "\n\nDescription: " + selectedLink.getText();
-      title = "Delete Link";
+      confirmationMessage = view.getResourceBundle().getString("areYouSureLink") +
+          "\n\n" + view.getResourceBundle().getString("description") + selectedLink.getText();
     } else if (selectedAction != null) {
-      confirmationMessage = "Are you sure you want to delete this action?" +
-          "\n\nDescription: " + selectedAction.getActionType();
-      title = "Delete Action";
+      confirmationMessage = view.getResourceBundle().getString("areYouSureAction") +
+          "\n\n"+ view.getResourceBundle().getString("description") + selectedAction.getActionType();
     }
 
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.initOwner(view.getScene().getWindow());
-    alert.setTitle("Confirmation");
-    alert.setHeaderText(title);
-    alert.setContentText(confirmationMessage);
+    boolean result = AlertHelper.showConfirmationAlert(view.getScene().getWindow(),view.getResourceBundle().getString("confirmation"),
+        confirmationMessage);
 
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == ButtonType.OK) {
+    if (result) {
       if (selectedPassage != null && selectedLink == null && selectedAction == null) {
         selectedStory.removePassage(selectedPassage);
         getLinksByReference(getSelectedPassageInPassageList().getTitle());
@@ -427,6 +395,8 @@ public class EditStoryController extends Controller<EditStoryView> {
         StoryDAO.getInstance().update(selectedStory);
         populateActionTableView();
       }
+    } else {
+      // Do nothing
     }
   }
 
