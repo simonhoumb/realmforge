@@ -159,5 +159,9 @@ public class CreateStoryView extends BorderPane {
   public TableColumn<Story, Integer> getColumnStoryLinkAmount() {
     return columnStoryLinkAmount;
   }
+
+  public ResourceBundle getResourceBundle() {
+    return resourceBundle;
+  }
 }
 

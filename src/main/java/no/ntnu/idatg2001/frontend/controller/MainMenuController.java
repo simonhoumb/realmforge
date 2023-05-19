@@ -7,11 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
-import no.ntnu.idatg2001.GameSave;
+import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
-import no.ntnu.idatg2001.frontend.view.ExitDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
@@ -115,11 +116,16 @@ public class MainMenuController extends Controller<MainMenuView> {
   public void onLoadSelectedGame(ActionEvent event) {
     GameController gameController;
     GameView gameView;
-    gameView = new GameView(loadGameDialog.getSelectedGameSave());
-    gameController = new GameController(gameView);
-    gameView.setController(gameController);
-    Scene newScene = view.getScene();
-    newScene.setRoot(gameView);
-    onCloseSource(event);
+    if (loadGameDialog.getSelectedGameSave() != null) {
+      gameView = new GameView(loadGameDialog.getSelectedGameSave());
+      gameController = new GameController(gameView);
+      gameView.setController(gameController);
+      Scene newScene = view.getScene();
+      newScene.setRoot(gameView);
+      onCloseSource(event);
+    } else {
+      AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(), loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
+          loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
+    }
   }
 }

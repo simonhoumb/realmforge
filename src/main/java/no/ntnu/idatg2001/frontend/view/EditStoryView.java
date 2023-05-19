@@ -273,5 +273,9 @@ public class EditStoryView extends BorderPane {
   public TableColumn<Action, String> getActionTableActionColumn() {
     return actionTableActionColumn;
   }
+
+  public ResourceBundle getResourceBundle() {
+    return resourceBundle;
+  }
 }
 

@@ -19,7 +19,6 @@ import no.ntnu.idatg2001.backend.MusicPlayer;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 import no.ntnu.idatg2001.backend.SettingsModel;
 
-
 public class MainMenuView extends BorderPane {
 
   private static final String CSS_FILE = "/CSS/MainMenuStyleSheet.css";
@@ -30,7 +29,6 @@ public class MainMenuView extends BorderPane {
   private ResourceBundle resourceBundle;
   private MainMenuController controller;
 
-
   public MainMenuView() throws IOException {
     setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
     getStylesheets().add(CSS_FILE);
@@ -40,16 +38,14 @@ public class MainMenuView extends BorderPane {
 
   private void menuView() throws IOException {
     resourceBundle = ResourceBundle.getBundle("languages/mainMenu", SettingsModel.getInstance().getLocale());
-    //Buttons for the menu
+    // Buttons for the menu
     newGameButton = new JFXButton();
     newGameButton.setId("newGameButton");
-    newGameButton.setOnAction(actionEvent
-        -> controller.onNewGameButtonPressed());
+    newGameButton.setOnAction(actionEvent -> controller.onNewGameButtonPressed());
 
     loadGameButton = new JFXButton();
     loadGameButton.setId("loadGameButton");
-    loadGameButton.setOnAction(actionEvent
-        -> controller.onLoadGameButtonPressed(actionEvent));
+    loadGameButton.setOnAction(actionEvent -> controller.onLoadGameButtonPressed(actionEvent));
 
     settingsButton = new JFXButton();
     settingsButton.setId("settingsButton");
@@ -61,29 +57,31 @@ public class MainMenuView extends BorderPane {
 
     updateMainMenu();
 
-    //a box to hold the buttons
-    HBox buttonBox = new HBox(10, newGameButton, loadGameButton, settingsButton, exitGameButton);
-    buttonBox.setAlignment(Pos.CENTER);
-
-    //a box to hold the buttons and the Title
-    Image logoImage = new Image(getClass().getResource("/images/Menutwo.jpg").openStream());
+    // Create an ImageView for the logo
+    Image logoImage = new Image(getClass().getResource("/images/MenutwowithLogo.jpg").openStream());
     ImageView imageView = new ImageView(logoImage);
     imageView.setPreserveRatio(true);
     imageView.autosize();
 
+    // Create a StackPane to hold the logo and buttons
     StackPane stackPane = new StackPane();
-    stackPane.setBorder(getBorder());
     stackPane.getChildren().add(imageView);
 
-    VBox contentBox = new VBox(20, stackPane, buttonBox);
-    contentBox.setAlignment(Pos.CENTER);
-    contentBox.setMinSize(200, 200);
-    contentBox.setPadding(new Insets(10, 0, 0, 0));
-    setCenter(contentBox);
-    contentBox.widthProperty().addListener(((observableValue, oldValue, newValue)
-        -> imageView.setFitWidth(newValue.doubleValue() * 0.9)));
-    contentBox.heightProperty().addListener(((observableValue, oldValue, newValue)
-        -> imageView.setFitHeight(newValue.doubleValue() * 0.9)));
+    // Create a VBox to hold the buttons
+    VBox buttonBox = new VBox(10, newGameButton, loadGameButton, settingsButton, exitGameButton);
+    buttonBox.setAlignment(Pos.CENTER);
+
+    // Set the StackPane as the center of the BorderPane
+    setCenter(stackPane);
+
+    // Set the VBox with buttons as the top of the StackPane
+    stackPane.getChildren().add(buttonBox);
+    StackPane.setAlignment(buttonBox, Pos.BOTTOM_CENTER);
+    StackPane.setMargin(buttonBox, new Insets(300,0,0,0));
+
+    // Set the size of the StackPane to match the size of the window
+    stackPane.prefWidthProperty().bind(widthProperty());
+    stackPane.prefHeightProperty().bind(heightProperty());
   }
 
   public void setController(MainMenuController menuController) {

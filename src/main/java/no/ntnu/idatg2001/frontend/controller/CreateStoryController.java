@@ -148,6 +148,8 @@ public class CreateStoryController extends Controller<CreateStoryView> {
      Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
 // If no item is selected, show an error message and return
     if (selectedStory == null) {
+      AlertHelper.showErrorAlert(view.getScene().getWindow(), view.getResourceBundle().getString("error"),
+          view.getResourceBundle().getString("error_select_story"));
       Alert alert = new Alert(AlertType.ERROR, "Please select a story to edit.");
       alert.initOwner(view.getScene().getWindow());
       alert.showAndWait();
