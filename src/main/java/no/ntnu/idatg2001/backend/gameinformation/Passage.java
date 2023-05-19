@@ -28,13 +28,6 @@
     @JoinColumn(name = "passage_id")
     private List<Link> links;
 
-    public Long getId() {
-      return id;
-    }
-
-    public void setId(Long id) {
-      this.id = id;
-    }
 
     /**
      * Constructor for Passage.
@@ -43,8 +36,8 @@
      * @param content The content of the passage.
      */
     public Passage(String title, StringBuilder content) {
-      this.title = setTitle(title);
-      this.content = setContent(content);
+      this.title = title;
+      this.content = content;
       this.links = new ArrayList<>();
     }
 
@@ -59,14 +52,22 @@
       return title;
     }
 
+    public Long getId() {
+      return id;
+    }
+
+    public void setId(Long id) {
+      this.id = id;
+    }
+
     /**
      * setTitle sets the title of the passage.
      *
      * @param title
      * @return the title of the passage.
      */
-    public String setTitle(String title) {
-      return this.title = title;
+    public void setTitle(String title) {
+      this.title = title;
     }
 
     /**
@@ -78,8 +79,8 @@
       return content;
     }
 
-    public StringBuilder setContent(StringBuilder content) {
-      return this.content = content;
+    public void setContent(StringBuilder content) {
+      this.content = content;
     }
 
     /**
