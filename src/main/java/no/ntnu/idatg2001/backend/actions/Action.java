@@ -19,6 +19,7 @@ public abstract class Action {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
+
   private ActionType actionType;
 
   @Convert
@@ -49,4 +50,13 @@ public abstract class Action {
   }
 
   public abstract void execute(Unit unit);
+
+  @Override
+  public String toString() {
+    return "Action{" +
+        "id=" + id +
+        ", actionType=" + actionType +
+        ", value=" + value +
+        '}';
+  }
 }
