@@ -13,7 +13,7 @@ import no.ntnu.idatg2001.dao.GameDAO;
  * @author Simon Husås Houmb
  * @version 1.0
  */
-public abstract class Controller<T> {
+public abstract class   Controller<T> {
 
   protected T view;
 
@@ -62,6 +62,8 @@ public abstract class Controller<T> {
    *@param event The action event.
    */
   public void onLoadSelectedGame(ActionEvent event) {}
+
+  public void onDeleteGameButton(ActionEvent event) {}
 
   /**
    *Configures the saved games table view.
