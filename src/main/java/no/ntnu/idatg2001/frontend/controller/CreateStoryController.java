@@ -6,68 +6,51 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
-import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.dialogs.NewStoryDialog;
 
+/**
+ * controller class for the CreateStoryView.
+ *
+ *@author Eskil Alstad og Simon Husås Houmb.
+ *@version 1.0
+ */
 public class CreateStoryController extends Controller<CreateStoryView> {
-  private AddPassageDialog addPassageDialog;
-  private NewStoryDialog newStoryDialog;
 
+  /**
+   * Constructor for the CreateStoryController.
+   *
+   * @param view The CreateStoryView associated with this controller.
+   */
   public CreateStoryController(CreateStoryView view) {
     this.view = view;
     init();
   }
 
+  /**
+   * Initializes the CreateStoryController.
+   */
   private void init() {
     configureTableView();
     populateTableView();
   }
 
-  /*
-  public void saveStoryTest(ActionEvent event) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Story");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.Paths"));
-    File file = fileChooser.showSaveDialog(createStoryView.getScene().getWindow());
-    if (file != null) {
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-        // Iterate through the entries of the HashMap and save the content of each text area
-        for (Map.Entry<String, TextArea> entry : createStoryView.getRoomTextAreas().entrySet()) {
-          String roomName = entry.getKey();
-          TextArea textArea = entry.getValue();
-          String text = textArea.getText();
-          // Write the room name and the content of the text area to the file
-          writer.write("::" + roomName + "\n");
-          writer.write(text);
-          writer.write("\n\n");
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
+  /**
+   * Handles the edit button event.
    */
   public void onEditButton() {
     if (getSelectedItemInTableView() != null) {
@@ -80,7 +63,12 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     }
   }
 
-  public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
+  /**
+   * Handles the back to main menu button pressed event.
+   *
+   * @throws IOException if an I/O error occurs.
+   */
+  public void onBackToMainMenuButtonPressed() throws IOException {
     MainMenuView mainMenuView = new MainMenuView();
     Scene newScene = view.getScene();
     MainMenuController menuController = new MainMenuController(mainMenuView);
@@ -88,28 +76,27 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     newScene.setRoot(mainMenuView);
   }
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
-  }
-
+  /**
+   * Handles the new story event.
+   */
   public void onNewStory() {
-    // Create a new dialog that opens the new story dialog, this story will be
-    // saved in the StoryDao.
-    newStoryDialog = new NewStoryDialog(this);
+    NewStoryDialog newStoryDialog = new NewStoryDialog(this);
     newStoryDialog.initOwner(view.getScene().getWindow());
     newStoryDialog.initStyle(StageStyle.UNDECORATED);
     newStoryDialog.showAndWait();
     populateTableView();
   }
 
+
+
+  /**
+   * Handles the import button pressed event.
+   */
   public void onImportButtonPressed() {
     StoryFileReader storyReader = new StoryFileReader();
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Import Story");
-    fileChooser.getExtensionFilters()
-        .add(new FileChooser.ExtensionFilter("Paths Files", "*.Paths"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Paths Files", "*.Paths"));
     File selectedFile = fileChooser.showOpenDialog(view.getScene().getWindow());
     if (selectedFile != null) {
       try {
@@ -120,11 +107,12 @@ public class CreateStoryController extends Controller<CreateStoryView> {
         StoryDAO.getInstance().update(story);
         populateTableView();
       } catch (IllegalArgumentException illegalArgumentException) {
-          AlertHelper.showErrorAlert(view.getScene().getWindow(), "Error loading file",
-              "The file you tried to load is not a valid story file. Make sure format is correct.");
+        AlertHelper.showErrorAlert(view.getScene().getWindow(), "Error loading file",
+            "The file you tried to load is not a valid story file. Make sure format is correct.");
       }
     }
   }
+
 
   public void onDeleteButtonPressed() {
     Story story = getSelectedItemInTableView();
@@ -141,12 +129,20 @@ public class CreateStoryController extends Controller<CreateStoryView> {
   }
 
 
+
+  /**
+   * Populates the table view with stories.
+   */
   private void populateTableView() {
     view.getStoryTableView().getItems().clear();
     List<Story> storylist = StoryDAO.getInstance().getAll();
     ObservableList<Story> list = FXCollections.observableArrayList(storylist);
     view.getStoryTableView().setItems(list);
   }
+
+  /**
+   * Configures the table view.
+   */
   public void configureTableView() {
     view.getColumnStoryName().setCellValueFactory(new PropertyValueFactory<>("title"));
     view.getColumnStoryPassageAmount().setCellValueFactory(cell -> {
@@ -156,18 +152,22 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     });
     view.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
-      int linkAmount = story.getTotalAmountOfPassagesLinks()  +
-          story.getOpeningPassage().getLinks().size();
+      int linkAmount = story.getTotalAmountOfPassagesLinks()
+          + story.getOpeningPassage().getLinks().size();
       return new SimpleIntegerProperty(linkAmount).asObject();
     });
   }
 
+  /**
+   * Retrieves the selected item in the table view.
+   *
+   * @return The selected story.
+   */
   public Story getSelectedItemInTableView() {
-    // Get the selected item from the table view
-     Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
-// If no item is selected, show an error message and return
+    Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
     if (selectedStory == null) {
-      AlertHelper.showErrorAlert(view.getScene().getWindow(), view.getResourceBundle().getString("error"),
+      AlertHelper.showErrorAlert(view.getScene().getWindow(),
+          view.getResourceBundle().getString("error"),
           view.getResourceBundle().getString("error_select_story"));
       return null;
     }

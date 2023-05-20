@@ -4,20 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Optional;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,12 +27,12 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryWriter;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.StoryDAO;
-import no.ntnu.idatg2001.frontend.view.dialogs.AddActionDialog;
-import no.ntnu.idatg2001.frontend.view.dialogs.AddLinkDialog;
-import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
 import no.ntnu.idatg2001.frontend.view.GuiElements.StoryMapCanvas;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddActionDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddLinkDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.AddPassageDialog;
 
 public class EditStoryController extends Controller<EditStoryView> {
 
@@ -46,9 +41,11 @@ public class EditStoryController extends Controller<EditStoryView> {
   private AddActionDialog addActionDialog;
   private Story selectedStory;
   private boolean isPassageBeingEdited = false;
+  private String warning;
 
   public EditStoryController(EditStoryView view) {
     this.view = view;
+    view.getResourceBundle().getString("warning");
     configurePassageList();
   }
 
@@ -61,12 +58,6 @@ public class EditStoryController extends Controller<EditStoryView> {
     return null;
   }
 
-  public void onCloseSource(ActionEvent event) {
-    Node source = (Node) event.getSource();
-    Stage stage = (Stage) source.getScene().getWindow();
-    stage.close();
-  }
-
   public void onAddPassageButtonPressed() {
     addPassageDialog = new AddPassageDialog(this);
     addPassageDialog.initOwner(view.getScene().getWindow());
@@ -75,24 +66,45 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   public void onAddPassageAddButtonPressed() {
+    String passageTitle = addPassageDialog.getRoomNameTextField();
+
     if (isPassageBeingEdited) {
-      getSelectedPassageInPassageList().setTitle(addPassageDialog.getRoomNameTextField());
-      getSelectedPassageInPassageList()
-          .setContent(new StringBuilder(addPassageDialog.getRoomContentTextArea()));
+      Passage selectedPassage = getSelectedPassageInPassageList();
+      String oldTitle = selectedPassage.getTitle();
+      String newTitle = passageTitle;
+
+      if (!oldTitle.equals(newTitle) && isPassageTitleExists(newTitle)) {
+        AlertHelper.showWarningAlert(addPassageDialog.getDialogPane().getScene().getWindow(),
+            warning,
+            view.getResourceBundle().getString("passageAlreadyExists"));
+        return;
+      }
+
+      selectedPassage.setTitle(newTitle);
+      selectedPassage.setContent(new StringBuilder(addPassageDialog.getRoomContentTextArea()));
+
+      if (!oldTitle.equals(newTitle)) {
+        editLinkReference(oldTitle, newTitle);
+      }
+
       StoryDAO.getInstance().update(selectedStory);
       populateTableView();
       isPassageBeingEdited = false;
     } else {
-      selectedStory.addPassage(new Passage(addPassageDialog.getRoomNameTextField(),
-          new StringBuilder(addPassageDialog.getRoomContentTextArea())));
-      StoryDAO.getInstance().update(selectedStory);
-      populateTableView();
+      if (isPassageTitleExists(passageTitle)) {
+        AlertHelper.showWarningAlert(addPassageDialog.getDialogPane().getScene().getWindow(), warning,
+            view.getResourceBundle().getString("passageAlreadyExists"));
+      } else {
+        Passage newPassage = new Passage(passageTitle, new StringBuilder(addPassageDialog.getRoomContentTextArea()));
+        selectedStory.addPassage(newPassage);
+        StoryDAO.getInstance().update(selectedStory);
+        populateTableView();
+      }
     }
   }
 
   public void setPassageBeingEdited(boolean isBeingEdited) {
     isPassageBeingEdited = isBeingEdited;
-    System.out.println(isPassageBeingEdited);
   }
 
   public void onAddLinkButtonPressed() {
@@ -105,7 +117,7 @@ public class EditStoryController extends Controller<EditStoryView> {
       getSelectedPassageInPassageList();
       addLinkDialog.showAndWait();
     } else {
-      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
           view.getResourceBundle().getString("selectPassageToAddLink"));
     }
   }
@@ -119,69 +131,78 @@ public class EditStoryController extends Controller<EditStoryView> {
     addActionDialog.showAndWait();
     getSelectedLinkInLinkList();
     } else {
-      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
           view.getResourceBundle().getString("selectLinkToAddAction"));
     }
   }
 
   public void onAddLinkToPassageAddButton(ActionEvent event) {
     Passage selectedPassage = addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem();
-
     if (!isPassageBeingEdited) {
-      if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
-        boolean passageAlreadyLinked = false;
-        for (Link link : getSelectedPassageInPassageList().getLinks()) {
-          if (link.getReference().equals(selectedPassage.getTitle())) {
-            passageAlreadyLinked = true;
-            break;
-          }
-        }
-
-        if (!passageAlreadyLinked) {
-          getSelectedPassageInPassageList().addLink(
-              new Link(addLinkDialog.getLinkTextField().getText(),
-                  addLinkDialog.getPassageTableView().getSelectionModel().getSelectedItem().getTitle()));
-          StoryDAO.getInstance().update(selectedStory);
-          populateLinkTableView();
-          onCloseSource(event);
-        } else {
-          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
-              view.getResourceBundle().getString("passageAlreadyLinked"));
-        }
-      } else {
-        AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(), view.getResourceBundle().getString("warning"),
-            view.getResourceBundle().getString("selectPassageToAddLink"));
-      }
-    } else if (isPassageBeingEdited) {
-      if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
-        boolean passageAlreadyLinked = false;
-        for (Link link : getSelectedPassageInPassageList().getLinks()) {
-          if (link.getReference().equals(selectedPassage.getTitle())) {
-            passageAlreadyLinked = true;
-          }
-        }
-
-        if (!passageAlreadyLinked) {
-          getSelectedLinkInLinkList().setText(addLinkDialog.getLinkTextField().getText());
-          getSelectedLinkInLinkList().setReference(addLinkDialog.getPassageTableView()
-              .getSelectionModel().getSelectedItem().getTitle());
-          StoryDAO.getInstance().update(selectedStory);
-          setPassageBeingEdited(false);
-          populateLinkTableView();
-          onCloseSource(event);
-        } else {
-          AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
-              view.getResourceBundle().getString("warning"),
-              view.getResourceBundle().getString("passageAlreadyLinked"));
-        }
-      } else {
-        AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
-            view.getResourceBundle().getString("warning"),
-            view.getResourceBundle().getString("selectPassageToAddLink"));
-      }
+      handleAddLinkWhenNotEditing(selectedPassage, event);
+    } else {
+      handleAddLinkWhenEditing(selectedPassage, event);
     }
   }
 
+  private void handleAddLinkWhenNotEditing(Passage selectedPassage, ActionEvent event) {
+    if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+      boolean passageAlreadyLinked = isPassageAlreadyLinked(selectedPassage);
+
+      if (!passageAlreadyLinked) {
+        getSelectedPassageInPassageList().addLink(
+            new Link(addLinkDialog.getLinkTextField().getText(),
+                selectedPassage.getTitle()));
+        StoryDAO.getInstance().update(selectedStory);
+        populateLinkTableView();
+        onCloseSource(event);
+      } else {
+        showPassageAlreadyLinkedWarning();
+      }
+    } else {
+      showSelectPassageToAddLinkWarning();
+    }
+  }
+
+  private void handleAddLinkWhenEditing(Passage selectedPassage, ActionEvent event) {
+    if (selectedPassage != null && selectedPassage != getSelectedPassageInPassageList()) {
+      boolean passageAlreadyLinked = isPassageAlreadyLinked(selectedPassage);
+
+      if (!passageAlreadyLinked) {
+        getSelectedLinkInLinkList().setText(addLinkDialog.getLinkTextField().getText());
+        getSelectedLinkInLinkList().setReference(selectedPassage.getTitle());
+        StoryDAO.getInstance().update(selectedStory);
+        setPassageBeingEdited(false);
+        populateLinkTableView();
+        onCloseSource(event);
+      } else {
+        showPassageAlreadyLinkedWarning();
+      }
+    } else {
+      showSelectPassageToAddLinkWarning();
+    }
+  }
+
+  private boolean isPassageAlreadyLinked(Passage selectedPassage) {
+    for (Link link : getSelectedPassageInPassageList().getLinks()) {
+      if (link.getReference().equals(selectedPassage.getTitle())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void showPassageAlreadyLinkedWarning() {
+    AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
+        warning,
+        view.getResourceBundle().getString("passageAlreadyLinked"));
+  }
+
+  private void showSelectPassageToAddLinkWarning() {
+    AlertHelper.showWarningAlert(addLinkDialog.getDialogPane().getScene().getWindow(),
+        warning,
+        view.getResourceBundle().getString("selectPassageToAddLink"));
+  }
 
   public void onEditButtonIsPressed() {
     if (getSelectedPassageInPassageList() != null && getSelectedLinkInLinkList() == null
@@ -203,10 +224,8 @@ public class EditStoryController extends Controller<EditStoryView> {
       populateAddLinkPassageTableView();
       getSelectedPassageInPassageList();
       addLinkDialog.showAndWait();
-    } else if (getSelectedActionInActionList() != null) {
-    //TODO: Add edit action dialog if needed.
     } else {
-      AlertHelper.showWarningAlert(view.getScene().getWindow(), view.getResourceBundle().getString("warning"),
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
           view.getResourceBundle().getString("selectPassageOrLinkOrActionToEdit"));
     }
   }
@@ -245,7 +264,6 @@ public class EditStoryController extends Controller<EditStoryView> {
         new FileChooser.ExtensionFilter("Paths Files (*.Paths)", "*.Paths"));
     File file = fileChooser.showSaveDialog(view.getScene().getWindow());
     if (file != null) {
-      System.out.println("inside" + file.getAbsolutePath());
       StoryWriter.writeStoryToFile(selectedStory, file.getAbsoluteFile());
     }
   }
@@ -393,51 +411,85 @@ public class EditStoryController extends Controller<EditStoryView> {
         });
   }
 
-  public void onDeletePassageButtonPressed(ActionEvent event) {
+  public void onDeletePassageButtonPressed() {
     Passage selectedPassage = getSelectedPassageInPassageList();
     Link selectedLink = getSelectedLinkInLinkList();
     Action selectedAction = getSelectedActionInActionList();
-
     String confirmationMessage = "";
+
+    if (selectedPassage == null && selectedLink == null && selectedAction == null) {
+      AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
+          view.getResourceBundle().getString("nothingSelected"));
+      return;
+    }
     if (selectedPassage != null && selectedLink == null && selectedAction == null) {
       confirmationMessage = view.getResourceBundle().getString("areYouSurePassage") +
           "\n\n" + view.getResourceBundle().getString("title") + selectedPassage.getTitle();
+      deletePassage(selectedPassage);
     } else if (selectedLink != null && selectedAction == null) {
       confirmationMessage = view.getResourceBundle().getString("areYouSureLink") +
           "\n\n" + view.getResourceBundle().getString("description") + selectedLink.getText();
-    } else if (selectedAction != null) {
+      deleteLink(selectedPassage, selectedLink);
+    } else {
       confirmationMessage = view.getResourceBundle().getString("areYouSureAction") +
-          "\n\n"+ view.getResourceBundle().getString("description") + selectedAction.getActionType();
+          "\n\n" + view.getResourceBundle().getString("description") +
+          selectedAction.getActionType();
+      deleteAction(selectedLink, selectedAction);
     }
 
-    boolean result = AlertHelper.showConfirmationAlert(view.getScene().getWindow(),view.getResourceBundle().getString("confirmation"),
-        confirmationMessage);
+    boolean result = AlertHelper.showConfirmationAlert(view.getScene().getWindow(),
+        view.getResourceBundle().getString("confirmation"), confirmationMessage);
 
     if (result) {
-      if (selectedPassage != null && selectedLink == null && selectedAction == null) {
-        selectedStory.removePassage(selectedPassage);
-        getLinksByReference(getSelectedPassageInPassageList().getTitle());
-        removePassage(getSelectedPassageInPassageList());
-        StoryDAO.getInstance().update(selectedStory);
-        populateTableView();
-        clearSelectedItemInPassageList();
-        view.getPassageContentTextArea().clear();
-        view.getLinkTableView().getItems().clear();
-        view.getActionTableView().getItems().clear();
-      } else if (selectedLink != null && selectedAction == null) {
-        selectedPassage.removeLink(selectedLink);
-        StoryDAO.getInstance().update(selectedStory);
-        populateLinkTableView();
-        clearSelectedItemInLinkList();
-        view.getActionTableView().getItems().clear();
-      } else if (selectedAction != null) {
-        selectedLink.removeAction(selectedAction);
-        StoryDAO.getInstance().update(selectedStory);
-        populateActionTableView();
-      }
-    } else {
-      // Do nothing
+      StoryDAO.getInstance().update(selectedStory);
+      populateTableView();
+      clearSelectedItemInPassageList();
+      view.getPassageContentTextArea().clear();
+      view.getLinkTableView().getItems().clear();
+      view.getActionTableView().getItems().clear();
     }
+    // Do nothing if the result is false
+  }
+
+  private void deletePassage(Passage passage) {
+    selectedStory.removePassage(passage);
+    getLinksByReference(getSelectedPassageInPassageList().getTitle());
+    removePassage(getSelectedPassageInPassageList());
+  }
+
+  private void deleteLink(Passage passage, Link link) throws NullPointerException {
+    try {
+      passage.removeLink(link);
+      populateLinkTableView();
+      clearSelectedItemInLinkList();
+      view.getActionTableView().getItems().clear();
+    } catch (NullPointerException e) {
+      AlertHelper.showWarningAlert(view.getScene().getWindow(),
+          warning,
+          view.getResourceBundle().getString("nothingSelected"));
+    }
+  }
+
+  private void deleteAction(Link link, Action action) throws NullPointerException {
+    try {
+      link.removeAction(action);
+      populateActionTableView();
+      clearSelectedItemInActionList();
+    } catch (NullPointerException e) {
+      AlertHelper.showWarningAlert(view.getScene().getWindow(),
+          warning,
+          view.getResourceBundle().getString("nothingSelected"));
+    }
+  }
+
+
+  private boolean isPassageTitleExists(String title) {
+    for (Passage passage : selectedStory.getPassages().values()) {
+      if (passage.getTitle().equals(title)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public List<Link> getLinksByReference(String passageTitle) {
@@ -451,7 +503,6 @@ public class EditStoryController extends Controller<EditStoryView> {
         }
       }
     }
-    System.out.println(linksWithReference);
     return linksWithReference;
   }
 
@@ -467,8 +518,8 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
 
-  private void editLinkReference(Passage passage, String newName) {
-    List<Link> linksToEdit = getLinksByReference(passage.getTitle());
+  private void editLinkReference(String oldName, String newName) {
+    List<Link> linksToEdit = getLinksByReference(oldName);
     for (Link link : linksToEdit) {
       link.setReference(newName);
     }

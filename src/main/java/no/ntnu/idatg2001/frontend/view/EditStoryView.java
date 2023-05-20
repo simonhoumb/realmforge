@@ -28,7 +28,6 @@ import no.ntnu.idatg2001.frontend.controller.EditStoryController;
 public class EditStoryView extends BorderPane {
 
   private EditStoryController controller;
-  private String cssFile = "/CSS/EditStoryView.css";
   private JFXButton addPassageButton;
   private JFXButton addLinkButton;
   private JFXButton addActionButton;
@@ -47,7 +46,7 @@ public class EditStoryView extends BorderPane {
   private TableColumn<Action, String> actionTableActionColumn;
   private ButtonBar buttonBar;
   private JFXTextArea passageContentTextArea;
-  private ResourceBundle resourceBundle;
+  private final ResourceBundle resourceBundle;
 
 
 
@@ -72,6 +71,7 @@ public class EditStoryView extends BorderPane {
     createActionTableView();
     createPassageContentTextArea();
     setPadding(new Insets(10));
+    String cssFile = "/CSS/EditStoryView.css";
     getStylesheets().add(cssFile);
     HBox buttonBox = new HBox();
     buttonBox.getChildren().add(buttonBar);
@@ -97,48 +97,42 @@ public class EditStoryView extends BorderPane {
   private void createNewPassageButton() {
     addPassageButton = new JFXButton(resourceBundle.getString("addPassageButton"));
     addPassageButton.setWrapText(true);
-    addPassageButton.setOnAction(event -> {
-      controller.onAddPassageButtonPressed();
-    });
+    addPassageButton.setOnAction(event ->
+      controller.onAddPassageButtonPressed());
   }
 
   private void  createNewLinkButton() {
     addLinkButton = new JFXButton(resourceBundle.getString("addLinkButton"));
     addLinkButton.setWrapText(true);
-    addLinkButton.setOnAction(event -> {
-      controller.onAddLinkButtonPressed();
-    });
+    addLinkButton.setOnAction(event ->
+      controller.onAddLinkButtonPressed());
   }
   private void createNewActionButton() {
     addActionButton = new JFXButton(resourceBundle.getString("addActionButton"));
     addActionButton.setWrapText(true);
-    addActionButton.setOnAction(event -> {
-      controller.onAddActingButtonPressed();
-    });
+    addActionButton.setOnAction(event ->
+      controller.onAddActingButtonPressed());
   }
 
   private void createEditButton() {
     editButton = new JFXButton(resourceBundle.getString("editButton"));
     editButton.setWrapText(true);
-    editButton.setOnAction(event -> {
-      controller.onEditButtonIsPressed();
-    });
+    editButton.setOnAction(event ->
+      controller.onEditButtonIsPressed());
   }
 
   private void createDeleteButton() {
     deleteButton = new JFXButton(resourceBundle.getString("deleteButton"));
     deleteButton.setWrapText(true);
-    deleteButton.setOnAction(event -> {
-      controller.onDeletePassageButtonPressed(event);
-    });
+    deleteButton.setOnAction(event ->
+      controller.onDeletePassageButtonPressed());
   }
 
   private void createMapButton() {
     mapButton = new JFXButton(resourceBundle.getString("mapButton"));
     mapButton.setWrapText(true);
-    mapButton.setOnAction(event -> {
-      controller.onMapPressed();
-    });
+    mapButton.setOnAction(event ->
+      controller.onMapPressed());
   }
 
   private void createSaveButton() {
@@ -151,9 +145,8 @@ public class EditStoryView extends BorderPane {
     backButton = new JFXButton(resourceBundle.getString("backButton"));
     backButton.setWrapText(true);
     backButton.setCancelButton(true);
-    backButton.setOnAction(event1 -> {
-      controller.onBackButtonPressed();
-    });
+    backButton.setOnAction(event1 ->
+      controller.onBackButtonPressed());
   }
 
   private void createButtonBar() {
@@ -189,9 +182,8 @@ public class EditStoryView extends BorderPane {
     linkTableView.setPrefWidth(400);
     linkTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     linkTableView.getColumns().addAll(linkTableLinkNameColumn, linkTableLinkReferenceColumn);
-    linkTableView.setOnMouseClicked(event -> {
-      controller.clearSelectedItemInActionList();
-    });
+    linkTableView.setOnMouseClicked(event ->
+      controller.clearSelectedItemInActionList());
   }
 
   private void createLinkTableLinkNameColumn() {
