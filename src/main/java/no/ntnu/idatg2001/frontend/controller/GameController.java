@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -97,25 +98,21 @@ public class GameController extends Controller<GameView> {
   }
 
   public void onSaveSelectedGame(ActionEvent event) {
-    Object selectedItem =saveGameDialog.getSavedGamesTableView().getSelectionModel().getSelectedItem();
-    if (selectedItem != null) {
-      GameSaveDAO.getInstance().remove((GameSave) selectedItem);
-      GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
-          view.getCurrentGameSave().getGame().getUnit().getUnitName());
-      newGameSave.savePassage(view.getCurrentPassage());
-      GameSaveDAO.getInstance()
-          .add(newGameSave);
-      onCloseSource(event);
-    } else {
-      GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
-          view.getCurrentGameSave().getGame().getUnit().getUnitName());
-      newGameSave.savePassage(view.getCurrentPassage());
-      GameSaveDAO.getInstance()
-          .add(newGameSave);
-      onCloseSource(event);
-    }
-  }
+    GameSave selectedItem = (saveGameDialog.getSelectedGameSave());
+    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(), view.getCurrentGameSave().getGame().getUnit().getUnitName());
+    newGameSave.savePassage(view.getCurrentPassage());
 
+    if (selectedItem != null) {
+      selectedItem.setGame(newGameSave.getGame());
+      selectedItem.setLastSavedPassage(newGameSave.getLastSavedPassage());
+      selectedItem.setTimeOfSave(LocalDateTime.now());
+      GameSaveDAO.getInstance().update(selectedItem);
+    } else {
+      GameSaveDAO.getInstance().add(newGameSave);
+    }
+
+    onCloseSource(event);
+  }
 
   @Override
   public void onLoadGameButtonPressed(ActionEvent event) {

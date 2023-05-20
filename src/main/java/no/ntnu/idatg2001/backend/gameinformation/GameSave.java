@@ -43,6 +43,32 @@ public class GameSave {
     return saveName;
   }
 
+  public void setSaveName(String saveName) {
+    this.saveName = saveName;
+  }
+
+  public GameSave setLastSavedPassage(
+      Passage lastSavedPassage) {
+    this.lastSavedPassage = lastSavedPassage;
+    return this;
+  }
+
+  public GameSave setTimeOfSave(LocalDateTime timeOfSave) {
+    this.timeOfSave = timeOfSave;
+    return this;
+  }
+
+  public GameSave setPlayerName(String playerName) {
+    this.playerName = playerName;
+    return this;
+  }
+
+  public GameSave setGame(Game game) {
+    this.game = game;
+    return this;
+  }
+
+
   public LocalDateTime getTimeOfSave() {
     return timeOfSave;
   }
