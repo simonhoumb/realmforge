@@ -59,6 +59,9 @@ public class GameSaveDAO implements DAO<GameSave> {
           "GameSave with the same id already exists in the database.");
     } else {
       this.em.getTransaction().begin();
+      if (!em.contains(gameSave)) {
+        gameSave = em.merge(gameSave);
+      }
       this.em.persist(gameSave);
       this.em.getTransaction().commit();
     }
