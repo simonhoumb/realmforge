@@ -3,6 +3,7 @@ package no.ntnu.idatg2001.frontend.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -117,14 +118,18 @@ public class CreateStoryController extends Controller<CreateStoryView> {
   public void onDeleteButtonPressed() {
     Story story = getSelectedItemInTableView();
     if (story != null) {
-      for (GameSave gameSave : GameSaveDAO.getInstance().getAll()) {
-        if (gameSave.getGame().getStory().getId().equals(story.getId())) {
-          AlertHelper.showWarningAlert(view.getScene().getWindow(), "Story in use",
-              "The story you are trying to delete is in use by a game save. Please delete the game save first.");
-        }
+      if (GameSaveDAO.getInstance().getAll().stream()
+          .map(GameSave::getGame)
+          .map(Game::getStory)
+          .map(Story::getId)
+          .anyMatch(storyId -> storyId.equals(story.getId()))) {
+        AlertHelper.showErrorAlert(view.getScene().getWindow(), "Error deleting story",
+            "The story you tried to delete is currently in use by a game save. "
+                + "Please delete the game save first.");
+      } else {
+        StoryDAO.getInstance().remove(story);
+        populateTableView();
       }
-      StoryDAO.getInstance().remove(story);
-      populateTableView();
     }
   }
 
