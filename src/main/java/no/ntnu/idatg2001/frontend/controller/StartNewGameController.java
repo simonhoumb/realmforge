@@ -90,15 +90,13 @@ public class StartNewGameController extends Controller<StartNewGameView> {
 
   public void onStartButtonPressed(ActionEvent event) {
     event.consume();
-
     if (isValidStart()) {
       Game newGame = new Game(createUnitBySelectedClass(),
           getSelectedStoryInTableView(),
           getSelectedGoals());
       GameDAO.getInstance().add(newGame);
       GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
-      GameSaveDAO.getInstance()
-          .add(newGameSave);
+      GameSaveDAO.getInstance().add(newGameSave);
       GameController gameController;
       GameView gameView;
       gameView = new GameView(newGameSave);
