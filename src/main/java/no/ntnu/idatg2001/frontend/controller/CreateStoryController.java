@@ -10,9 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
+import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
+import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
@@ -108,6 +112,23 @@ public class CreateStoryController extends Controller<CreateStoryView> {
       }
     }
   }
+
+
+  public void onDeleteButtonPressed() {
+    Story story = getSelectedItemInTableView();
+    if (story != null) {
+      for (GameSave gameSave : GameSaveDAO.getInstance().getAll()) {
+        if (gameSave.getGame().getStory().getId().equals(story.getId())) {
+          AlertHelper.showWarningAlert(view.getScene().getWindow(), "Story in use",
+              "The story you are trying to delete is in use by a game save. Please delete the game save first.");
+        }
+      }
+      StoryDAO.getInstance().remove(story);
+      populateTableView();
+    }
+  }
+
+
 
   /**
    * Populates the table view with stories.
