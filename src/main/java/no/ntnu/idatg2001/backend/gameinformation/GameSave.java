@@ -23,7 +23,7 @@ public class GameSave {
   private String saveName;
   private LocalDateTime timeOfSave;
   private String playerName;
-  @OneToOne(cascade = CascadeType.REMOVE)
+  @OneToOne
   @JoinColumn(name = "game_id")
   private Game game;
   @OneToOne
