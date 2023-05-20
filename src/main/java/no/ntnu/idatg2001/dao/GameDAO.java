@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
+import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 
@@ -70,11 +71,12 @@ public class GameDAO implements DAO<Game> {
    */
   @Override
   public void remove(Game game) {
+    Game foundGame = em.find(Game.class, game.getId());
     em.getTransaction().begin();
-    if (!em.contains(game)) {
-      game = em.merge(game);
+    if (!em.contains(foundGame)) {
+      foundGame = em.merge(foundGame);
     }
-    em.remove(game);
+    em.remove(foundGame);
     em.getTransaction().commit();
   }
 
