@@ -70,9 +70,11 @@ public class GameDAO implements DAO<Game> {
    */
   @Override
   public void remove(Game game) {
-    Game foundGame = em.find(Game.class, game.getId());
     em.getTransaction().begin();
-    em.remove(foundGame);
+    if (!em.contains(game)) {
+      game = em.merge(game);
+    }
+    em.remove(game);
     em.getTransaction().commit();
   }
 
@@ -85,7 +87,6 @@ public class GameDAO implements DAO<Game> {
   public void update(Game game) {
     em.getTransaction().begin();
     em.merge(game);
-    em.flush();
     em.getTransaction().commit();
   }
 

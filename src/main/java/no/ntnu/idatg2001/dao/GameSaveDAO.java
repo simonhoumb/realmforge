@@ -71,9 +71,11 @@ public class GameSaveDAO implements DAO<GameSave> {
    */
   @Override
   public void remove(GameSave gameSave) {
-    GameSave foundGameSave = em.find(GameSave.class, gameSave.getId());
     em.getTransaction().begin();
-    em.remove(foundGameSave);
+    if (!em.contains(gameSave)) {
+      gameSave = em.merge(gameSave);
+    }
+    em.remove(gameSave);
     em.getTransaction().commit();
   }
 
@@ -86,7 +88,6 @@ public class GameSaveDAO implements DAO<GameSave> {
   public void update(GameSave gameSave) {
     em.getTransaction().begin();
     em.merge(gameSave);
-    em.flush();
     em.getTransaction().commit();
   }
 

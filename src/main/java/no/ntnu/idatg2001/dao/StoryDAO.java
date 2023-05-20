@@ -42,9 +42,11 @@ public class StoryDAO implements DAO<Story>{
 
   @Override
   public void remove(Story story) {
-    Story foundStory = this.em.find(Story.class, story.getId());
     em.getTransaction().begin();
-    em.remove(foundStory);
+    if (!em.contains(story)) {
+      story = em.merge(story);
+    }
+    em.remove(story);
     em.getTransaction().commit();
   }
 
@@ -52,7 +54,6 @@ public class StoryDAO implements DAO<Story>{
   public void update(Story story) {
     em.getTransaction().begin();
     em.merge(story);
-    em.flush();
     em.getTransaction().commit();
 
   }
