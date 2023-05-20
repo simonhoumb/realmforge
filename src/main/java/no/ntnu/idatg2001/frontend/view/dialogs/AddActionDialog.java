@@ -116,28 +116,21 @@ public class AddActionDialog extends Dialog<Void> {
   }
 
   private Node createComponentForActionType(ActionType actionType) {
-    switch (actionType) {
-      case GOLD:
-      case HEALTH:
-      case DAMAGE:
-      case PASSAGE:
-      case SCORE:
-        return createTextField();
-      case ARMOR:
-      case WEAPON:
-      case ITEM:
-        return createNewComboBox();
-      case GAMEOVER:
-      case WIN:
-      case LOSE:
-      case NONE:
-        return null; // No additional component needed
-    }
-    return null; // Default case, should not be reached
+    return switch (actionType) {
+      case GOLD, HEALTH, DAMAGE, PASSAGE, SCORE -> createTextField();
+      case ARMOR, WEAPON, ITEM -> createNewComboBox();
+      case GAMEOVER, WIN, LOSE, NONE -> null; // No additional component needed
+    };
   }
 
   private Node createTextField() {
-    return new TextField();
+    TextField newTextField = new TextField();
+    newTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.matches("-?\\d*")) {
+        newTextField.setText(oldValue);
+      }
+    });
+    return newTextField;
   }
 
   private ComboBox<String> createNewComboBox() {
