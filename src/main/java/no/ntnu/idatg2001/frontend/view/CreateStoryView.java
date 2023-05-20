@@ -30,6 +30,7 @@ public class CreateStoryView extends BorderPane {
   private CreateStoryController controller;
   private JFXButton storyNameButton;
   private JFXButton editStoryButton;
+  private JFXButton deleteButton;
   private JFXButton importButton;
   private JFXButton backButton;
   private ResourceBundle resourceBundle;
@@ -49,12 +50,13 @@ public class CreateStoryView extends BorderPane {
     createNewStoryNameButton();
     createEditStoryButton();
     createImportStoryButton();
+    createDeleteButton();
     createBackButton();
     createStoryTableView();
 
     buttonBar = new ButtonBar();
     buttonBar.setButtonMinWidth(10);
-    buttonBar.getButtons().addAll(storyNameButton,editStoryButton, importButton, backButton);
+    buttonBar.getButtons().addAll(storyNameButton,editStoryButton, deleteButton, importButton, backButton);
     HBox buttonHbox = new HBox(buttonBar);
     buttonHbox.setAlignment(Pos.BOTTOM_CENTER);
     buttonHbox.setPadding(new Insets(25,0,0,0));
@@ -115,6 +117,11 @@ public class CreateStoryView extends BorderPane {
   private void createImportStoryButton() {
     importButton = new JFXButton(resourceBundle.getString("newStoryView.loadStoryButton"));
     importButton.setOnAction(event -> controller.onImportButtonPressed());
+  }
+
+  public void createDeleteButton() {
+    deleteButton = new JFXButton(resourceBundle.getString("newStoryView.deleteStoryButton"));
+    deleteButton.setOnAction(event -> controller.onDeleteButtonPressed());
   }
 
   private void createBackButton() {
