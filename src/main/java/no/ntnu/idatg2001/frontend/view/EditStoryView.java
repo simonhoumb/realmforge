@@ -71,7 +71,7 @@ public class EditStoryView extends BorderPane {
     createActionTableView();
     createPassageContentTextArea();
     setPadding(new Insets(10));
-    String cssFile = "/CSS/EditStoryView.css";
+    String cssFile = "/css/EditStoryView.css";
     getStylesheets().add(cssFile);
     HBox buttonBox = new HBox();
     buttonBox.getChildren().add(buttonBar);

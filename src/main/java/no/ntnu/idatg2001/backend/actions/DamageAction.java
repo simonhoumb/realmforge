@@ -12,7 +12,7 @@ public class DamageAction extends Action {
   }
 
   public DamageAction() {
-
+    this.setActionType(ActionType.DAMAGE);
   }
 
   public void execute(Unit unit) {

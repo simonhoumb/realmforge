@@ -15,10 +15,10 @@ public class Ranger extends Unit {
     super.addToInventory("Trap");
     super.addToInventory("Boots");
     this.setPlayerClass(PlayerClass.RANGER);
-    super.setIntelligence(4);
-    super.setDexterity(10);
-    super.setStrength(3);
-    super.setLuck(5);
+    super.setDamage(25);
+    super.setCriticalChance(20);
+    super.setArmour(15);
+    super.setUnitManaMax(50);
   }
 
   public Ranger() {

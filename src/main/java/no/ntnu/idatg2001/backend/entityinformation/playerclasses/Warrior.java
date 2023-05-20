@@ -14,10 +14,10 @@ public class Warrior extends Unit {
     super.addToInventory("Shield");
     super.addToInventory("BodyArmor");
     this.setPlayerClass(PlayerClass.WARRIOR);
-    super.setIntelligence(2);
-    super.setDexterity(5);
-    super.setStrength(10);
-    super.setLuck(3);
+    super.setDamage(20);
+    super.setCriticalChance(5);
+    super.setArmour(25);
+    super.setUnitManaMax(50);
   }
 
   public Warrior() {
