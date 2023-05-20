@@ -10,6 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import no.ntnu.idatg2001.backend.entityinformation.PlayerClass;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Custom;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Mage;
@@ -55,6 +57,7 @@ public class StartNewGameController extends Controller<StartNewGameView> {
     String rogueString = this.view.getResourceBundle().getString("startNewGame.classType.rogue");
     String warriorString = this.view.getResourceBundle().getString("startNewGame.classType.warrior");
     String rangerString = this.view.getResourceBundle().getString("startNewGame.classType.ranger");
+    String customString = this.view.getResourceBundle().getString("startNewGame.classType.custom");
     if (getSelectedClassInComboBox() != null){
       if (getSelectedClassInComboBox().equals(mageString)) {
         return new Mage(view.getNameField().getText());
@@ -64,6 +67,8 @@ public class StartNewGameController extends Controller<StartNewGameView> {
         return new Warrior(view.getNameField().getText());
       } else if (getSelectedClassInComboBox().equals(rangerString)) {
         return new Ranger(view.getNameField().getText());
+      } else if (getSelectedClassInComboBox().equals(customString)) {
+        return new Custom(view.getNameField().getText());
       }
     }
     return null;
@@ -117,6 +122,45 @@ public class StartNewGameController extends Controller<StartNewGameView> {
     mainMenuView.setController(menuController);
     newScene.setRoot(mainMenuView);
   }
+
+
+  public void updateClassStats() {
+    String selectedClass = view.getClassComboBox().getValue();
+
+    if (selectedClass != null) {
+      if (selectedClass.equals("Mage")) {
+        // Set mage stats
+        Mage mage = new Mage(view.getNameField().getText());
+        setStatsForClass(mage);
+      } else if (selectedClass.equals("Rogue")) {
+        // Set rogue stats
+        Rogue rogue = new Rogue(view.getNameField().getText());
+        setStatsForClass(rogue);
+      } else if (selectedClass.equals("Warrior")) {
+        // Set warrior stats
+        Warrior warrior = new Warrior(view.getNameField().getText());
+        setStatsForClass(warrior);
+      } else if (selectedClass.equals("Ranger")) {
+        // Set ranger stats
+        Ranger ranger = new Ranger(view.getNameField().getText());
+        setStatsForClass(ranger);
+      } else if (selectedClass.equals("Custom")) {
+        // Set custom class stats
+        Custom custom = new Custom(view.getNameField().getText());
+        setStatsForClass(custom);
+      }
+    }
+  }
+
+  private void setStatsForClass(Unit unit) {
+    view.getHealthTextField().setText(String.valueOf(unit.getUnitHealth()));
+    view.getManaTextField().setText(String.valueOf(unit.getUnitMana()));
+    view.getGoldTextField().setText(String.valueOf(unit.getGold()));
+    view.getDamageTextField().setText(String.valueOf(unit.getDamage()));
+    view.getCriticalChanceTextField().setText(String.valueOf(unit.getCriticalChance()));
+    view.getArmourTextField().setText(String.valueOf(unit.getArmour()));
+  }
+
 
   public Story getSelectedStoryInTableView() {
     return view.getStoryTableView().getSelectionModel().getSelectedItem();

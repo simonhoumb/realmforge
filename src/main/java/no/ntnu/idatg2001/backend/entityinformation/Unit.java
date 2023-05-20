@@ -31,15 +31,9 @@ public abstract class Unit {
   private int unitLevel; //The Level of the Unit.
   private int unitMana; //The Mana of the unit.
   private int unitManaMax; //The max Mana points of the unit.
-
-  //Stats
-  private int strength; //Strength stat of the Unit.
-  private int intelligence; //Intelligence stat of the Unit.
-  private int dexterity; //Dexterity stat of the Unit.
-  private int luck; //Luck stat of the Unit.
   private int gold; //Gold for the Unit.
-  private double damage = 30; //Damage the Unit starts with.
-  private double criticalChance = 0.0; //Unit CriticalChance.
+  private int damage = 0; //Damage the Unit starts with.
+  private int criticalChance = 0; //Unit CriticalChance.
   private int armour; //Armor stat to the Unit.
   private String weapon = "hands"; //Weapon Unit Starts With.
   @ElementCollection
@@ -179,7 +173,7 @@ public abstract class Unit {
    *
    * @return the damage
    */
-  public double getDamage() {
+  public int getDamage() {
     return damage;
   }
 
@@ -188,7 +182,7 @@ public abstract class Unit {
    *
    * @param damage the damage
    */
-  public void setDamage(double damage) {
+  public void setDamage(int damage) {
     this.damage = damage;
   }
 
@@ -197,7 +191,7 @@ public abstract class Unit {
    *
    * @return the critical chance
    */
-  public double getCriticalChance() {
+  public int getCriticalChance() {
     return criticalChance;
   }
 
@@ -206,7 +200,7 @@ public abstract class Unit {
    *
    * @param criticalChance the critical chance
    */
-  public void setCriticalChance(double criticalChance) {
+  public void setCriticalChance(int criticalChance) {
     this.criticalChance = criticalChance;
   }
 
@@ -268,6 +262,13 @@ public abstract class Unit {
   }
 
   /**
+   * Sets unit Weapon.
+   */
+  public void setWeapon(String weapon) {
+    this.weapon = weapon;
+  }
+
+  /**
    * Gets unit level.
    *
    * @return the unit level
@@ -283,78 +284,6 @@ public abstract class Unit {
    */
   public void setUnitLevel(int unitLevel) {
     this.unitLevel = unitLevel;
-  }
-
-  /**
-   * Gets strength.
-   *
-   * @return the strength
-   */
-  public int getStrength() {
-    return strength;
-  }
-
-  /**
-   * Sets strength.
-   *
-   * @param strength the strength
-   */
-  public void setStrength(int strength) {
-    this.strength = strength;
-  }
-
-  /**
-   * Gets intelligence.
-   *
-   * @return the intelligence
-   */
-  public int getIntelligence() {
-    return intelligence;
-  }
-
-  /**
-   * Sets intelligence.
-   *
-   * @param intelligence the intelligence
-   */
-  public void setIntelligence(int intelligence) {
-    this.intelligence = intelligence;
-  }
-
-  /**
-   * Gets dexterity.
-   *
-   * @return the dexterity
-   */
-  public int getDexterity() {
-    return dexterity;
-  }
-
-  /**
-   * Sets dexterity.
-   *
-   * @param dexterity the dexterity
-   */
-  public void setDexterity(int dexterity) {
-    this.dexterity = dexterity;
-  }
-
-  /**
-   * Gets luck.
-   *
-   * @return the luck
-   */
-  public int getLuck() {
-    return luck;
-  }
-
-  /**
-   * Sets luck.
-   *
-   * @param luck the luck
-   */
-  public void setLuck(int luck) {
-    this.luck = luck;
   }
 
   /**
@@ -437,12 +366,6 @@ public abstract class Unit {
         + ", unitGold= " + gold
         + ", playerClass= " + playerClass
         + ", unitInventory= " + unitInventory
-        + ", unit Stats §§ "
-        + " STR " + strength + ", "
-        + " INT " + intelligence + ", "
-        + " DEX " + dexterity + ", "
-        + " LUCK " + luck + ", "
-        + " §§ "
         + '}';
   }
 }

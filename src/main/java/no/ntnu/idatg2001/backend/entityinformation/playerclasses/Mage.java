@@ -11,10 +11,10 @@ public class Mage extends Unit {
     super.addToInventory("Staff");
     super.addToInventory("Mana Potion");
     super.addToInventory("Mage Robe");
-    super.setIntelligence(10);
-    super.setDexterity(5);
-    super.setStrength(2);
-    super.setLuck(4);
+    super.setUnitManaMax(100);
+    super.setDamage(30);
+    super.setCriticalChance(30);
+    super.setArmour(10);
   }
 
   public Mage() {

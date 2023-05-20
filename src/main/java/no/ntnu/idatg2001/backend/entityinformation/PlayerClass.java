@@ -1,6 +1,7 @@
 package no.ntnu.idatg2001.backend.entityinformation;
 
 import java.util.HashMap;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Custom;
 
 /**
  * Enum class where The Class of the player is retrieved.
@@ -13,7 +14,8 @@ public enum PlayerClass {
   MAGE("Mage", 1),
   ROGUE("Rogue", 2),
   WARRIOR("Warrior", 3),
-  RANGER("Ranger", 4);
+  RANGER("Ranger", 4),
+  CUSTOM("Custom", 5);
 
   private static final HashMap<String, PlayerClass> BY_CLASSNAME = new HashMap<>();
   private static final HashMap<Integer, PlayerClass> BY_CLASS_NUMBER = new HashMap<>();
