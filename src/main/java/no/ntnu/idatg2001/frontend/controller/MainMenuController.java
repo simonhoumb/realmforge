@@ -128,4 +128,17 @@ public class MainMenuController extends Controller<MainMenuView> {
           loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
     }
   }
+
+  @Override
+  public void onDeleteGameButton(ActionEvent event) {
+    GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
+    if (selectedGameSave != null) {
+      GameSaveDAO.getInstance().remove(selectedGameSave);
+      populateSavedGamesTableView(event);
+    } else {
+      AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(),
+          loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
+          loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
+    }
+  }
 }
