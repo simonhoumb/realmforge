@@ -9,8 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
+import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
@@ -125,6 +128,20 @@ public class MainMenuController extends Controller<MainMenuView> {
       onCloseSource(event);
     } else {
       AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(), loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
+          loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
+    }
+  }
+
+  @Override
+  public void onDeleteGameButton(ActionEvent event) {
+    GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
+    if (selectedGameSave != null) {
+      GameSaveDAO.getInstance().update(selectedGameSave);
+      GameSaveDAO.getInstance().remove(selectedGameSave);
+      populateSavedGamesTableView(event);
+    } else {
+      AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(),
+          loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
           loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
     }
   }

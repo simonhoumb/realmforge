@@ -11,6 +11,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.PassageDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.MainMenuController;
 
 public class ApplicationStart extends Application {
@@ -52,6 +55,9 @@ public class ApplicationStart extends Application {
       primaryStage.setScene(mainMenuScene);
       primaryStage.setOnCloseRequest(windowEvent -> {
         GameDAO.getInstance().close();
+        GameSaveDAO.getInstance().close();
+        StoryDAO.getInstance().close();
+        PassageDAO.getInstance().close();
         Platform.exit();
         System.exit(0);
       });

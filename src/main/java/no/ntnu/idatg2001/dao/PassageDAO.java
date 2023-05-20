@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 
 public class PassageDAO implements DAO<Passage> {
@@ -49,8 +50,11 @@ public class PassageDAO implements DAO<Passage> {
 
   @Override
   public void remove(Passage passage) {
-    Passage foundPassage = this.em.find(Passage.class, passage.getId());
+    Passage foundPassage = em.find(Passage.class, passage.getId());
     em.getTransaction().begin();
+    if (!em.contains(foundPassage)) {
+      foundPassage = em.merge(foundPassage);
+    }
     em.remove(foundPassage);
     em.getTransaction().commit();
   }
@@ -59,7 +63,6 @@ public class PassageDAO implements DAO<Passage> {
   public void update(Passage passage) {
     em.getTransaction().begin();
     em.merge(passage);
-    em.flush();
     em.getTransaction().commit();
 
   }

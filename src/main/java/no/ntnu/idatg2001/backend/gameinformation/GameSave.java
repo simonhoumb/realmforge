@@ -5,14 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 
 @Entity
+@Table(name = "game_save")
 public class GameSave {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +23,11 @@ public class GameSave {
   private String saveName;
   private LocalDateTime timeOfSave;
   private String playerName;
-  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne
+  @JoinColumn(name = "game_id")
   private Game game;
-  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne
+  @JoinColumn(name = "passage_id")
   private Passage lastSavedPassage;
 
 
@@ -37,6 +42,9 @@ public class GameSave {
 
   public Long getId() {
     return id;
+  }
+  public Long setId(Long id) {
+    return this.id = id;
   }
 
   public String getSaveName() {

@@ -26,7 +26,6 @@ public class Game {
   @JoinColumn(name = "unit_id")
   private Unit unit;
   @ManyToOne
-  @JoinColumn(name = "story_id")
   private Story story;
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id")

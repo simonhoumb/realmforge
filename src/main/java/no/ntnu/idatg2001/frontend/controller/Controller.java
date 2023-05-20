@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.PassageDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 
 /**
  *Abstract class for all controllers.
@@ -13,7 +16,7 @@ import no.ntnu.idatg2001.dao.GameDAO;
  * @author Simon Husås Houmb
  * @version 1.0
  */
-public abstract class Controller<T> {
+public abstract class   Controller<T> {
 
   protected T view;
 
@@ -36,6 +39,9 @@ public abstract class Controller<T> {
   public void onExitApplication(ActionEvent event) {
     event.consume();
     GameDAO.getInstance().close();
+    GameSaveDAO.getInstance().close();
+    StoryDAO.getInstance().close();
+    PassageDAO.getInstance().close();
     Platform.exit();
     System.exit(0);
   }
@@ -62,6 +68,8 @@ public abstract class Controller<T> {
    *@param event The action event.
    */
   public void onLoadSelectedGame(ActionEvent event) {}
+
+  public void onDeleteGameButton(ActionEvent event) {}
 
   /**
    *Configures the saved games table view.
