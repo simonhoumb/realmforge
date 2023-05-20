@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import no.ntnu.idatg2001.dao.GameDAO;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.PassageDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 
 /**
  *Abstract class for all controllers.
@@ -36,6 +39,9 @@ public abstract class   Controller<T> {
   public void onExitApplication(ActionEvent event) {
     event.consume();
     GameDAO.getInstance().close();
+    GameSaveDAO.getInstance().close();
+    StoryDAO.getInstance().close();
+    PassageDAO.getInstance().close();
     Platform.exit();
     System.exit(0);
   }
