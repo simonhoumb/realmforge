@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
+import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
@@ -135,9 +136,13 @@ public class CreateStoryController extends Controller<CreateStoryView> {
    */
   private void populateTableView() {
     view.getStoryTableView().getItems().clear();
-    List<Story> storylist = StoryDAO.getInstance().getAll();
+    List<Story> storylist = StoryDAO.getInstance().getAll().stream().toList();
     ObservableList<Story> list = FXCollections.observableArrayList(storylist);
-    view.getStoryTableView().setItems(list);
+    if (!list.isEmpty()) {
+      view.getStoryTableView().setItems(list);
+    } else {
+      //NO STORIES);
+    }
   }
 
   /**
@@ -164,13 +169,6 @@ public class CreateStoryController extends Controller<CreateStoryView> {
    * @return The selected story.
    */
   public Story getSelectedItemInTableView() {
-    Story selectedStory = view.getStoryTableView().getSelectionModel().getSelectedItem();
-    if (selectedStory == null) {
-      AlertHelper.showErrorAlert(view.getScene().getWindow(),
-          view.getResourceBundle().getString("error"),
-          view.getResourceBundle().getString("error_select_story"));
-      return null;
-    }
-    return selectedStory;
+    return view.getStoryTableView().getSelectionModel().getSelectedItem();
   }
 }
