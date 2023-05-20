@@ -268,6 +268,13 @@ public abstract class Unit {
   }
 
   /**
+   * Sets unit Weapon.
+   */
+  public void setWeapon(String weapon) {
+    this.weapon = weapon;
+  }
+
+  /**
    * Gets unit level.
    *
    * @return the unit level
