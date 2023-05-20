@@ -23,6 +23,7 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
   private ResourceBundle resourceBundle;
   private Button backButton;
   private Button loadGameButton;
+  private Button deleteGameButton;
   private VBox layout;
   private Controller<T> controller;
   private TableView<GameSave> savedGamesTableView;
@@ -37,6 +38,7 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     resourceBundle = ResourceBundle.getBundle("languages/loadGameDialog", locale);
     createTableView();
     createLoadGameButton();
+    createDeleteGameButton();
     createBackToMainMenuButton();
     createLayout();
     getDialogPane().setContent(layout);
@@ -52,7 +54,7 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     buttonBox.setSpacing(20);
     buttonBox.setAlignment(Pos.CENTER);
     buttonBox.setPadding(new Insets(10));
-    buttonBox.getChildren().addAll(loadGameButton, backButton);
+    buttonBox.getChildren().addAll(loadGameButton, deleteGameButton, backButton);
     layout.getChildren().add(buttonBox);
     layout.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
     layout.setAlignment(Pos.CENTER);
@@ -99,6 +101,14 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     backButton.setWrapText(true);
     backButton.setOnAction(event -> controller.onCloseSource(event));
   }
+
+  private void createDeleteGameButton() {
+    deleteGameButton = new Button(resourceBundle.getString("deleteGameButton"));
+    deleteGameButton.setAlignment(Pos.CENTER);
+    deleteGameButton.setWrapText(true);
+    deleteGameButton.setOnAction(event -> controller.onDeleteGameButton(event));
+  }
+
 
   private void createLoadGameButton() {
     loadGameButton = new Button(resourceBundle.getString("loadGameButton"));
