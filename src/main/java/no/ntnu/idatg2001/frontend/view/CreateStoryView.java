@@ -122,7 +122,7 @@ public class CreateStoryView extends BorderPane {
     backButton.setCancelButton(true);
     backButton.setOnAction(event -> {
       try {
-        controller.onBackToMainMenuButtonPressed(event);
+        controller.onBackToMainMenuButtonPressed();
       } catch (IOException e) {
         e.printStackTrace();
       }

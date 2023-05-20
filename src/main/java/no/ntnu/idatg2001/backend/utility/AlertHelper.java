@@ -33,7 +33,9 @@ public class AlertHelper {
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
+    alert.initStyle(StageStyle.UNDECORATED);
     alert.initOwner(window);
+    alert.getDialogPane().getStylesheets().add("/css/alerts.css");
     Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
     stage.setAlwaysOnTop(true);
     stage.toFront();
