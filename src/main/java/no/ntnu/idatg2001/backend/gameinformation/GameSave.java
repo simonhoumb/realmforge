@@ -1,10 +1,12 @@
 package no.ntnu.idatg2001.backend.gameinformation;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
@@ -18,9 +20,9 @@ public class GameSave {
   private String saveName;
   private LocalDateTime timeOfSave;
   private String playerName;
-  @ManyToOne
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Game game;
-  @ManyToOne
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Passage lastSavedPassage;
 
 
