@@ -469,7 +469,6 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   private void deletePassage(Passage passage) {
     selectedStory.removePassageAndConnectedLinks(passage);
-    getLinksByReference(getSelectedPassageInPassageList().getTitle());
     removePassage(getSelectedPassageInPassageList());
   }
 
@@ -510,7 +509,6 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public List<Link> getLinksByReference(String passageTitle) {
     List<Link> linksWithReference = new ArrayList<>();
-
     for (Entry<Link, Passage> entry : selectedStory.getPassages().entrySet()) {
       Passage passage = entry.getValue();
       for (Link link : passage.getLinks()) {
