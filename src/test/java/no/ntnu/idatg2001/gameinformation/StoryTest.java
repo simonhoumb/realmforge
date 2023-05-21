@@ -26,6 +26,7 @@ class StoryTest {
     dungeonLink1 = new Link("Open Dungeon Door", "Dungeon");
     openingPassage.addLink(dungeonLink1);
     story = new Story("MyStory", openingPassage);
+    story.addPassage(openingPassage);
     story.addPassage(dungeonPassage);
   }
 
@@ -50,19 +51,40 @@ class StoryTest {
   class removePassageTest {
     @Test
     void passageIsNotLinkedToOtherPassages() {
-      Map<Link, Passage> testPassages = new HashMap<>(story.getPassages());
-      story.removePassage(testPassages.get(dungeonLink1));
-      assertFalse(testPassages.containsValue(openingPassage));
+      Passage testPassage = new Passage("testPassage", new StringBuilder("This is a test"));
+      story.addPassage(testPassage);
+      assertDoesNotThrow(() -> story.removePassage(new Link("testLink", "testPassage")));
+      assertFalse(story.getPassages().containsValue(testPassage));
+    }
+
+    @Test
+    void passageIsLinkedToOtherPassages() {
+      assertThrows(IllegalStateException.class,
+          () -> story.removePassage(new Link("testLink", "Dungeon")));
+      assertTrue(story.getPassages().containsValue(dungeonPassage));
     }
   }
 
   @Nested
   class getBrokenLinksTest {
     @Test
-    void brokenLinkFound() {
+    void brokenLinkWithEmptyReferenceFound() {
       Link dungeonLink2 = new Link("Fall Down Hatch", "");
       openingPassage.addLink(dungeonLink2);
-      assertFalse(story.getBrokenLinks().contains(dungeonLink2));
+      assertTrue(story.getBrokenLinks().contains(dungeonLink2));
+    }
+
+    @Test
+    void brokenLinkWithNotEmptyReferenceFound() {
+      Link dungeonLink2 = new Link("Fall Down Hatch", "NonExistentPassage");
+      openingPassage.addLink(dungeonLink2);
+      assertTrue(story.getBrokenLinks().contains(dungeonLink2));
+    }
+
+    @Test
+    void noBrokenLinksFound() {
+      System.out.println(story.getBrokenLinks());
+      assertTrue(story.getBrokenLinks().isEmpty());
     }
   }
 

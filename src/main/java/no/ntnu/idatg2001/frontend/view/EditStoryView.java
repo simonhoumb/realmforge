@@ -125,7 +125,7 @@ public class EditStoryView extends BorderPane {
     deleteButton = new JFXButton(resourceBundle.getString("deleteButton"));
     deleteButton.setWrapText(true);
     deleteButton.setOnAction(event ->
-      controller.onDeletePassageButtonPressed());
+      controller.onDeleteButtonPressed());
   }
 
   private void createMapButton() {

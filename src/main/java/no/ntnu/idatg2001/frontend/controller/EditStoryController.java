@@ -300,16 +300,16 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   public void populateTableView() {
-    if (selectedStory == null) {
-      return; // Do nothing if selectedStory is null
-    }
+    if (selectedStory != null) {
     view.getPassageTableView().getItems().clear(); // Clear the selection
     List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
     ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
-    if (selectedStory.getOpeningPassage() != null) {
+    if (selectedStory.getOpeningPassage() != null
+        && !selectedStory.getPassages().containsValue(selectedStory.getOpeningPassage())) {
       list.add(selectedStory.getOpeningPassage());
     }
     view.getPassageTableView().setItems(list);
+    }
   }
 
 
@@ -411,36 +411,29 @@ public class EditStoryController extends Controller<EditStoryView> {
         });
   }
 
-  public void onDeletePassageButtonPressed() {
+  public void onDeleteButtonPressed() {
     Passage selectedPassage = getSelectedPassageInPassageList();
     Link selectedLink = getSelectedLinkInLinkList();
     Action selectedAction = getSelectedActionInActionList();
-    String confirmationMessage = "";
 
     if (selectedPassage == null && selectedLink == null && selectedAction == null) {
       AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
           view.getResourceBundle().getString("nothingSelected"));
       return;
     }
-    if (selectedPassage != null && selectedLink == null && selectedAction == null) {
-      confirmationMessage = view.getResourceBundle().getString("areYouSurePassage") +
-          "\n\n" + view.getResourceBundle().getString("title") + selectedPassage.getTitle();
-      deletePassage(selectedPassage);
-    } else if (selectedLink != null && selectedAction == null) {
-      confirmationMessage = view.getResourceBundle().getString("areYouSureLink") +
-          "\n\n" + view.getResourceBundle().getString("description") + selectedLink.getText();
-      deleteLink(selectedPassage, selectedLink);
-    } else {
-      confirmationMessage = view.getResourceBundle().getString("areYouSureAction") +
-          "\n\n" + view.getResourceBundle().getString("description") +
-          selectedAction.getActionType();
-      deleteAction(selectedLink, selectedAction);
-    }
-
+    String confirmationMessage = createConfirmationMessage(selectedPassage, selectedLink, selectedAction);
     boolean result = AlertHelper.showConfirmationAlert(view.getScene().getWindow(),
         view.getResourceBundle().getString("confirmation"), confirmationMessage);
 
     if (result) {
+      if (selectedPassage != null && selectedLink == null && selectedAction == null) {
+        deletePassage(selectedPassage);
+      } else if (selectedLink != null && selectedAction == null) {
+        deleteLink(selectedPassage, selectedLink);
+      } else {
+        deleteAction(selectedLink, selectedAction);
+      }
+
       StoryDAO.getInstance().update(selectedStory);
       populateTableView();
       clearSelectedItemInPassageList();
@@ -448,12 +441,34 @@ public class EditStoryController extends Controller<EditStoryView> {
       view.getLinkTableView().getItems().clear();
       view.getActionTableView().getItems().clear();
     }
-    // Do nothing if the result is false
   }
 
+  private String createConfirmationMessage(Passage selectedPassage, Link selectedLink, Action selectedAction) {
+    String confirmationMessage = "";
+
+    if (selectedPassage != null && selectedLink == null && selectedAction == null) {
+      confirmationMessage = String.format("%s\n\n%s %s",
+          view.getResourceBundle().getString("areYouSurePassage"),
+          view.getResourceBundle().getString("title"),
+          selectedPassage.getTitle());
+    } else if (selectedLink != null && selectedAction == null) {
+      confirmationMessage = String.format("%s\n\n%s %s",
+          view.getResourceBundle().getString("areYouSureLink"),
+          view.getResourceBundle().getString("description"),
+          selectedLink.getText());
+    } else if (selectedAction != null) {
+      confirmationMessage = String.format("%s\n\n%s %s",
+          view.getResourceBundle().getString("areYouSureAction"),
+          view.getResourceBundle().getString("description"),
+          selectedAction.getActionType());
+    }
+
+    return confirmationMessage;
+  }
+
+
   private void deletePassage(Passage passage) {
-    selectedStory.removePassage(passage);
-    getLinksByReference(getSelectedPassageInPassageList().getTitle());
+    selectedStory.removePassageAndConnectedLinks(passage);
     removePassage(getSelectedPassageInPassageList());
   }
 
@@ -494,7 +509,6 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public List<Link> getLinksByReference(String passageTitle) {
     List<Link> linksWithReference = new ArrayList<>();
-
     for (Entry<Link, Passage> entry : selectedStory.getPassages().entrySet()) {
       Passage passage = entry.getValue();
       for (Link link : passage.getLinks()) {

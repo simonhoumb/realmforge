@@ -3,13 +3,12 @@ package no.ntnu.idatg2001.backend.gameinformation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FlushModeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class Story {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
 
@@ -38,14 +37,9 @@ public class Story {
 
   public Story(String title, Passage openingPassage) {
     this.title = title;
-    this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
-  }
-
-  public Story(Story story) {
-    this.title = story.getTitle();
-    this.openingPassage = story.getOpeningPassage();
-    this.passages = story.getPassages();
+    this.openingPassage = openingPassage;
+    this.addPassage(this.openingPassage);
   }
 
   public Story() {}
@@ -85,44 +79,48 @@ public class Story {
     }
   }
 
-  //TODO må sjekke om detter rett.
-  /*
   public void removePassage(Link link) {
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      if (entry.getValue().getLinks().size() == 1
-      && entry.getValue().getLinks().contains(link)) {
-        passages.remove(link);
+    Passage passageToRemove = getPassage(link);
+    boolean hasOtherReferences = passages.values().stream()
+        .filter(passage -> !passage.equals(passageToRemove))
+        .flatMap(passage -> passage.getLinks().stream())
+        .anyMatch(l -> l.getReference().equals(passageToRemove.getTitle()));
+    if (!hasOtherReferences) {
+      if(getPassage(link).equals(getOpeningPassage())) {
+        setOpeningPassage(null);
       }
+      passages.remove(link);
+    } else {
+      throw new IllegalStateException("Passage has other links referencing it.");
     }
   }
-   */
 
-  public void removePassage(Passage passage) {
-    List<Link> linksToRemove = new ArrayList<>();
 
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      Passage currentPassage = entry.getValue();
-      if (currentPassage.equals(passage)) {
-        linksToRemove.addAll(currentPassage.getLinks());
-      }
-    }
-
+  public void removePassageAndConnectedLinks(Passage passage) {
+    List<Link> linksToRemove = passages.values().stream()
+        .flatMap(p -> p.getLinks().stream())
+        .filter(l -> l.getReference().equals(passage.getTitle()))
+        .toList();
     for (Link link : linksToRemove) {
       passages.remove(link);
     }
     // Remove the passage from the passages map
+    if(passage.equals(getOpeningPassage())) {
+      setOpeningPassage(null);
+    }
     passages.values().remove(passage);
   }
 
   //TODO må sjekke om detter rett.
   public List<Link> getBrokenLinks() {
     ArrayList<Link> brokenLinks = new ArrayList<>();
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      if (!entry.getKey().getReference().equals(entry.getValue().getTitle())) {
-        brokenLinks.add(entry.getKey());
-      }
-    }
-    System.out.println(brokenLinks);
+    this.passages.values().stream()
+        .flatMap(passage -> passage.getLinks().stream())
+        .forEach(link -> {
+          if (!passages.containsKey(link)) {
+            brokenLinks.add(link);
+          }
+        });
     return brokenLinks;
   }
 
@@ -132,6 +130,42 @@ public class Story {
 
   public Map<Link, Passage> getPassages() {
     return passages;
+  }
+
+
+  /**
+   * This method counts the amount of passages in Story.
+   * @return the amount of passages in the story as a int.
+   */
+  public int getTotalAmountOfPassages() {
+    List<Passage> passageList = new ArrayList<>();
+    for (Passage storyPassage: passages.values()) {
+      if (!passageList.contains(storyPassage)) {
+        passageList.add(storyPassage);
+      }
+    }
+    if (getOpeningPassage() != null
+        && !getPassages().containsValue(getOpeningPassage())) {
+      passageList.add(getOpeningPassage());
+    }
+    return passageList.size();
+  }
+
+  /**
+   * This method counts the amount of links in passages in Story.
+   * @return the amount of links in passages in the story as an int.
+   */
+  public int getTotalAmountOfLinks() {
+    List<String> linkTextList = new ArrayList<>();
+
+    for (Passage passage : passages.values()) {
+      passage.getLinks().forEach(link -> {
+        if (!linkTextList.contains(link.getText())) {
+          linkTextList.add(link.getText());
+        }
+      });
+    }
+    return linkTextList.size();
   }
 
   /**
@@ -157,39 +191,5 @@ public class Story {
     }
     stringBuilder.append("}");
     return stringBuilder.toString();
-  }
-
-  /**
-   * This method counts the amount of passages in Story.
-   * @return the amount of passages in the story as a int.
-   */
-  public int getTotalAmountOfPassages() {
-    List<Passage> passageList = new ArrayList<>();
-    for (Passage storyPassage: passages.values()) {
-      if (!passageList.contains(storyPassage)) {
-        passageList.add(storyPassage);
-      }
-    }
-    if (getOpeningPassage() != null) {
-      passageList.add(getOpeningPassage());
-    }
-    return passageList.size();
-  }
-
-  /**
-   * This method counts the amount of links in passages in Story.
-   * @return the amount of links in passages in the story as an int.
-   */
-  public int getTotalAmountOfPassagesLinks() {
-    List<Link> linkList = new ArrayList<>();
-
-    for (Passage passage : passages.values()) {
-      passage.getLinks().forEach(link -> {
-        if (!linkList.contains(link)) {
-          linkList.add(link);
-        }
-      });
-    }
-    return linkList.size();
   }
 }
