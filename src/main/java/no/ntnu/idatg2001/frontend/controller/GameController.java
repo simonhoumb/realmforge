@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -84,8 +85,10 @@ public class GameController extends Controller<GameView> {
 
   public void onLinkPressed(ActionEvent event, Link link) {
     Passage passageToGoTo = view.getCurrentGameSave().getGame().go(link);
+    link.getActions().forEach(action -> action.execute(view.getCurrentGameSave().getGame().getUnit()));
     view.clearGameTextFlow();
     view.addToGameTextFlow(passageToGoTo);
+    populatePlayerInventoryListView();
     event.consume();
   }
 
@@ -139,6 +142,12 @@ public class GameController extends Controller<GameView> {
     Collections.reverse(gameSaves);
     loadGameDialog.getSavedGamesTableView()
         .setItems(FXCollections.observableArrayList(gameSaves));
+  }
+
+  public void populatePlayerInventoryListView() {
+    view.getPlayerInventoryListView().getItems().clear();
+    view.getPlayerInventoryListView().setItems(FXCollections.observableArrayList(
+        view.getCurrentGameSave().getGame().getUnit().getUnitInventory()));
   }
 
 
