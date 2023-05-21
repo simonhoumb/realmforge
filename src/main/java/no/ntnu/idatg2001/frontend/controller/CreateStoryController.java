@@ -2,9 +2,7 @@ package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,13 +13,10 @@ import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
-import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
-import no.ntnu.idatg2001.dao.PassageDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
@@ -149,7 +144,6 @@ public class CreateStoryController extends Controller<CreateStoryView> {
   }
 
 
-
   /**
    * Populates the table view with stories.
    */
@@ -176,8 +170,8 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     });
     view.getColumnStoryLinkAmount().setCellValueFactory(cell -> {
       Story story = cell.getValue();
-      int linkAmount = story.getTotalAmountOfPassagesLinks()
-          + story.getOpeningPassage().getLinks().size();
+      int linkAmount = story.getTotalAmountOfLinks();
+          //+ story.getOpeningPassage().getLinks().size();
       return new SimpleIntegerProperty(linkAmount).asObject();
     });
   }

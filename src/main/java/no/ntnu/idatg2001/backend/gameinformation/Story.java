@@ -80,15 +80,16 @@ public class Story {
   }
 
   public void removePassage(Link link) {
-    /*
-          if ((linksByReference).size() == 1 && linksByReference.contains(link)) {
-            passages.remove(link);
-          } else {
-            throw new IllegalStateException("Passage has other links referencing it. "
-                + "Use removePassageAndConnectedLinks instead.");
-          }
-
-     */
+    Passage passageToRemove = getPassage(link);
+    boolean hasOtherReferences = passages.values().stream()
+        .filter(passage -> !passage.equals(passageToRemove))
+        .flatMap(passage -> passage.getLinks().stream())
+        .anyMatch(l -> l.getReference().equals(passageToRemove.getTitle()));
+    if (!hasOtherReferences) {
+      passages.remove(link);
+    } else {
+      throw new IllegalStateException("Passage has other links referencing it.");
+    }
   }
 
 
@@ -140,7 +141,8 @@ public class Story {
         passageList.add(storyPassage);
       }
     }
-    if (getOpeningPassage() != null) {
+    if (getOpeningPassage() != null
+        && !getPassages().containsValue(getOpeningPassage())) {
       passageList.add(getOpeningPassage());
     }
     return passageList.size();
@@ -150,17 +152,17 @@ public class Story {
    * This method counts the amount of links in passages in Story.
    * @return the amount of links in passages in the story as an int.
    */
-  public int getTotalAmountOfPassagesLinks() {
-    List<Link> linkList = new ArrayList<>();
+  public int getTotalAmountOfLinks() {
+    List<String> linkTextList = new ArrayList<>();
 
     for (Passage passage : passages.values()) {
       passage.getLinks().forEach(link -> {
-        if (!linkList.contains(link)) {
-          linkList.add(link);
+        if (!linkTextList.contains(link.getText())) {
+          linkTextList.add(link.getText());
         }
       });
     }
-    return linkList.size();
+    return linkTextList.size();
   }
 
   /**
