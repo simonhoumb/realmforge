@@ -16,6 +16,6 @@ public class ScoreAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.setUnitLevel(unit.getUnitLevel() + (Integer) value);
+    unit.setUnitScore(unit.getUnitScore() + (Integer) value);
   }
 }

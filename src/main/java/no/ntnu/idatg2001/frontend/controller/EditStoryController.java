@@ -125,11 +125,11 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onAddActingButtonPressed() {
     if (getSelectedLinkInLinkList() != null && view.getLinkTableView() != null) {
-    addActionDialog = new AddActionDialog(this);
-    addActionDialog.initOwner(view.getScene().getWindow());
-    addActionDialog.initStyle(StageStyle.UNDECORATED);
-    addActionDialog.showAndWait();
-    getSelectedLinkInLinkList();
+      addActionDialog = new AddActionDialog(this);
+      addActionDialog.initOwner(view.getScene().getWindow());
+      addActionDialog.initStyle(StageStyle.UNDECORATED);
+      addActionDialog.showAndWait();
+      getSelectedLinkInLinkList();
     } else {
       AlertHelper.showWarningAlert(view.getScene().getWindow(), warning,
           view.getResourceBundle().getString("selectLinkToAddAction"));
@@ -206,7 +206,7 @@ public class EditStoryController extends Controller<EditStoryView> {
 
   public void onEditButtonIsPressed() {
     if (getSelectedPassageInPassageList() != null && getSelectedLinkInLinkList() == null
-    && getSelectedActionInActionList() == null) {
+        && getSelectedActionInActionList() == null) {
       setPassageBeingEdited(true);
       addPassageDialog = new AddPassageDialog(this);
       addPassageDialog.initOwner(view.getScene().getWindow());
