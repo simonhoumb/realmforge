@@ -92,7 +92,7 @@
       boolean linkAdded = true;
       try {
         if(link == null) {
-          throw new IllegalArgumentException();
+          throw new IllegalArgumentException("Link is null");
         } else {
           getLinks().add(link);
         }
