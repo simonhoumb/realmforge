@@ -1,0 +1,7 @@
+#health-bar {
+    -fx-accent: #ff0000;
+}
+
+#mana-bar {
+    -fx-accent: #0099ff;
+}
