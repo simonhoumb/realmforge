@@ -43,6 +43,9 @@ public class PassageDAO implements DAO<Passage> {
           "Passage with the same id already exists in the database.");
     } else {
       this.em.getTransaction().begin();
+      if (!em.contains(passage)) {
+        passage = em.merge(passage);
+      }
       this.em.persist(passage);
       this.em.getTransaction().commit();
     }

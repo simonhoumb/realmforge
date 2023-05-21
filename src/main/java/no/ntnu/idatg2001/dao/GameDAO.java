@@ -59,6 +59,9 @@ public class GameDAO implements DAO<Game> {
           "Game with the same id already exists in the database.");
     } else {
       this.em.getTransaction().begin();
+      if (!em.contains(game)) {
+        game = em.merge(game);
+      }
       this.em.persist(game);
       this.em.getTransaction().commit();
     }

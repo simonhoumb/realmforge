@@ -35,6 +35,9 @@ public class StoryDAO implements DAO<Story>{
           "Story with the same id already exists in the database.");
     } else {
       this.em.getTransaction().begin();
+      if (!em.contains(story)) {
+        story = em.merge(story);
+      }
       this.em.persist(story);
       this.em.getTransaction().commit();
     }
