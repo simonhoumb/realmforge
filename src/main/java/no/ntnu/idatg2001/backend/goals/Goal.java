@@ -1,6 +1,8 @@
 package no.ntnu.idatg2001.backend.goals;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,11 @@ public abstract class Goal {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Convert
+   protected Object goalValue;
+
+  private GoalType goalType;
+
   Long getId() {
     return id;
   }
@@ -27,4 +34,18 @@ public abstract class Goal {
   }
 
   public abstract boolean isFulfilled(Unit unit);
+
+  public abstract void setGoalValue(int value);
+
+  public Object getGoalValue() {
+    return goalValue;
+  }
+
+  public GoalType getGoalType() {
+    return goalType;
+  }
+
+  protected void setGoalType(GoalType goalType) {
+    this.goalType = goalType;
+  }
 }

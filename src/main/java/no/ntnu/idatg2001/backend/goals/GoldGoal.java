@@ -5,10 +5,10 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class GoldGoal extends Goal  {
-  private int minimumGold;
 
   public GoldGoal(int goldMinimum) {
-    this.minimumGold = goldMinimum;
+    this.goalValue = goldMinimum;
+    setGoalType(GoalType.GOLD_GOAL);
   }
 
   public GoldGoal() {
@@ -16,6 +16,11 @@ public class GoldGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getGold() >= minimumGold;
+    return unit.getGold() >= (Integer) goalValue;
+  }
+
+  @Override
+  public void setGoalValue(int value) {
+
   }
 }

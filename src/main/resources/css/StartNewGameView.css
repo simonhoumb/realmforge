@@ -50,6 +50,10 @@
   -fx-table-cell-border-color: transparent;
 }
 
+.table-view:hover {
+  -fx-background-color: #3A3A3A;
+}
+
 .table-view .column-header {
   -fx-background-color: #1E1E1E;
   -fx-text-fill: #A9A9A9;
@@ -111,6 +115,34 @@
 
 .scroll-bar:vertical .decrement-arrow:hover {
   -fx-background-color: #A9A9A9;
+}
+
+.checkbox-label {
+  -fx-text-fill: white;
+}
+
+.checkbox .box {
+  -fx-background-color: #333333;
+  -fx-border-color: #666666;
+}
+
+.checkbox:selected .box {
+  -fx-background-color: #555555;
+  -fx-border-color: #999999;
+}
+
+.checkbox:selected .box .mark {
+  -fx-background-color: white;
+}
+
+.checkbox:hover .box {
+  -fx-background-color: #555555;
+  -fx-border-color: #999999;
+}
+
+.checkbox:pressed .box {
+  -fx-background-color: #777777;
+  -fx-border-color: #999999;
 }
 
 

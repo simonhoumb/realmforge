@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -48,8 +49,11 @@ public class NewGameDialog extends Dialog {
     vBox.getContentBias();
     vBox.fillWidthProperty();
     vBox.setFillWidth(true);
-    //vBox.setAlignment(Pos.CENTER);
-    vBox.getChildren().addAll(playNewStoryButton, createStoryButton, backToMainMenuButton);
+    HBox buttonCloseBox = new HBox();
+    buttonCloseBox.setAlignment(Pos.CENTER_RIGHT);
+    buttonCloseBox.setSpacing(10);
+    buttonCloseBox.getChildren().add(backToMainMenuButton);
+    vBox.getChildren().addAll(playNewStoryButton, createStoryButton, buttonCloseBox);
     layout.getChildren().add(vBox);
     getDialogPane().setHeader(newGameLabel);
     getDialogPane().setContent(layout);
@@ -58,7 +62,7 @@ public class NewGameDialog extends Dialog {
 
   private void createNewStoryButton() {
     createStoryButton = new Button(resourceBundle.getString("createStoryButton"));
-    createStoryButton.setPrefSize(150,30);
+    createStoryButton.setPrefSize(300,30);
     createStoryButton.setOnAction(event -> {
       try {
         controller.onCreateStoryButtonPressed(event);
@@ -70,7 +74,7 @@ public class NewGameDialog extends Dialog {
 
   private void createNewGameButton() {
     playNewStoryButton = new Button(resourceBundle.getString("playNewStoryButton"));
-    playNewStoryButton.setPrefSize(150,30);
+    playNewStoryButton.setPrefSize(300,30);
     playNewStoryButton.setOnAction(event -> controller.onStartGameButtonPressed(event));
   }
 

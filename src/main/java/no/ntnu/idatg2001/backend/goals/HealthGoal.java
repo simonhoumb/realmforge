@@ -5,10 +5,11 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class HealthGoal extends Goal  {
-  private int minimumHealth;
+
 
   public HealthGoal(int minimumHealth) {
-    this.minimumHealth = minimumHealth;
+    this.goalValue = minimumHealth;
+    setGoalType(GoalType.HEALTH_GOAL);
   }
 
   public HealthGoal() {
@@ -16,6 +17,11 @@ public class HealthGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitHealth() >= minimumHealth;
+    return unit.getUnitHealth() >= (Integer) goalValue;
+  }
+
+  @Override
+  public void setGoalValue(int value) {
+
   }
 }
