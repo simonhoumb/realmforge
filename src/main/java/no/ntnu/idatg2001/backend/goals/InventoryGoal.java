@@ -6,10 +6,10 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 @Entity
 public class InventoryGoal extends Goal  {
-  private List<String> mandatoryItems;
 
-  public InventoryGoal(List<String> mandatoryItems) {
-    this.mandatoryItems = mandatoryItems;
+  public InventoryGoal(String mandatoryItem) {
+    this.goalValue = mandatoryItem;
+    setGoalType(GoalType.INVENTORY_GOAL);
   }
 
   public InventoryGoal() {
@@ -17,6 +17,11 @@ public class InventoryGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitInventory().equals(mandatoryItems);
+    return unit.getUnitInventory().contains(goalValue);
+  }
+
+  @Override
+  public void setGoalValue(int value) {
+
   }
 }
