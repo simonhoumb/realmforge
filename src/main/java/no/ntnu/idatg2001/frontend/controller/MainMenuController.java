@@ -117,12 +117,11 @@ public class MainMenuController extends Controller<MainMenuView> {
 
   @Override
   public void onLoadSelectedGame(ActionEvent event) {
-    GameController gameController;
-    GameView gameView;
     if (loadGameDialog.getSelectedGameSave() != null) {
-      gameView = new GameView(loadGameDialog.getSelectedGameSave());
-      gameController = new GameController(gameView);
+      GameView gameView = new GameView(loadGameDialog.getSelectedGameSave());
+      GameController gameController = new GameController(gameView);
       gameView.setController(gameController);
+      gameController.populatePlayerInventoryListView();
       Scene newScene = view.getScene();
       newScene.setRoot(gameView);
       onCloseSource(event);
