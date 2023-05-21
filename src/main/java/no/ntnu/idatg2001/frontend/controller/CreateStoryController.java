@@ -2,6 +2,7 @@ package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,12 +14,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
+import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.PassageDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
@@ -108,6 +111,15 @@ public class CreateStoryController extends Controller<CreateStoryView> {
         }
         StoryDAO.getInstance().update(story);
         populateTableView();
+        List<Link> brokenLinks = story.getBrokenLinks();
+        if (!brokenLinks.isEmpty()) {
+          StringBuilder brokenLinksStringBuilder = new StringBuilder();
+          brokenLinksStringBuilder.append("The following passages have broken links:");
+          brokenLinks.forEach(link -> brokenLinksStringBuilder.append("\n")
+              .append(link.getReference()));
+          AlertHelper.showWarningAlert(view.getScene().getWindow(), "Broken links",
+              brokenLinksStringBuilder.toString());
+        }
       } catch (IllegalArgumentException illegalArgumentException) {
         AlertHelper.showErrorAlert(view.getScene().getWindow(), "Error loading file",
             "The file you tried to load is not a valid story file. Make sure format is correct.");
@@ -128,6 +140,8 @@ public class CreateStoryController extends Controller<CreateStoryView> {
             "The story you tried to delete is currently in use by a game save. "
                 + "Please delete the game save first.");
       } else {
+        story.setOpeningPassage(null);
+        StoryDAO.getInstance().update(story);
         StoryDAO.getInstance().remove(story);
         populateTableView();
       }
