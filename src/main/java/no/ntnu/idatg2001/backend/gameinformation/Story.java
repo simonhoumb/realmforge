@@ -3,13 +3,12 @@ package no.ntnu.idatg2001.backend.gameinformation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FlushModeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class Story {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
 
@@ -38,14 +37,9 @@ public class Story {
 
   public Story(String title, Passage openingPassage) {
     this.title = title;
-    this.openingPassage = openingPassage;
     this.passages = new HashMap<>();
-  }
-
-  public Story(Story story) {
-    this.title = story.getTitle();
-    this.openingPassage = story.getOpeningPassage();
-    this.passages = story.getPassages();
+    this.openingPassage = openingPassage;
+    this.addPassage(this.openingPassage);
   }
 
   public Story() {}
@@ -85,28 +79,27 @@ public class Story {
     }
   }
 
-  //TODO må sjekke om detter rett.
-  /*
   public void removePassage(Link link) {
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      if (entry.getValue().getLinks().size() == 1
-      && entry.getValue().getLinks().contains(link)) {
-        passages.remove(link);
-      }
-    }
+    /*
+          if ((linksByReference).size() == 1 && linksByReference.contains(link)) {
+            passages.remove(link);
+          } else {
+            throw new IllegalStateException("Passage has other links referencing it. "
+                + "Use removePassageAndConnectedLinks instead.");
+          }
+
+     */
   }
-   */
 
-  public void removePassage(Passage passage) {
+
+  public void removePassageAndConnectedLinks(Passage passage) {
     List<Link> linksToRemove = new ArrayList<>();
-
     for (Entry<Link, Passage> entry : passages.entrySet()) {
       Passage currentPassage = entry.getValue();
       if (currentPassage.equals(passage)) {
         linksToRemove.addAll(currentPassage.getLinks());
       }
     }
-
     for (Link link : linksToRemove) {
       passages.remove(link);
     }
@@ -117,12 +110,13 @@ public class Story {
   //TODO må sjekke om detter rett.
   public List<Link> getBrokenLinks() {
     ArrayList<Link> brokenLinks = new ArrayList<>();
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      if (!entry.getKey().getReference().equals(entry.getValue().getTitle())) {
-        brokenLinks.add(entry.getKey());
-      }
-    }
-    System.out.println(brokenLinks);
+    this.passages.values().stream()
+        .flatMap(passage -> passage.getLinks().stream())
+        .forEach(link -> {
+          if (!passages.containsKey(link)) {
+            brokenLinks.add(link);
+          }
+        });
     return brokenLinks;
   }
 
@@ -134,30 +128,6 @@ public class Story {
     return passages;
   }
 
-  /**
-   * This method returns a string representation of the Story object.
-   * @return a string representation of the Story object.
-   */
-  @Override
-  public String toString() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(String.format("Story{"
-        + "Title=%s,"
-        + "OpeningPassage=%s", title, openingPassage));
-    for (Passage passage : passages.values()) {
-      stringBuilder.append(String.format("%nPassage{%nTitle=%s", passage.getTitle()));
-      for (Link link : passage.getLinks()) {
-        stringBuilder.append(String.format("%nLink{%nText=%s%nReference=%s%n",
-            link.getText(), link.getReference()));
-        for (Action action : link.getActions()) {
-          stringBuilder.append(String.format("%nAction{%nText=%s%nType=%s}}%n",
-              action.getActionType(), action.getValue()));
-        }
-      }
-    }
-    stringBuilder.append("}");
-    return stringBuilder.toString();
-  }
 
   /**
    * This method counts the amount of passages in Story.
@@ -191,5 +161,30 @@ public class Story {
       });
     }
     return linkList.size();
+  }
+
+  /**
+   * This method returns a string representation of the Story object.
+   * @return a string representation of the Story object.
+   */
+  @Override
+  public String toString() {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(String.format("Story{"
+        + "Title=%s,"
+        + "OpeningPassage=%s", title, openingPassage));
+    for (Passage passage : passages.values()) {
+      stringBuilder.append(String.format("%nPassage{%nTitle=%s", passage.getTitle()));
+      for (Link link : passage.getLinks()) {
+        stringBuilder.append(String.format("%nLink{%nText=%s%nReference=%s%n",
+            link.getText(), link.getReference()));
+        for (Action action : link.getActions()) {
+          stringBuilder.append(String.format("%nAction{%nText=%s%nType=%s}}%n",
+              action.getActionType(), action.getValue()));
+        }
+      }
+    }
+    stringBuilder.append("}");
+    return stringBuilder.toString();
   }
 }

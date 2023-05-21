@@ -452,7 +452,7 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   private void deletePassage(Passage passage) {
-    selectedStory.removePassage(passage);
+    selectedStory.removePassageAndConnectedLinks(passage);
     getLinksByReference(getSelectedPassageInPassageList().getTitle());
     removePassage(getSelectedPassageInPassageList());
   }
