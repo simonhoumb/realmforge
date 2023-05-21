@@ -16,7 +16,7 @@ public class ScoreGoal extends Goal {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitLevel() >= (Integer) goalValue;
+    return unit.getUnitScore() >= (Integer) goalValue;
   }
 
   @Override

@@ -30,7 +30,7 @@ public abstract class Unit {
   private PlayerClass playerClass; //The Class of the Player
   private int unitHealthMax; //The max Health points of the Unit.
   private int unitHealth; //The Health of the Unit.
-  private int unitLevel; //The Level of the Unit.
+  private int unitScore; //The Level of the Unit.
   private int unitMana; //The Mana of the unit.
   private int unitManaMax; //The max Mana points of the unit.
   private int gold; //Gold for the Unit.
@@ -275,17 +275,17 @@ public abstract class Unit {
    *
    * @return the unit level
    */
-  public int getUnitLevel() {
-    return unitLevel;
+  public int getUnitScore() {
+    return unitScore;
   }
 
   /**
    * Sets unit level.
    *
-   * @param unitLevel the unit level
+   * @param unitScore the unit level
    */
-  public void setUnitLevel(int unitLevel) {
-    this.unitLevel = unitLevel;
+  public void setUnitScore(int unitScore) {
+    this.unitScore = unitScore;
   }
 
   /**
@@ -364,7 +364,7 @@ public abstract class Unit {
         + "unitName= '" + unitName + '\''
         + ", unitHealthPoints= " + unitHealth
         + ", unitMana= " + unitMana
-        + ", unitScore= " + unitLevel
+        + ", unitScore= " + unitScore
         + ", unitGold= " + gold
         + ", playerClass= " + playerClass
         + ", unitInventory= " + unitInventory

@@ -52,6 +52,12 @@ public class GameController extends Controller<GameView> {
     }
   }
 
+  public void onMenuButtonPressed(ActionEvent event) {
+      pauseMenuDialog = new PauseMenuDialog(this);
+      pauseMenuDialog.initOwner(view.getScene().getWindow());
+      pauseMenuDialog.showAndWait();
+  }
+
   public void onSettingsViewButtonPressed() {
     settingsDialog = new SettingsDialog(this);
     System.out.println(pauseMenuDialog.getDialogPane().getScene().getWindow());
@@ -70,7 +76,6 @@ public class GameController extends Controller<GameView> {
     SettingsModel.getInstance().saveSettings();
 
     pauseMenuDialog.update();
-    view.update();
 
     // Close the settings dialog.
     onCloseSource(event);
@@ -86,8 +91,7 @@ public class GameController extends Controller<GameView> {
   public void onLinkPressed(ActionEvent event, Link link) {
     Passage passageToGoTo = view.getCurrentGameSave().getGame().go(link);
     link.getActions().forEach(action -> action.execute(view.getCurrentGameSave().getGame().getUnit()));
-    view.clearGameTextFlow();
-    view.addToGameTextFlow(passageToGoTo);
+    view.addLinksToButtons(passageToGoTo);
     populatePlayerInventoryListView();
     event.consume();
   }
