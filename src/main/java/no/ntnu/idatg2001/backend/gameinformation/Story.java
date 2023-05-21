@@ -86,6 +86,9 @@ public class Story {
         .flatMap(passage -> passage.getLinks().stream())
         .anyMatch(l -> l.getReference().equals(passageToRemove.getTitle()));
     if (!hasOtherReferences) {
+      if(getPassage(link).equals(getOpeningPassage())) {
+        setOpeningPassage(null);
+      }
       passages.remove(link);
     } else {
       throw new IllegalStateException("Passage has other links referencing it.");
@@ -94,17 +97,17 @@ public class Story {
 
 
   public void removePassageAndConnectedLinks(Passage passage) {
-    List<Link> linksToRemove = new ArrayList<>();
-    for (Entry<Link, Passage> entry : passages.entrySet()) {
-      Passage currentPassage = entry.getValue();
-      if (currentPassage.equals(passage)) {
-        linksToRemove.addAll(currentPassage.getLinks());
-      }
-    }
+    List<Link> linksToRemove = passages.values().stream()
+        .flatMap(p -> p.getLinks().stream())
+        .filter(l -> l.getReference().equals(passage.getTitle()))
+        .toList();
     for (Link link : linksToRemove) {
       passages.remove(link);
     }
     // Remove the passage from the passages map
+    if(passage.equals(getOpeningPassage())) {
+      setOpeningPassage(null);
+    }
     passages.values().remove(passage);
   }
 
