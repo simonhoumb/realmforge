@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.gameinformation;
+package no.ntnu.idatg2001.backend.gameinformation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +20,33 @@ class PassageTest {
   @AfterEach
   void tearDown() {
     passage = null;
+  }
+
+  @Nested
+  class getAndSetId {
+    @Test
+    void setIdSetsAndGetsCorrectId() {
+      passage.setId(10L);
+      assertEquals(10L, passage.getId());
+    }
+  }
+
+  @Nested
+  class getAndSetTitle {
+    @Test
+    void setTextSetsAndGetsCorrectText() {
+      passage.setTitle("newTitle");
+      assertEquals("newTitle", passage.getTitle());
+    }
+  }
+
+  @Nested
+  class getAndSetContent {
+    @Test
+    void setTextSetsAndGetsCorrectText() {
+      passage.setContent(new StringBuilder("newContent"));
+      assertEquals("newContent", passage.getContent().toString());
+    }
   }
 
   @Nested
