@@ -18,5 +18,6 @@ public class ItemAction extends Action {
 
   public void execute(Unit unit) {
     unit.addToInventory((String) value);
+    this.setActionType(ActionType.NONE);
   }
 }
