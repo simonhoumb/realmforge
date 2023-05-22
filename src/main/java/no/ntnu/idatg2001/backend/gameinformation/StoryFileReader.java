@@ -5,10 +5,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.ActionType;
+import no.ntnu.idatg2001.backend.actions.ArmorAction;
+import no.ntnu.idatg2001.backend.actions.DamageAction;
+import no.ntnu.idatg2001.backend.actions.GameOverAction;
 import no.ntnu.idatg2001.backend.actions.GoldAction;
 import no.ntnu.idatg2001.backend.actions.HealthAction;
 import no.ntnu.idatg2001.backend.actions.ItemAction;
+import no.ntnu.idatg2001.backend.actions.LoseAction;
+import no.ntnu.idatg2001.backend.actions.NoneAction;
+import no.ntnu.idatg2001.backend.actions.PassageAction;
 import no.ntnu.idatg2001.backend.actions.ScoreAction;
+import no.ntnu.idatg2001.backend.actions.WeaponAction;
+import no.ntnu.idatg2001.backend.actions.WinAction;
 import no.ntnu.idatg2001.backend.utility.CheckIfValid;
 
 public class StoryFileReader{
@@ -154,15 +162,54 @@ public class StoryFileReader{
 
   private Action createNewAction(String actionType, String actionValue) {
     ActionType type = ActionType.valueOfLabel(actionType);
-    if (type == ActionType.HEALTH && checkIfValid.isInteger(actionValue)) {
-      return new HealthAction(Integer.parseInt(actionValue));
-    } else if (type == ActionType.GOLD && checkIfValid.isInteger(actionValue)) {
-      return new GoldAction(Integer.parseInt(actionValue));
-    } else if (type == ActionType.ITEM) { //TODO: legg til check for item om trengs
-      return new ItemAction(actionValue);
-    } else if (type == ActionType.SCORE && checkIfValid.isInteger(actionValue)) {
-      return new ScoreAction(Integer.parseInt(actionValue));
+    if (type == null) {
+      return null;
     }
+
+    switch (type) {
+      case GOLD, HEALTH, DAMAGE, ARMOR, SCORE -> {
+        if (checkIfValid.isInteger(actionValue)) {
+          int value = Integer.parseInt(actionValue);
+          return createActionByType(type, value);
+        }
+      }
+      case WEAPON, ITEM, PASSAGE -> {
+        return createActionByType(type, actionValue);
+      }
+      case GAME_OVER -> {
+        return new GameOverAction();
+      }
+      case WIN -> {
+        return new WinAction();
+      }
+      case LOSE -> {
+        return new LoseAction();
+      }
+      case NONE -> {
+        return new NoneAction();
+      }
+    }
+
     return null;
+  }
+
+  private Action createActionByType(ActionType type, int value) {
+    return switch (type) {
+      case GOLD -> new GoldAction(value);
+      case HEALTH -> new HealthAction(value);
+      case DAMAGE -> new DamageAction(value);
+      case ARMOR -> new ArmorAction(value);
+      case SCORE -> new ScoreAction(value);
+      default -> null;
+    };
+  }
+
+  private Action createActionByType(ActionType type, String value) {
+    return switch (type) {
+      case WEAPON -> new WeaponAction(value);
+      case ITEM -> new ItemAction(value);
+      case PASSAGE -> new PassageAction(value);
+      default -> null;
+    };
   }
 }
