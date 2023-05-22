@@ -113,12 +113,13 @@ public class Link {
     boolean actionRemoved = false;
     try {
       if(action == null) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Action given is null");
       } else {
         getActions().remove(action);
+        actionRemoved = true;
       }
     } catch (Exception exception) {
-      actionRemoved = true;
+      exception.printStackTrace();
     }
     return actionRemoved;
   }
