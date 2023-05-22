@@ -19,7 +19,5 @@ public class Mage extends Unit {
     super.setArmour(10);
   }
 
-  public Mage() {
-
-  }
+  public Mage() {}
 }
