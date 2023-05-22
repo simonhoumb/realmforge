@@ -1,0 +1,18 @@
+Story Title
+
+::Opening Passage
+This is the opening passage.
+It has some text.
+[First Link](passage2)
+{Damage}<10>
+{Health}<50>
+[Second Link](passage3)
+{Armor}<5>
+
+::passage2
+This is passage 2.
+
+::passage3
+This is passage 3.
+[Final Link](passage4)
+{Win}<1>

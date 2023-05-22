@@ -20,7 +20,5 @@ public class Mage extends Unit {
     super.setUnitManaMax(50);
   }
 
-  public Mage() {
-
-  }
+  public Mage() {}
 }

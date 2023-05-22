@@ -8,8 +8,7 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 public class Ranger extends Unit {
 
   public Ranger(String entityName) {
-    super(100, 100, entityName, 0, 50);
-    this.setUnitHealth(150);
+    super(150, 150, entityName, 0, 50);
     super.addToInventory("Bow");
     super.addToInventory("HealthPotion");
     super.addToInventory("Trap");

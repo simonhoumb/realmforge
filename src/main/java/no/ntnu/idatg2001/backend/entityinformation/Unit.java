@@ -52,7 +52,7 @@ public abstract class Unit {
    * @param unitHealthMax the unit health max
    * @param unitHealth    the unit health
    * @param unitName      the unit name
-   * @param gold            the gold
+   * @param gold          the gold
    */
   protected Unit(int unitHealthMax, int unitHealth, String unitName, int gold,
       int unitMana) {
@@ -91,18 +91,15 @@ public abstract class Unit {
   }
 
   /**
-   * Sets unit health. if Health is bigger than max health, health
-   * is set to maxHealth.
+   * Sets unit health. if Health is bigger than max health, health is set to maxHealth.
    *
    * @param unitHealth the unit health
    */
   public void setUnitHealth(int unitHealth) {
     if (unitHealth > this.unitHealthMax) {
       this.unitHealth = this.unitHealthMax;
-    } else if (unitHealth < 0) {
-      this.unitHealth = 0;
     } else {
-      this.unitHealth = unitHealth;
+      this.unitHealth = Math.max(unitHealth, 0);
     }
   }
 
@@ -137,18 +134,15 @@ public abstract class Unit {
   }
 
   /**
-   * Sets unit mana if mana is bigger than mana, its set back
-   * to max mana.
+   * Sets unit mana if mana is bigger than mana, its set back to max mana.
    *
    * @param unitMana the unit mana
    */
   public void setUnitMana(int unitMana) {
     if (unitMana > this.unitManaMax) {
       this.unitMana = this.unitManaMax;
-    } else if (unitMana < 0) {
-      this.unitHealth = 0;
     } else {
-      this.unitMana = unitMana;
+      this.unitMana = Math.max(unitMana, 0);
     }
   }
 

@@ -16,9 +16,7 @@ public class WeaponAction extends Action {
   }
 
   public void execute(Unit unit) {
-    if (value instanceof String) {
-      String weapon = (String) value;
-      unit.setWeapon(weapon);
-    }
+    String weapon = (String) value;
+    unit.setWeapon(weapon);
   }
 }

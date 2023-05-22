@@ -109,18 +109,11 @@ public class Link {
     return actionAdded;
   }
 
-  public boolean removeAction(Action action) {
-    boolean actionRemoved = false;
-    try {
-      if(action == null) {
-        throw new IllegalArgumentException();
-      } else {
-        getActions().remove(action);
-      }
-    } catch (Exception exception) {
-      actionRemoved = true;
+  public void removeAction(Action action) {
+    if (action == null) {
+      throw new IllegalArgumentException("Action given is null");
     }
-    return actionRemoved;
+      getActions().remove(action);
   }
 
 

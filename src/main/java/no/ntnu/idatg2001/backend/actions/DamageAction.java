@@ -11,9 +11,7 @@ public class DamageAction extends Action {
     this.setActionType(ActionType.DAMAGE);
   }
 
-  public DamageAction() {
-    this.setActionType(ActionType.DAMAGE);
-  }
+  public DamageAction() {}
 
   public void execute(Unit unit) {
     int damage = Integer.parseInt(value.toString());

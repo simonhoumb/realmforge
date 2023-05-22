@@ -1,4 +1,4 @@
-package no.ntnu.idatg2001.entityinformation;
+package no.ntnu.idatg2001.backend.entityinformation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +17,13 @@ class UnitTest {
   void setUpEach() {
      unit = new Ranger("Legolas");
 }
+
+  @Test
+  void testGetAndSetId() {
+    unit.setId(1L);
+    assertEquals(1, unit.getId());
+  }
+
   @Nested
   class removeFromInventoryTest {
     @Test

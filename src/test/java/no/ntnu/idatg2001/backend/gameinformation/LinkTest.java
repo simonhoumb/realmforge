@@ -1,7 +1,8 @@
-package no.ntnu.idatg2001.gameinformation;
+package no.ntnu.idatg2001.backend.gameinformation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import no.ntnu.idatg2001.backend.actions.ItemAction;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.GoldAction;
@@ -24,6 +25,33 @@ class LinkTest {
   }
 
   @Nested
+  class getAndSetId {
+    @Test
+    void setIdSetsAndGetsCorrectId() {
+      link.setId(10L);
+      assertEquals(10L, link.getId());
+    }
+  }
+
+  @Nested
+  class getAndSetText {
+    @Test
+    void setTextSetsAndGetsCorrectText() {
+      link.setText("newText");
+      assertEquals("newText", link.getText());
+    }
+  }
+
+  @Nested
+  class getAndSetReference {
+    @Test
+    void setReferenceSetsAndGetsCorrectReference() {
+      link.setReference("newReference");
+      assertEquals("newReference", link.getReference());
+    }
+  }
+
+  @Nested
   class addActionTest {
     @Test
     void validActionAddedDoesNotThrowException() {
@@ -37,6 +65,29 @@ class LinkTest {
       assertFalse(link.addAction(null));
       assertTrue(link.getActions().isEmpty());
     }
+  }
+  @Test
+  void testRemoveActionIsNotNull() {
+    Action action1 = new ItemAction("Action 1");
+    Action action2 = new ItemAction("Action 2");
+    link.addAction(action1);
+    link.addAction(action2);
+
+    assertDoesNotThrow(() -> link.removeAction(action1));
+    assertFalse(link.getActions().contains(action1));
+    assertTrue(link.getActions().contains(action2));
+  }
+
+  @Test
+  void testRemoveActionIsNull() {
+    Action action1 = new ItemAction("Action 1");
+    Action action2 = new ItemAction("Action 2");
+    link.addAction(action1);
+    link.addAction(action2);
+    assertThrows(IllegalArgumentException.class, () -> link.removeAction(null));
+
+    assertTrue(link.getActions().contains(action1));
+    assertTrue(link.getActions().contains(action2));
   }
 
   @Nested
