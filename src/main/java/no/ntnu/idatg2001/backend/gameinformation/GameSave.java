@@ -27,7 +27,7 @@ public class GameSave {
   private String saveName;
   private LocalDateTime timeOfSave;
   private String playerName;
-  @OneToOne
+  @OneToOne (cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JoinColumn(name = "game_id")
   private Game game;
   @OneToOne
@@ -35,9 +35,9 @@ public class GameSave {
   private Passage lastSavedPassage;
 
 
-  public GameSave(Game gameToSave, String playerName) {
-    this.game = gameToSave;
-    this.saveName = gameToSave.getStory().getTitle();
+  public GameSave(Unit unit, Story story, List<Goal> goals, String playerName) {
+    this.game = new Game(unit, story, goals);
+    this.saveName = story.getTitle();
     this.playerName = playerName;
     this.timeOfSave = LocalDateTime.now();
   }
@@ -129,24 +129,6 @@ public class GameSave {
      this.game.setGoals(goals);
   }
 
-  public void setStoredInitialImprint(GameSave gameSave) {
-    // Set the relevant properties from the original game save to the initial imprint
-    this.setGame(gameSave.getGame()); // Set the game to the original game
-    this.setUnit(gameSave.getUnit()); // Set the unit to the original unit
-    this.setStory(gameSave.getStory()); // Set the story to the original story
-    this.setGoals(gameSave.getGoals()); // Set the goals to the original goals
-    this.setTimeOfSave(gameSave.getTimeOfSave()); // Set the time of save to the original time of save
-    this.setPlayerName(gameSave.getPlayerName()); // Set the player name to the original player name
-    this.setId(gameSave.getId()); // Set the id to the original id
-
-    // Set the time of save and player name to appropriate values if needed
-  }
-
-  public GameSave getInitialGameSave() {
-    GameSave initialGameSave = new GameSave();
-    initialGameSave.setStoredInitialImprint(this);
-    return initialGameSave;
-  }
 
   public String getStoryAndLastPassage() {
     StringBuilder location = new StringBuilder(this.saveName + " - ");

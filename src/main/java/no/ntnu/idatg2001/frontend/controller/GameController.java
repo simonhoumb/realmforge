@@ -7,26 +7,21 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import no.ntnu.idatg2001.backend.actions.Action;
-import no.ntnu.idatg2001.backend.entityinformation.Unit;
-import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
-import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
 import no.ntnu.idatg2001.backend.goals.GoldGoal;
 import no.ntnu.idatg2001.backend.goals.HealthGoal;
 import no.ntnu.idatg2001.backend.goals.InventoryGoal;
 import no.ntnu.idatg2001.backend.goals.ScoreGoal;
-import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.frontend.view.EndGameView;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.dialogs.GoalsDialog;
@@ -147,6 +142,10 @@ public class GameController extends Controller<GameView> {
   }
 
   public void onEndGameButtonPressed() {
+    EndGameView endGameView = new EndGameView();
+    Scene newScene = view.getScene();
+    endGameView.setController(this);
+    newScene.setRoot(endGameView);
 
   }
 
@@ -174,11 +173,10 @@ public class GameController extends Controller<GameView> {
 
   public void onSaveSelectedGame(ActionEvent event) {
     GameSave selectedItem = (saveGameDialog.getSelectedGameSave());
-    GameSave newGameSave = new GameSave(getCurrentGameSave().getGame(),
-        getCurrentGameSave().getGame().getUnit().getUnitName());
+    GameSave newGameSave = new GameSave(getCurrentGameSave().getUnit(), getCurrentGameSave().getStory(), getCurrentGameSave().getGoals(),
+        getCurrentGameSave().getPlayerName());
     newGameSave.savePassage(getCurrentPassage());
     if (selectedItem != null) {
-      System.out.println(currentPassage.getTitle());
       selectedItem.setGame(newGameSave.getGame());
       selectedItem.setLastSavedPassage(newGameSave.getLastSavedPassage());
       selectedItem.setTimeOfSave(LocalDateTime.now());
@@ -301,7 +299,17 @@ public class GameController extends Controller<GameView> {
   }
 
   public void restartGame() {
-
+      // Reset unit to default based on its type
+      currentGameSave.getGame().getUnit().setGold(0);
+      currentGameSave.getGame().getUnit().setUnitScore(0);
+      currentGameSave.getGame().getUnit().setUnitHealth(currentGameSave.getGame().getUnit().getUnitHealthMax());
+      currentGameSave.getGame().getUnit().setUnitMana(currentGameSave.getGame().getUnit().getUnitManaMax());
+      currentGameSave.getGame().getStory().getOpeningPassage();
+      currentPassage = currentGameSave.getGame().getStory().getOpeningPassage();
+      view.addLinksToButtons(currentPassage);
+      // Get a reference to the opening passage
+      updateStats();
+      GameSaveDAO.getInstance().update(getCurrentGameSave());
   }
 
   public void setCurrentPassage (Passage passage){

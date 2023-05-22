@@ -142,6 +142,7 @@ public class GoalsDialog extends Dialog {
     confirmButton.setOnAction(e -> {
       // Check if all goals are completed before ending the game
       if (controller.areAllGoalsCompleted()) {
+        controller.onEndGameButtonPressed();
         controller.onCloseSource(e);
       }
     });
