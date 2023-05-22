@@ -17,6 +17,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.gameinformation.StoryFileReader;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.PassageDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.EditStoryView;
@@ -86,8 +87,6 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     newStoryDialog.showAndWait();
     populateTableView();
   }
-
-
 
   /**
    * Handles the import button pressed event.

@@ -7,7 +7,7 @@ import no.ntnu.idatg2001.backend.entityinformation.Unit;
 public class GameOverAction extends Action {
 
   public GameOverAction() {
-    this.setActionType(ActionType.GAMEOVER);
+    this.setActionType(ActionType.GAME_OVER);
   }
 
   public void execute(Unit unit) {

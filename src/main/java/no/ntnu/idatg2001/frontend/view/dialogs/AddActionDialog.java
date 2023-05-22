@@ -117,16 +117,17 @@ public class AddActionDialog extends Dialog<Void> {
 
   private Node createComponentForActionType(ActionType actionType) {
     return switch (actionType) {
-      case GOLD, HEALTH, DAMAGE, PASSAGE, SCORE -> createTextField();
-      case ARMOR, WEAPON, ITEM -> createNewComboBox();
-      case GAMEOVER, WIN, LOSE, NONE -> null; // No additional component needed
+      case GOLD, HEALTH, DAMAGE, SCORE, ARMOR -> createTextField("-?\\d*");
+      case WEAPON, ITEM, PASSAGE -> createTextField("[a-zA-Z0-9]*");
+      //add here for comboBoxes -> createNewComboBox();
+      case GAME_OVER, WIN, LOSE, NONE -> null;
     };
   }
 
-  private Node createTextField() {
+  private Node createTextField(String format) {
     TextField newTextField = new TextField();
     newTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("-?\\d*")) {
+      if (!newValue.matches(format)) {
         newTextField.setText(oldValue);
       }
     });

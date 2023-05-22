@@ -10,8 +10,10 @@ import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
 public class StoryWriter {
+
+  private StoryWriter() {}
   public static void writeStoryToFile(Story selectedStory, File file) {
-    try (PrintWriter writer = new PrintWriter(file )) {
+    try (PrintWriter writer = new PrintWriter(file)) {
       // Write the story title
       writer.println(selectedStory.getTitle());
       writer.println();
@@ -27,15 +29,16 @@ public class StoryWriter {
       writer.println();
 
       // Write the remaining passages and their links
-      for (Passage passage : selectedStory.getPassages().values()) {
-        writer.println("::" + passage.getTitle());
-        writer.println(passage.getContent());
+      selectedStory.getPassages().values().stream().filter(p -> !p.equals(openingPassage))
+          .forEach(p -> {
+            writer.println("::" + p.getTitle());
+            writer.println(p.getContent());
 
-        // Write the passage links
-        writeLinks(writer, passage.getLinks());
+            // Write the passage links
+            writeLinks(writer, p.getLinks());
 
-        writer.println();
-      }
+            writer.println();
+          });
 
       // Check for broken links
       List<Link> brokenLinks = selectedStory.getBrokenLinks();

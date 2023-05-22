@@ -3,6 +3,8 @@ package no.ntnu.idatg2001.frontend.view.dialogs;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -30,6 +32,8 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
   private TableColumn<GameSave, String> nameColumn;
   private TableColumn<GameSave, LocalDateTime> dateTimeColumn;
   private TableColumn<GameSave, String> playerColumn;
+
+  private BooleanProperty deleteButtonDisabledProperty = new SimpleBooleanProperty();
 
   public LoadGameDialog(Controller<T> controller) {
     this.controller = controller;
@@ -71,21 +75,21 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     nameColumn = new TableColumn<>(
         resourceBundle.getString("loadGameTableName"));
     nameColumn.setResizable(false);
-    nameColumn.setSortable(false);
+    nameColumn.setSortable(true);
     nameColumn.setReorderable(false);
     nameColumn.setPrefWidth(200);
 
     dateTimeColumn = new TableColumn<>(
         resourceBundle.getString("loadGameTableDate"));
     dateTimeColumn.setResizable(false);
-    dateTimeColumn.setSortable(false);
+    dateTimeColumn.setSortable(true);
     dateTimeColumn.setReorderable(false);
     dateTimeColumn.setPrefWidth(250);
 
     playerColumn = new TableColumn<>(
         resourceBundle.getString("loadGameTablePlayer"));
     playerColumn.setResizable(false);
-    playerColumn.setSortable(false);
+    playerColumn.setSortable(true);
     playerColumn.setReorderable(false);
     playerColumn.setPrefWidth(150);
 
@@ -107,8 +111,8 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
     deleteGameButton.setAlignment(Pos.CENTER);
     deleteGameButton.setWrapText(true);
     deleteGameButton.setOnAction(event -> controller.onDeleteGameButton(event));
+    deleteGameButton.disableProperty().bind(deleteButtonDisabledProperty.not());
   }
-
 
   private void createLoadGameButton() {
     loadGameButton = new Button(resourceBundle.getString("loadGameButton"));
@@ -136,5 +140,9 @@ public class LoadGameDialog<T extends Controller<T>> extends Dialog {
   }
   public ResourceBundle getResourceBundle() {
     return resourceBundle;
+  }
+
+  public void setDeleteButtonDisabledProperty(boolean value) {
+    this.deleteButtonDisabledProperty.set(value);
   }
 }
