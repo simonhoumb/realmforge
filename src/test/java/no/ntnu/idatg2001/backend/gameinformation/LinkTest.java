@@ -72,9 +72,8 @@ class LinkTest {
     Action action2 = new ItemAction("Action 2");
     link.addAction(action1);
     link.addAction(action2);
-    boolean removed = link.removeAction(action1);
 
-    assertTrue(removed);
+    assertDoesNotThrow(() -> link.removeAction(action1));
     assertFalse(link.getActions().contains(action1));
     assertTrue(link.getActions().contains(action2));
   }
@@ -85,9 +84,8 @@ class LinkTest {
     Action action2 = new ItemAction("Action 2");
     link.addAction(action1);
     link.addAction(action2);
-    boolean removed = link.removeAction(null);
+    assertThrows(IllegalArgumentException.class, () -> link.removeAction(null));
 
-    assertFalse(removed);
     assertTrue(link.getActions().contains(action1));
     assertTrue(link.getActions().contains(action2));
   }
