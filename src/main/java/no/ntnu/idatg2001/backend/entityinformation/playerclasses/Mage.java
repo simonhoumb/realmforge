@@ -14,7 +14,6 @@ public class Mage extends Unit {
     super.addToInventory("Health Potion");
     super.addToInventory("Mana Potion");
     super.addToInventory("Mage Robe");
-    this.setPlayerClass(PlayerClass.MAGE);
     super.setDamage(25);
     super.setCriticalChance(20);
     super.setArmour(15);

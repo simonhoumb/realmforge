@@ -11,7 +11,6 @@ public class CustomUnit extends Unit {
 
   public CustomUnit(String unitName) {
     super(0,0,unitName,0,0); // Call the superclass constructor to set the unit name
-    this.setPlayerClass(PlayerClass.CUSTOM);
     super.setUnitScore(0);
     // Perform any additional custom initialization or set initial values
   }

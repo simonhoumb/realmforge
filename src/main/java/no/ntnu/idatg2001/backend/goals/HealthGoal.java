@@ -22,6 +22,5 @@ public class HealthGoal extends Goal  {
 
   @Override
   public void setGoalValue(Object value) {
-
   }
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.StageStyle;
+import no.ntnu.idatg2001.backend.entityinformation.PlayerClass;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnit;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnitBuilder;
@@ -189,6 +190,7 @@ public class StartNewGameController extends Controller<StartNewGameView> {
             .withUnitMana(unitMana)
             .withArmour(armour)
             .withGold(gold)
+            .withPlayerClass(PlayerClass.CUSTOM)
             .withDamage(damage)
             .withCriticalStrikeChance(critChance)
             .withUnitName(view.getNameField().getText())

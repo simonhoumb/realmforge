@@ -13,7 +13,6 @@ public class Rogue extends Unit {
     super.addToInventory("HealthPotion");
     super.addToInventory("PoisonBottle");
     super.addToInventory("Cloak");
-    this.setPlayerClass(PlayerClass.ROGUE);
     super.setDamage(35);
     super.setUnitManaMax(75);
     super.setCriticalChance(20);

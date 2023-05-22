@@ -24,7 +24,7 @@ public class Game {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "unit_id")
   private Unit unit;
   @ManyToOne

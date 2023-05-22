@@ -14,7 +14,6 @@ public class Ranger extends Unit {
     super.addToInventory("HealthPotion");
     super.addToInventory("Trap");
     super.addToInventory("Boots");
-    this.setPlayerClass(PlayerClass.RANGER);
     super.setDamage(25);
     super.setCriticalChance(20);
     super.setArmour(15);

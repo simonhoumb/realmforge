@@ -13,7 +13,6 @@ public class Warrior extends Unit {
     super.addToInventory("HealthPotion");
     super.addToInventory("Shield");
     super.addToInventory("BodyArmor");
-    this.setPlayerClass(PlayerClass.WARRIOR);
     super.setDamage(20);
     super.setCriticalChance(5);
     super.setArmour(25);
