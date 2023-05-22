@@ -11,13 +11,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-<<<<<<< src/main/java/no/ntnu/idatg2001/frontend/controller/GameController.java
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
-=======
 import no.ntnu.idatg2001.backend.actions.ActionType;
->>>>>>> src/main/java/no/ntnu/idatg2001/frontend/controller/GameController.java
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -140,11 +137,11 @@ public class GameController extends Controller<GameView> {
   }
 
   public void onLinkPressed(ActionEvent event, Link link) {
-    currentPassage = view.getCurrentGameSave().getGame().go(link);
+    currentPassage = getCurrentGameSave().getGame().go(link);
     link.getActions().stream()
         .filter(action -> !action.getActionType().equals(ActionType.NONE))
-        .forEach(action -> action.execute(view.getCurrentGameSave().getGame().getUnit()));
-    view.addLinksToButtons(passageToGoTo);
+        .forEach(action -> action.execute(getCurrentGameSave().getGame().getUnit()));
+    view.addLinksToButtons(currentPassage);
     populatePlayerInventoryListView();
     event.consume();
   }
