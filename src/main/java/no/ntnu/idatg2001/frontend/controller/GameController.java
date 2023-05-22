@@ -7,17 +7,28 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import no.ntnu.idatg2001.backend.actions.Action;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
+import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.gameinformation.Story;
+import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.backend.goals.GoldGoal;
+import no.ntnu.idatg2001.backend.goals.HealthGoal;
+import no.ntnu.idatg2001.backend.goals.InventoryGoal;
+import no.ntnu.idatg2001.backend.goals.ScoreGoal;
+import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
+import no.ntnu.idatg2001.frontend.view.dialogs.GoalsDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.LoadGameDialog;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.dialogs.PauseMenuDialog;
@@ -25,14 +36,44 @@ import no.ntnu.idatg2001.frontend.view.dialogs.SaveGameDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
 
 public class GameController extends Controller<GameView> {
+
   private PauseMenuDialog pauseMenuDialog;
   private SettingsDialog settingsDialog;
   private LoadGameDialog loadGameDialog;
   private SaveGameDialog saveGameDialog;
+  private GoalsDialog goalsDialog;
+  private GameSave currentGameSave;
+  private Passage currentPassage;
 
 
-  public GameController(GameView gameView) {
+  public GameController(GameView gameView, GameSave currentGameSave) {
     this.view = gameView;
+    loadGameSave(currentGameSave);
+  }
+
+
+  public void loadGameSave(GameSave gameSaveToLoad) {
+    this.currentGameSave = gameSaveToLoad;
+    if (currentGameSave.getLastSavedPassage() == null) {
+      this.currentPassage = currentGameSave.getGame().begin();
+    } else {
+      this.currentPassage = currentGameSave.getLastSavedPassage();
+    }
+    view.getPlayerNameLabel().setText(currentGameSave.getGame().getUnit().getUnitName());
+    view.addLinksToButtons(currentPassage);
+  }
+
+  public void updateStats() {
+    view.getHealthBar().setProgress((double) currentGameSave.getGame().getUnit().getUnitHealth()
+        / currentGameSave.getGame().getUnit().getUnitHealthMax());
+    view.getHealthLabel().setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitHealth(),
+        currentGameSave.getGame().getUnit().getUnitHealthMax()));
+    view.getManaBar().setProgress((double) currentGameSave.getGame().getUnit().getUnitMana()
+        / currentGameSave.getGame().getUnit().getUnitManaMax());
+    view.getManaLabel().setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitMana(),
+        currentGameSave.getGame().getUnit().getUnitManaMax()));
+    view.getGoldAmountLabel().setText(String.valueOf(currentGameSave.getGame().getUnit().getGold()));
+    view.getScoreAmountLabel().setText(String.valueOf(currentGameSave.getGame().getUnit().getUnitScore()));
   }
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
@@ -53,9 +94,9 @@ public class GameController extends Controller<GameView> {
   }
 
   public void onMenuButtonPressed(ActionEvent event) {
-      pauseMenuDialog = new PauseMenuDialog(this);
-      pauseMenuDialog.initOwner(view.getScene().getWindow());
-      pauseMenuDialog.showAndWait();
+    pauseMenuDialog = new PauseMenuDialog(this);
+    pauseMenuDialog.initOwner(view.getScene().getWindow());
+    pauseMenuDialog.showAndWait();
   }
 
   public void onSettingsViewButtonPressed() {
@@ -88,12 +129,37 @@ public class GameController extends Controller<GameView> {
     exitDialog.showAndWait();
   }
 
+  public void onDialogButtonPressed(ActionEvent event) {
+    goalsDialog = new GoalsDialog(this);
+    goalsDialog.initOwner(view.getScene().getWindow());
+    goalsDialog.showAndWait();
+  }
+
   public void onLinkPressed(ActionEvent event, Link link) {
-    Passage passageToGoTo = view.getCurrentGameSave().getGame().go(link);
-    link.getActions().forEach(action -> action.execute(view.getCurrentGameSave().getGame().getUnit()));
-    view.addLinksToButtons(passageToGoTo);
+    currentPassage = getCurrentGameSave().getGame().go(link);
+    link.getActions()
+        .forEach(action -> action.execute(getCurrentGameSave().getGame().getUnit()));
+    view.addLinksToButtons(currentPassage);
     populatePlayerInventoryListView();
     event.consume();
+  }
+
+  public void onEndGameButtonPressed() {
+
+  }
+
+  public void onRestartGameButtonPressed() {
+    restartGame();
+  }
+
+  // Method to check if all goals are completed
+  public boolean areAllGoalsCompleted() {
+    for (Goal goal : getCurrentGameSave().getGame().getGoals()) {
+      if (!goal.isFulfilled(getCurrentGameSave().getGame().getUnit())) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public void onSaveButtonPressed(ActionEvent event) {
@@ -106,10 +172,12 @@ public class GameController extends Controller<GameView> {
 
   public void onSaveSelectedGame(ActionEvent event) {
     GameSave selectedItem = (saveGameDialog.getSelectedGameSave());
-    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(), view.getCurrentGameSave().getGame().getUnit().getUnitName());
-    newGameSave.savePassage(view.getCurrentPassage());
+    GameSave newGameSave = new GameSave(getCurrentGameSave().getGame(),
+        getCurrentGameSave().getGame().getUnit().getUnitName());
+    newGameSave.savePassage(getCurrentPassage());
 
     if (selectedItem != null) {
+      System.out.println(currentPassage.getTitle());
       selectedItem.setGame(newGameSave.getGame());
       selectedItem.setLastSavedPassage(newGameSave.getLastSavedPassage());
       selectedItem.setTimeOfSave(LocalDateTime.now());
@@ -133,7 +201,7 @@ public class GameController extends Controller<GameView> {
   @Override
   public void onLoadSelectedGame(ActionEvent event) {
     GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
-    view.loadGameSave(selectedGameSave);
+    loadGameSave(selectedGameSave);
     pauseMenuDialog.close();
     onCloseSource(event);
   }
@@ -151,7 +219,7 @@ public class GameController extends Controller<GameView> {
   public void populatePlayerInventoryListView() {
     view.getPlayerInventoryListView().getItems().clear();
     view.getPlayerInventoryListView().setItems(FXCollections.observableArrayList(
-        view.getCurrentGameSave().getGame().getUnit().getUnitInventory()));
+        getCurrentGameSave().getGame().getUnit().getUnitInventory()));
   }
 
 
@@ -166,15 +234,100 @@ public class GameController extends Controller<GameView> {
   @Override
   public void configureSavedGamesTableView(ActionEvent event) {
     event.consume();
-    loadGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
-    loadGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
+    loadGameDialog.getNameColumn()
+        .setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
+    loadGameDialog.getDateTimeColumn()
+        .setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
     loadGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
 
 
   public void configureSavedGameTableViewForSavedGame() {
-    saveGameDialog.getNameColumn().setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
-    saveGameDialog.getDateTimeColumn().setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
+    saveGameDialog.getNameColumn()
+        .setCellValueFactory(new PropertyValueFactory<>("storyAndLastPassage"));
+    saveGameDialog.getDateTimeColumn()
+        .setCellValueFactory(new PropertyValueFactory<>("timeOfSaveFormatted"));
     saveGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
-}
+
+  public Object getCurrentAmount(Goal goal) {
+    if (goal instanceof HealthGoal) {
+      return getCurrentGameSave().getGame().getUnit().getUnitHealth();
+    } else if (goal instanceof ScoreGoal) {
+      return getCurrentGameSave().getGame().getUnit().getUnitScore();
+    } else if (goal instanceof GoldGoal){
+      return getCurrentGameSave().getGame().getUnit().getGold();
+    } else if (goal instanceof InventoryGoal) {
+      if (getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue())) {
+        return getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue());
+      } else {
+        return goalsDialog.getResourceBundle().getString("dialog.no")+ ": " + goal.getGoalValue() + " " +goalsDialog.getResourceBundle().getString("dialog.inInventory");
+      }
+    }
+    return "";
+  }
+
+  public boolean isGoalReached(Goal goal) {
+    if (goal instanceof HealthGoal) {
+      // Replace this with your logic to check if the health goal is reached
+      int currentHealth = getCurrentGameSave().getGame().getUnit().getUnitHealth();
+      int goalValue = Integer.parseInt(goal.getGoalValue().toString());
+      return currentHealth >= goalValue;
+    } else if (goal instanceof ScoreGoal) {
+      // Replace this with your logic to check if the score goal is reached
+      int currentScore = getCurrentGameSave().getGame().getUnit().getUnitScore();
+      int goalValue = Integer.parseInt(goal.getGoalValue().toString());
+      return currentScore >= goalValue;
+    } else if (goal instanceof GoldGoal) {
+      int currentGold = getCurrentGameSave().getGame().getUnit().getGold();
+      int goalValue = Integer.parseInt(goal.getGoalValue().toString());
+      return currentGold >= goalValue;
+    } else if (goal instanceof InventoryGoal) {
+      List<String> currentInventory = getCurrentGameSave().getGame().getUnit().getUnitInventory();
+      String inventoryGoal = goal.getGoalValue().toString();
+      return currentInventory.contains(inventoryGoal);
+    }
+    return false;
+  }
+
+  public GameSave getCurrentGameSave() {
+    return this.currentGameSave;
+  }
+
+  public Passage getCurrentPassage() {
+    return this.currentPassage;
+  }
+
+  public void restartGame() {
+    // Create a new instance of the Game class
+    Game newGame = new Game(getCurrentGameSave().getGame().getUnit(), getCurrentGameSave().getGame()
+        .getStory(),
+        getCurrentGameSave().getGame().getGoals());
+
+    // Update the existing game instance with the new values
+    getCurrentGameSave().setGame(newGame);
+
+
+    // Reset any other game-specific data or states as needed
+
+    // Update the game in the database using the GameDAO class
+    GameDAO.getInstance().update(newGame);
+
+    // Perform any other necessary operations for restarting the game
+    GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
+    // Update the game view and controller
+    GameController gameController = new GameController(view, newGameSave);
+    view.setController(gameController);
+    gameController.updateStats();
+    gameController.populatePlayerInventoryListView();
+    // Refresh the current scene to reflect the restarted game
+    Scene currentScene = view.getScene();
+    currentScene.setRoot(view);
+  }
+
+    public void setCurrentPassage (Passage passage){
+      this.currentPassage = passage;
+    }
+  }
+
+

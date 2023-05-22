@@ -1,0 +1,54 @@
+.dialog-pane{
+  -fx-background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0, 0, 2); /* Drop shadow effect */
+}
+
+.button {
+  -fx-background-color: #4D4D4D;
+  -fx-background-radius: 50px;
+  -fx-text-fill: #FFFFFF;
+  -fx-font-family: "Times New Roman";
+  -fx-font-size: 18px;
+  -fx-border-radius: 50px;
+  -fx-padding: 8px 16px;
+}
+
+.button:hover {
+  -fx-background-color: #808080;
+}
+
+.button:pressed {
+  -fx-background-color: #666666;
+}
+
+.button:default {
+  -fx-background-color: #4D4D4D;
+  -fx-text-fill: #FFFFFF;
+  -fx-font-weight: bold;
+}
+
+.button:default:hover {
+  -fx-background-color: #808080;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 1);
+}
+
+.button:default:focused {
+  -fx-border-color: black;
+}
+
+/* Styles for .label elements */
+.label {
+  -fx-text-fill: #A9A9A9;
+}
+.dialog-close-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-font-size: 12px;
+  -fx-pref-width: 20px;
+  -fx-pref-height: 20px;
+  -fx-border-width: 0;
+}
+
+.dialog-close-button:hover {
+  -fx-background-color: #808080; /* Customize the hover color for the close button */
+}

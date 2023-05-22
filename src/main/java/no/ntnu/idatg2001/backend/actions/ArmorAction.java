@@ -17,7 +17,7 @@ public class ArmorAction extends Action {
 
   public void execute(Unit unit) {
     if (value instanceof Double) {
-      int armor = (Integer) value;
+      int armor = Integer.parseInt(value.toString());
       unit.setArmour(unit.getArmour() + armor);
     }
   }

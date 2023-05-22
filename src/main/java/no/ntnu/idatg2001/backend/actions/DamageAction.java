@@ -16,7 +16,7 @@ public class DamageAction extends Action {
   }
 
   public void execute(Unit unit) {
-    int damage = (Integer) value;
+    int damage = Integer.parseInt(value.toString());
     int modifiedDamage = calculateModifiedDamage(damage, unit);
     unit.setUnitHealth(unit.getUnitHealth() - modifiedDamage);
   }

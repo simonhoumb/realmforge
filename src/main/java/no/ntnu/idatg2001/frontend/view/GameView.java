@@ -58,11 +58,8 @@ public class GameView extends BorderPane {
   private FlowPane buttonHbox;
   private Separator separatorTop;
   private Separator separatorBottom;
-  private Separator separatorLeft;
-  private GameSave currentGameSave;
-  private Passage currentPassage;
 
-  public GameView(GameSave currentGameSave) {
+  public GameView() {
     resourceBundle = ResourceBundle
       .getBundle("languages/GameView", SettingsModel.getInstance().getLocale());
     getStylesheets().add("/css/GameView.css");
@@ -71,7 +68,6 @@ public class GameView extends BorderPane {
     createPlayerInventoryListView();
     createLayout();
     setBackground(new Background(new BackgroundFill(Color.rgb(25, 25, 25, 0.9), null, null)));
-    loadGameSave(currentGameSave);
   }
 
   private void createLayout() {
@@ -162,13 +158,12 @@ public class GameView extends BorderPane {
     buttonHbox.getChildren().clear();
     passageLabel.setText(currentPassage.getTitle());
     contentTextArea.setText(currentPassage.getContent().toString());
-    this.currentPassage = currentPassage;
-    updateStats();
     for (Link link : currentPassage.getLinks()) {
       JFXButton button = new JFXButton(link.getText());
       button.setWrapText(true);
       button.setOnAction(event -> {
         controller.onLinkPressed(event, link);
+        controller.updateStats();
       });
       buttonHbox.getChildren().add(button);
     }
@@ -176,30 +171,6 @@ public class GameView extends BorderPane {
 
   public void setController(GameController controller) {
     this.controller = controller;
-  }
-
-  public void updateStats() {
-    healthBar.setProgress((double) currentGameSave.getGame().getUnit().getUnitHealth()
-        / currentGameSave.getGame().getUnit().getUnitHealthMax());
-    healthLabel.setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitHealth(),
-        currentGameSave.getGame().getUnit().getUnitHealthMax()));
-    manaBar.setProgress((double) currentGameSave.getGame().getUnit().getUnitMana()
-        / currentGameSave.getGame().getUnit().getUnitManaMax());
-    manaLabel.setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitMana(),
-        currentGameSave.getGame().getUnit().getUnitManaMax()));
-    goldAmountLabel.setText(String.valueOf(currentGameSave.getGame().getUnit().getGold()));
-    scoreAmountLabel.setText(String.valueOf(currentGameSave.getGame().getUnit().getUnitScore()));
-  }
-
-  public void loadGameSave(GameSave gameSaveToLoad) {
-    this.currentGameSave = gameSaveToLoad;
-    if (currentGameSave.getLastSavedPassage() == null) {
-      this.currentPassage = currentGameSave.getGame().begin();
-    } else {
-      this.currentPassage = currentGameSave.getLastSavedPassage();
-    }
-    playerNameLabel.setText(currentGameSave.getGame().getUnit().getUnitName());
-    addLinksToButtons(currentPassage);
   }
 
   private Separator createSeparatorTop() {
@@ -280,7 +251,7 @@ public class GameView extends BorderPane {
   private JFXButton createGoalButton() {
     goalButton = new JFXButton(resourceBundle.getString("game.goalButton"));
     goalButton.setPrefWidth(200);
-    goalButton.setOnAction(event -> controller.onSaveButtonPressed(event));
+    goalButton.setOnAction(event -> controller.onDialogButtonPressed(event));
     return goalButton;
   }
 
@@ -307,17 +278,32 @@ public class GameView extends BorderPane {
   }
 
 
-  public GameSave getCurrentGameSave() {
-    return this.currentGameSave;
+  public Label getGoldAmountLabel() {
+    return goldAmountLabel;
   }
 
-  public Passage getCurrentPassage() {
-    return this.currentPassage;
+  public Label getScoreAmountLabel() {
+    return scoreAmountLabel;
   }
 
+  public Label getHealthLabel() {
+    return healthLabel;
+  }
 
-  public void setCurrentPassage(Passage passage) {
-    this.currentPassage = passage;
+  public Label getManaLabel() {
+    return manaLabel;
+  }
+
+  public Label getPlayerNameLabel() {
+    return playerNameLabel;
+  }
+
+  public ProgressBar getHealthBar() {
+    return healthBar;
+  }
+
+  public ProgressBar getManaBar() {
+    return manaBar;
   }
 
   public ListView<String> getPlayerInventoryListView() {

@@ -108,9 +108,10 @@ public class StartNewGameController extends Controller<StartNewGameView> {
       GameDAO.getInstance().add(newGame);
       GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
       GameSaveDAO.getInstance().add(newGameSave);
-      GameView gameView = new GameView(newGameSave);
-      GameController gameController = new GameController(gameView);
+      GameView gameView = new GameView();
+      GameController gameController = new GameController(gameView, newGameSave);
       gameView.setController(gameController);
+      gameController.updateStats();
       gameController.populatePlayerInventoryListView();
       Scene newScene = view.getScene();
       newScene.setRoot(gameView);
