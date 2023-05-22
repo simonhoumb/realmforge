@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -106,7 +105,8 @@ public class GameController extends Controller<GameView> {
 
   public void onSaveSelectedGame(ActionEvent event) {
     GameSave selectedItem = (saveGameDialog.getSelectedGameSave());
-    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(), view.getCurrentGameSave().getGame().getUnit().getUnitName());
+    GameSave newGameSave = new GameSave(view.getCurrentGameSave().getGame(),
+        view.getCurrentGameSave().getGame().getUnit().getUnitName());
     newGameSave.savePassage(view.getCurrentPassage());
 
     if (selectedItem != null) {
@@ -124,6 +124,7 @@ public class GameController extends Controller<GameView> {
   @Override
   public void onLoadGameButtonPressed(ActionEvent event) {
     loadGameDialog = new LoadGameDialog(this);
+    loadGameDialog.setDeleteButtonDisabledProperty(false);
     configureSavedGamesTableView(event);
     populateSavedGamesTableView(event);
     loadGameDialog.initOwner(pauseMenuDialog.getDialogPane().getScene().getWindow());
