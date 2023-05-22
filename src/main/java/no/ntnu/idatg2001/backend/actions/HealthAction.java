@@ -15,6 +15,9 @@ public class HealthAction extends Action {
 
   }
   public void execute(Unit unit) {
-    unit.setUnitHealth(unit.getUnitHealth() + Integer.parseInt(value.toString()));
+    int health = (Integer) value;
+    int currentHealth = unit.getUnitHealth();
+    int newHealth = currentHealth + health;
+    unit.setUnitHealth(newHealth);
   }
 }
