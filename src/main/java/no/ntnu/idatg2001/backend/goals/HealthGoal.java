@@ -17,11 +17,11 @@ public class HealthGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitHealth() >= (Integer) goalValue;
+    return unit.getUnitHealth() >= Integer.parseInt(goalValue.toString());
   }
 
   @Override
-  public void setGoalValue(int value) {
+  public void setGoalValue(Object value) {
 
   }
 }

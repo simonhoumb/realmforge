@@ -16,6 +16,6 @@ public class GoldAction extends Action {
   }
 
   public void execute(Unit unit) {
-    unit.setGold(unit.getGold() + (Integer) value);
+    unit.setGold(unit.getGold() + Integer.parseInt(value.toString()));
   }
 }

@@ -35,7 +35,7 @@ public abstract class Goal {
 
   public abstract boolean isFulfilled(Unit unit);
 
-  public abstract void setGoalValue(int value);
+  public abstract void setGoalValue(Object value);
 
   public Object getGoalValue() {
     return goalValue;

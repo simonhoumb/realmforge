@@ -17,11 +17,11 @@ public class InventoryGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitInventory().contains(goalValue);
+    return unit.getUnitInventory().contains(goalValue.toString());
   }
 
   @Override
-  public void setGoalValue(int value) {
+  public void setGoalValue(Object value) {
 
   }
 }

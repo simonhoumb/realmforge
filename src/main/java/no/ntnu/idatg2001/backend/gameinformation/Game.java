@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.dao.GameDAO;
 
 @Entity
 @Table(name = "game")

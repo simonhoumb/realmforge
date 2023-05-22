@@ -16,11 +16,11 @@ public class ScoreGoal extends Goal {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getUnitScore() >= (Integer) goalValue;
+    return unit.getUnitScore() >= Integer.parseInt(goalValue.toString());
   }
 
   @Override
-  public void setGoalValue(int value) {
+  public void setGoalValue(Object value) {
 
   }
 }
