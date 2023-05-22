@@ -21,6 +21,6 @@ public class CheckIfValid {
   }
 
   public boolean isInteger(String value) {
-    return value.matches("[0-9]+") && !value.isEmpty() && !value.isBlank();
+    return value.matches("-?\\d*") && !value.isEmpty() && !value.isBlank();
   }
 }
