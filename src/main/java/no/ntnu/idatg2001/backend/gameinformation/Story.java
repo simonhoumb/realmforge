@@ -28,7 +28,7 @@ public class Story {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "story_id")
   private Map<Link, Passage> passages;
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "opening_passage_id")
   private Passage openingPassage;
 

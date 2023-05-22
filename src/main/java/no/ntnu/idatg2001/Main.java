@@ -26,7 +26,7 @@ public class Main {
     /* Bruk dette for å importere fra fil, (bruk update, ikke add!)
     StoryFileReader storyReader = new StoryFileReader();
     Story story;
-    story = storyReader.readFile("src/main/resources/stories/story.Paths");
+    story = storyReader.readFile("src/main/resources/stories/Haunted House.Paths");
     StoryDAO.getInstance().update(story);
      */
 

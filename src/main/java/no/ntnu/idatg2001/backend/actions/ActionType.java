@@ -5,11 +5,11 @@ public enum ActionType {
   HEALTH ("Health"),
   DAMAGE ("Damage"),
   ARMOR ("Armor"),
+  SCORE ("Score"),
   WEAPON ("Weapon"),
   ITEM ("Item"),
   PASSAGE  ("Passage"),
-  SCORE ("Score"),
-  GAMEOVER ("Gameover"),
+  GAME_OVER ("Game Over"),
   WIN ("Win"),
   LOSE ("Lose"),
   NONE ("None");
