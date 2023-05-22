@@ -18,9 +18,18 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.actions.Action;
 import no.ntnu.idatg2001.backend.actions.ActionType;
+import no.ntnu.idatg2001.backend.actions.ArmorAction;
+import no.ntnu.idatg2001.backend.actions.DamageAction;
+import no.ntnu.idatg2001.backend.actions.GameOverAction;
 import no.ntnu.idatg2001.backend.actions.GoldAction;
 import no.ntnu.idatg2001.backend.actions.HealthAction;
-import no.ntnu.idatg2001.backend.actions.InventoryAction;
+import no.ntnu.idatg2001.backend.actions.ItemAction;
+import no.ntnu.idatg2001.backend.actions.LoseAction;
+import no.ntnu.idatg2001.backend.actions.NoneAction;
+import no.ntnu.idatg2001.backend.actions.PassageAction;
+import no.ntnu.idatg2001.backend.actions.ScoreAction;
+import no.ntnu.idatg2001.backend.actions.WeaponAction;
+import no.ntnu.idatg2001.backend.actions.WinAction;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
@@ -240,21 +249,46 @@ public class EditStoryController extends Controller<EditStoryView> {
   }
 
   private Action createActionInstance(ActionType actionType, String selectedValue) {
-    switch (actionType) {
-      case GOLD:
+    return switch (actionType) {
+      case GOLD ->
         // Create and return an instance of the GoldAction class with the selected value
-        return new GoldAction(Integer.parseInt(selectedValue));
-      case HEALTH:
+          new GoldAction(Integer.parseInt(selectedValue));
+      case HEALTH ->
         // Create and return an instance of the HealthAction class with the selected value
-        return new HealthAction(Integer.parseInt(selectedValue));
-      case DAMAGE:
+          new HealthAction(Integer.parseInt(selectedValue));
+      case DAMAGE ->
         // Create and return an instance of the DamageAction class with the selected value
-        return new InventoryAction(selectedValue);
-      // Handle other action types as needed
-      default:
-        return null;
-    }
+          new DamageAction(Integer.parseInt(selectedValue));
+      case ARMOR ->
+        // Create and return an instance of the ArmorAction class with the selected value
+          new ArmorAction(Integer.parseInt(selectedValue));
+      case SCORE ->
+        // Create and return an instance of the ScoreAction class with the selected value
+          new ScoreAction(Integer.parseInt(selectedValue));
+      case WEAPON ->
+        // Create and return an instance of the WeaponAction class with the selected value
+          new WeaponAction(selectedValue);
+      case ITEM ->
+        // Create and return an instance of the ItemAction class with the selected value
+          new ItemAction(selectedValue);
+      case PASSAGE ->
+        // Create and return an instance of the PassageAction class with the selected value
+          new PassageAction(selectedValue);
+      case GAME_OVER ->
+        // Create and return an instance of the GameOverAction class with the selected value
+          new GameOverAction();
+      case WIN ->
+        // Create and return an instance of the WinAction class with the selected value
+          new WinAction();
+      case LOSE ->
+        // Create and return an instance of the LoseAction class with the selected value
+          new LoseAction();
+      case NONE ->
+        // Create and return an instance of the NoneAction class with the selected value
+          new NoneAction();
+    };
   }
+
 
   public void onExportPress() {
     FileChooser fileChooser = new FileChooser();
@@ -347,7 +381,8 @@ public class EditStoryController extends Controller<EditStoryView> {
     addLinkDialog.getPassageTableView().getItems().clear();
     List<Passage> passageList = selectedStory.getPassages().values().stream().toList();
     ObservableList<Passage> list = FXCollections.observableArrayList(passageList);
-    if (selectedStory.getOpeningPassage() != null) {
+    if (selectedStory.getOpeningPassage() != null
+        && !selectedStory.getPassages().containsValue(selectedStory.getOpeningPassage())) {
       list.add(selectedStory.getOpeningPassage());
     }
     addLinkDialog.getPassageTableView().setItems(list);
@@ -427,7 +462,12 @@ public class EditStoryController extends Controller<EditStoryView> {
 
     if (result) {
       if (selectedPassage != null && selectedLink == null && selectedAction == null) {
-        deletePassage(selectedPassage);
+        if (selectedPassage.equals(selectedStory.getOpeningPassage())) {
+          AlertHelper.showErrorAlert(view.getScene().getWindow(), "error",
+              view.getResourceBundle().getString("cannotDeleteOpeningPassage"));
+        } else {
+          deletePassage(selectedPassage);
+        }
       } else if (selectedLink != null && selectedAction == null) {
         deleteLink(selectedPassage, selectedLink);
       } else {
