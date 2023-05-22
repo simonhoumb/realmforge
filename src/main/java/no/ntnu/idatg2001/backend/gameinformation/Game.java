@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.dao.GameDAO;
 
 @Entity
 @Table(name = "game")
@@ -23,7 +24,7 @@ public class Game {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "unit_id")
   private Unit unit;
   @ManyToOne

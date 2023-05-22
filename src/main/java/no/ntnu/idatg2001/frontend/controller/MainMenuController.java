@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
+import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
@@ -116,9 +117,10 @@ public class MainMenuController extends Controller<MainMenuView> {
   @Override
   public void onLoadSelectedGame(ActionEvent event) {
     if (loadGameDialog.getSelectedGameSave() != null) {
-      GameView gameView = new GameView(loadGameDialog.getSelectedGameSave());
-      GameController gameController = new GameController(gameView);
+      GameView gameView = new GameView();
+      GameController gameController = new GameController(gameView, loadGameDialog.getSelectedGameSave());
       gameView.setController(gameController);
+      gameController.updateStats();
       gameController.populatePlayerInventoryListView();
       Scene newScene = view.getScene();
       newScene.setRoot(gameView);
@@ -133,7 +135,6 @@ public class MainMenuController extends Controller<MainMenuView> {
   public void onDeleteGameButton(ActionEvent event) {
     GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
     if (selectedGameSave != null) {
-      GameSaveDAO.getInstance().update(selectedGameSave);
       GameSaveDAO.getInstance().remove(selectedGameSave);
       populateSavedGamesTableView(event);
     } else {

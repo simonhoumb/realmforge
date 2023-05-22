@@ -1,7 +1,7 @@
 package no.ntnu.idatg2001.backend.entityinformation;
 
 import java.util.HashMap;
-import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Custom;
+
 
 /**
  * Enum class where The Class of the player is retrieved.

@@ -351,6 +351,15 @@ public abstract class Unit {
     return unitInventory;
   }
 
+  /**
+   * Gets the entire unit.
+   *
+   * @return the unit with all its properties.
+   */
+  public Unit getUnit() {
+    return this;
+  }
+
 
   @Override
   public String toString() {

@@ -11,8 +11,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
 
 @Entity
 @Table(name = "game_save")
@@ -23,7 +27,7 @@ public class GameSave {
   private String saveName;
   private LocalDateTime timeOfSave;
   private String playerName;
-  @OneToOne
+  @OneToOne (cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JoinColumn(name = "game_id")
   private Game game;
   @OneToOne
@@ -31,9 +35,9 @@ public class GameSave {
   private Passage lastSavedPassage;
 
 
-  public GameSave(Game gameToSave, String playerName) {
-    this.game = gameToSave;
-    this.saveName = gameToSave.getStory().getTitle();
+  public GameSave(Unit unit, Story story, List<Goal> goals, String playerName) {
+    this.game = new Game(unit, story, goals);
+    this.saveName = story.getTitle();
     this.playerName = playerName;
     this.timeOfSave = LocalDateTime.now();
   }
@@ -100,6 +104,31 @@ public class GameSave {
   public void savePassage(Passage lastSavedPassage) {
     this.lastSavedPassage = lastSavedPassage;
   }
+
+  public Unit getUnit() {
+     return this.game.getUnit();
+  }
+
+  public Story getStory() {
+     return this.game.getStory();
+  }
+
+  public List<Goal> getGoals() {
+     return this.game.getGoals();
+  }
+
+  public void setUnit(Unit unit) {
+     this.game.setUnit(unit);
+  }
+
+  public void setStory(Story story) {
+     this.game.setStory(story);
+  }
+
+  public void setGoals(List<Goal> goals) {
+     this.game.setGoals(goals);
+  }
+
 
   public String getStoryAndLastPassage() {
     StringBuilder location = new StringBuilder(this.saveName + " - ");

@@ -9,17 +9,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
-import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Custom;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnit;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnitBuilder;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Mage;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.MageBuilder;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Ranger;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Rogue;
 import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Warrior;
-import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
-import no.ntnu.idatg2001.backend.utility.CheckIfValid;
-import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.view.GameView;
@@ -31,6 +30,15 @@ import no.ntnu.idatg2001.frontend.view.dialogs.AddGoalDialog;
 public class StartNewGameController extends Controller<StartNewGameView> {
 
   private AddGoalDialog addGoalDialog;
+  private int unitHealthMax;
+  private int unitHealth;
+  private int unitMana;
+  private int gold;
+  private String unitName;
+  private int armour;
+  private int damage;
+  private int critChance;
+
 
   public StartNewGameController(StartNewGameView view) {
     this.view = view;
@@ -71,6 +79,16 @@ public class StartNewGameController extends Controller<StartNewGameView> {
     view.getGoalTableView().getItems().add(goal);
   }
 
+  private void setCostumeStats() {
+    unitHealth = Integer.parseInt(view.getHealthTextField().getText());
+    unitHealthMax = Integer.parseInt(view.getHealthTextField().getText());
+    unitMana = Integer.parseInt(view.getManaTextField().getText());
+    armour = Integer.parseInt(view.getArmourTextField().getText());
+    gold = Integer.parseInt(view.getGoldTextField().getText());
+    damage = Integer.parseInt(view.getDamageTextField().getText());
+    critChance = Integer.parseInt(view.getCriticalChanceTextField().getText());
+  }
+
 
 
   private Unit createUnitBySelectedClass() {
@@ -89,7 +107,24 @@ public class StartNewGameController extends Controller<StartNewGameView> {
       } else if (getSelectedClassInComboBox().equals(rangerString)) {
         return new Ranger(view.getNameField().getText());
       } else if (getSelectedClassInComboBox().equals(customString)) {
-        return new Custom(view.getNameField().getText());
+        try {
+          setCostumeStats();
+          return new CustomUnitBuilder()
+              .withUnitHealthMax(unitHealthMax)
+              .withUnitHealth(unitHealth)  // Remove this line if it's a duplicate
+              .withUnitMana(unitMana)
+              .withArmour(armour)
+              .withGold(gold)
+              .withDamage(damage)
+              .withCriticalStrikeChance(critChance)
+              .withUnitName(view.getNameField().getText())
+              .withScore(0)
+              .build();
+
+        } catch (NumberFormatException e) {
+          // Handle the error when parsing invalid input
+          // You can display an error message or take appropriate action
+        }
       }
     }
     return null;
@@ -103,14 +138,13 @@ public class StartNewGameController extends Controller<StartNewGameView> {
   public void onStartButtonPressed(ActionEvent event) {
     event.consume();
     if (isValidStart()) {
-      Game newGame = new Game(createUnitBySelectedClass(),
-          getSelectedStoryInTableView(), view.getGoalTableView().getItems().stream().toList());
-      GameDAO.getInstance().add(newGame);
-      GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
+      GameSave newGameSave = new GameSave(createUnitBySelectedClass(),getSelectedStoryInTableView(),
+          view.getGoalTableView().getItems().stream().toList(), view.getNameField().getText());
       GameSaveDAO.getInstance().add(newGameSave);
-      GameView gameView = new GameView(newGameSave);
-      GameController gameController = new GameController(gameView);
+      GameView gameView = new GameView();
+      GameController gameController = new GameController(gameView, newGameSave);
       gameView.setController(gameController);
+      gameController.updateStats();
       gameController.populatePlayerInventoryListView();
       Scene newScene = view.getScene();
       newScene.setRoot(gameView);
@@ -133,32 +167,42 @@ public class StartNewGameController extends Controller<StartNewGameView> {
     String selectedClass = view.getClassComboBox().getValue();
 
     if (selectedClass != null) {
-      if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.mage"))) {
-        // Set mage stats
-        Mage mage = new Mage(view.getNameField().getText());
-        setStatsForClass(mage);
-      } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.rogue"))) {
-        // Set rogue stats
-        Rogue rogue = new Rogue(view.getNameField().getText());
-        setStatsForClass(rogue);
-      } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.warrior"))) {
-        // Set warrior stats
-        Warrior warrior = new Warrior(view.getNameField().getText());
-        setStatsForClass(warrior);
-      } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.ranger"))) {
-        // Set ranger stats
-        Ranger ranger = new Ranger(view.getNameField().getText());
-        setStatsForClass(ranger);
+        if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.mage"))) {
+          Mage mage = new Mage(view.getNameField().getText());
+          setStatsForClass(mage);
+        } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.rogue"))) {
+          Rogue rogue = new Rogue(view.getNameField().getText());
+          setStatsForClass(rogue);
+        } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.warrior"))) {
+          Warrior warrior = new Warrior(view.getNameField().getText());
+          setStatsForClass(warrior);
+        } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.ranger"))) {
+          Ranger ranger = new Ranger(view.getNameField().getText());
+          setStatsForClass(ranger);
+        }
       } else if (selectedClass.equals(view.getResourceBundle().getString("startNewGame.classType.custom"))) {
-        // Set custom class stats
-        Custom custom = new Custom(view.getNameField().getText());
-        setStatsForClass(custom);
-      }
+      try {
+        setCostumeStats();
+        CustomUnit unit = new CustomUnitBuilder()
+            .withUnitHealthMax(unitHealthMax)
+            .withUnitHealth(unitHealth)  // Remove this line if it's a duplicate
+            .withUnitMana(unitMana)
+            .withArmour(armour)
+            .withGold(gold)
+            .withDamage(damage)
+            .withCriticalStrikeChance(critChance)
+            .withUnitName(view.getNameField().getText())
+            .withScore(0)
+            .build();
+        setStatsForClass(unit);
+      } catch (NumberFormatException e) {
+        // Handle the error when parsing invalid input// You can display an error message or take appropriate action
+      }// You can display an error message or take appropriate action
     }
   }
 
   private void setStatsForClass(Unit unit) {
-    view.getHealthTextField().setText(String.valueOf(unit.getUnitHealth()));
+    view.getHealthTextField().setText(String.valueOf(unit.getUnitHealthMax()));
     view.getManaTextField().setText(String.valueOf(unit.getUnitMana()));
     view.getGoldTextField().setText(String.valueOf(unit.getGold()));
     view.getDamageTextField().setText(String.valueOf(unit.getDamage()));

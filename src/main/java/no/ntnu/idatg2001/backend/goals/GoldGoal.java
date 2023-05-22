@@ -16,11 +16,11 @@ public class GoldGoal extends Goal  {
   }
 
   public boolean isFulfilled(Unit unit) {
-    return unit.getGold() >= (Integer) goalValue;
+    return unit.getGold() >= Integer.parseInt(goalValue.toString());
   }
 
   @Override
-  public void setGoalValue(int value) {
+  public void setGoalValue(Object value) {
 
   }
 }
