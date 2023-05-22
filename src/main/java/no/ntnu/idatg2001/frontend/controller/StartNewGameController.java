@@ -107,6 +107,7 @@ public class StartNewGameController extends Controller<StartNewGameView> {
           getSelectedStoryInTableView(), view.getGoalTableView().getItems().stream().toList());
       GameDAO.getInstance().add(newGame);
       GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
+      newGameSave.setStoredInitialImprint(newGameSave);
       GameSaveDAO.getInstance().add(newGameSave);
       GameView gameView = new GameView();
       GameController gameController = new GameController(gameView, newGameSave);

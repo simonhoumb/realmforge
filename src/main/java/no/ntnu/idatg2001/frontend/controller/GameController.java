@@ -299,35 +299,12 @@ public class GameController extends Controller<GameView> {
   }
 
   public void restartGame() {
-    // Create a new instance of the Game class
-    Game newGame = new Game(getCurrentGameSave().getGame().getUnit(), getCurrentGameSave().getGame()
-        .getStory(),
-        getCurrentGameSave().getGame().getGoals());
 
-    // Update the existing game instance with the new values
-    getCurrentGameSave().setGame(newGame);
-
-
-    // Reset any other game-specific data or states as needed
-
-    // Update the game in the database using the GameDAO class
-    GameDAO.getInstance().update(newGame);
-
-    // Perform any other necessary operations for restarting the game
-    GameSave newGameSave = new GameSave(newGame, newGame.getUnit().getUnitName());
-    // Update the game view and controller
-    GameController gameController = new GameController(view, newGameSave);
-    view.setController(gameController);
-    gameController.updateStats();
-    gameController.populatePlayerInventoryListView();
-    // Refresh the current scene to reflect the restarted game
-    Scene currentScene = view.getScene();
-    currentScene.setRoot(view);
   }
 
-    public void setCurrentPassage (Passage passage){
-      this.currentPassage = passage;
-    }
+  public void setCurrentPassage (Passage passage){
+    this.currentPassage = passage;
   }
+}
 
 
