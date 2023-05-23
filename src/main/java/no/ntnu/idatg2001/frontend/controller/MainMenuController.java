@@ -3,15 +3,18 @@ package no.ntnu.idatg2001.frontend.controller;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.utility.AlertHelper;
 import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.UnitDAO;
 import no.ntnu.idatg2001.frontend.view.CreateStoryView;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
@@ -117,16 +120,40 @@ public class MainMenuController extends Controller<MainMenuView> {
   @Override
   public void onLoadSelectedGame(ActionEvent event) {
     if (loadGameDialog.getSelectedGameSave() != null) {
-      GameView gameView = new GameView();
-      GameController gameController = new GameController(gameView, loadGameDialog.getSelectedGameSave());
-      gameView.setController(gameController);
-      gameController.updateStats();
-      gameController.populatePlayerInventoryListView();
-      Scene newScene = view.getScene();
-      newScene.setRoot(gameView);
-      onCloseSource(event);
+      GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
+      UnitDAO unitDAO = UnitDAO.getInstance();
+      Optional<Unit> saveUnitOptional = unitDAO.find(selectedGameSave.getGame().getUnit().getId());
+
+      if (saveUnitOptional.isPresent()) {
+        Unit saveUnit = saveUnitOptional.get();
+        // Set the parameters from the found unit to the unit in the selected game save
+        selectedGameSave.getGame().getUnit().setUnitName(saveUnit.getUnitName());
+        selectedGameSave.getGame().getUnit().setUnitHealth(saveUnit.getUnitHealth());
+        selectedGameSave.getGame().getUnit().setUnitScore(saveUnit.getUnitScore());
+        selectedGameSave.getGame().getUnit().setUnitMana(saveUnit.getUnitMana());
+        selectedGameSave.getGame().getUnit().setGold(saveUnit.getGold());
+        selectedGameSave.getGame().getUnit().setArmour(saveUnit.getArmour());
+        selectedGameSave.getGame().getUnit().clearInventory();
+        selectedGameSave.getGame().getUnit().addToInventory(saveUnit.getUnitInventory());
+        selectedGameSave.getGame().getUnit().setDamage(saveUnit.getDamage());
+
+        GameView gameView = new GameView();
+        GameController gameController = new GameController(gameView, selectedGameSave);
+        gameView.setController(gameController);
+        gameController.populatePlayerInventoryListView();
+        gameController.updatePlayerStats();
+        Scene newScene = view.getScene();
+        newScene.setRoot(gameView);
+        onCloseSource(event);
+      } else {
+        // Handle case when the unit cannot be found in the database
+        AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(),
+            loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
+            loadGameDialog.getResourceBundle().getString("unitNotFoundError"));
+      }
     } else {
-      AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(), loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
+      AlertHelper.showInformationAlert(loadGameDialog.getDialogPane().getScene().getWindow(),
+          loadGameDialog.getResourceBundle().getString("loadGameErrorTitle"),
           loadGameDialog.getResourceBundle().getString("noGameSelectedError"));
     }
   }

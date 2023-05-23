@@ -2,8 +2,10 @@ package no.ntnu.idatg2001.frontend.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -11,6 +13,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import no.ntnu.idatg2001.backend.actions.ActionType;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
+import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnitBuilder;
 import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
@@ -21,6 +26,8 @@ import no.ntnu.idatg2001.backend.goals.HealthGoal;
 import no.ntnu.idatg2001.backend.goals.InventoryGoal;
 import no.ntnu.idatg2001.backend.goals.ScoreGoal;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.dao.UnitDAO;
 import no.ntnu.idatg2001.frontend.view.EndGameView;
 import no.ntnu.idatg2001.frontend.view.dialogs.ExitDialog;
 import no.ntnu.idatg2001.frontend.view.GameView;
@@ -40,6 +47,7 @@ public class GameController extends Controller<GameView> {
   private GoalsDialog goalsDialog;
   private GameSave currentGameSave;
   private Passage currentPassage;
+  private GameView view;
 
 
   public GameController(GameView gameView, GameSave currentGameSave) {
@@ -50,26 +58,31 @@ public class GameController extends Controller<GameView> {
 
   public void loadGameSave(GameSave gameSaveToLoad) {
     this.currentGameSave = gameSaveToLoad;
+    // Reset the current passage and update the view
     if (currentGameSave.getLastSavedPassage() == null) {
       this.currentPassage = currentGameSave.getGame().begin();
     } else {
       this.currentPassage = currentGameSave.getLastSavedPassage();
     }
+
     view.getPlayerNameLabel().setText(currentGameSave.getGame().getUnit().getUnitName());
+    updatePlayerStats(); // Update the player's stats
     view.addLinksToButtons(currentPassage);
   }
 
-  public void updateStats() {
-    view.getHealthBar().setProgress((double) currentGameSave.getGame().getUnit().getUnitHealth()
-        / currentGameSave.getGame().getUnit().getUnitHealthMax());
-    view.getHealthLabel().setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitHealth(),
-        currentGameSave.getGame().getUnit().getUnitHealthMax()));
-    view.getManaBar().setProgress((double) currentGameSave.getGame().getUnit().getUnitMana()
-        / currentGameSave.getGame().getUnit().getUnitManaMax());
-    view.getManaLabel().setText(String.format("%d/%d", currentGameSave.getGame().getUnit().getUnitMana(),
-        currentGameSave.getGame().getUnit().getUnitManaMax()));
-    view.getGoldAmountLabel().setText(String.valueOf(currentGameSave.getGame().getUnit().getGold()));
-    view.getScoreAmountLabel().setText(String.valueOf(currentGameSave.getGame().getUnit().getUnitScore()));
+  public void updatePlayerStats() {
+    Unit playerUnit = getCurrentGameSave().getGame().getUnit();
+    // Update the view with the player's stats
+    view.getHealthBar()
+        .setProgress((double) playerUnit.getUnitHealth() / playerUnit.getUnitHealthMax());
+    view.getHealthLabel()
+        .setText(String.format("%d/%d", playerUnit.getUnitHealth(), playerUnit.getUnitHealthMax()));
+    view.getManaBar().setProgress((double) playerUnit.getUnitMana() / playerUnit.getUnitManaMax());
+    view.getManaLabel()
+        .setText(String.format("%d/%d", playerUnit.getUnitMana(), playerUnit.getUnitManaMax()));
+    view.getGoldAmountLabel().setText(String.valueOf(playerUnit.getGold()));
+    view.getScoreAmountLabel().setText(String.valueOf(playerUnit.getUnitScore()));
+    System.out.println(playerUnit);
   }
 
   public void onBackToMainMenuButtonPressed(ActionEvent event) throws IOException {
@@ -133,20 +146,19 @@ public class GameController extends Controller<GameView> {
 
   public void onLinkPressed(ActionEvent event, Link link) {
     currentPassage = getCurrentGameSave().getGame().go(link);
-    link.getActions().stream()
-        .filter(action -> !action.getActionType().equals(ActionType.NONE))
-        .forEach(action -> action.execute(getCurrentGameSave().getGame().getUnit()));
     view.addLinksToButtons(currentPassage);
+    link.getActions().forEach(action -> action.execute(getCurrentGameSave().getGame().getUnit()));
     populatePlayerInventoryListView();
+    updatePlayerStats();
     event.consume();
   }
 
   public void onEndGameButtonPressed() {
     EndGameView endGameView = new EndGameView();
     Scene newScene = view.getScene();
-    endGameView.setController(this);
+    EndViewController endViewController = new EndViewController(endGameView);
+    endGameView.setController(endViewController);
     newScene.setRoot(endGameView);
-
   }
 
   public void onRestartGameButtonPressed() {
@@ -171,13 +183,29 @@ public class GameController extends Controller<GameView> {
     saveGameDialog.showAndWait();
   }
 
+
+
   public void onSaveSelectedGame(ActionEvent event) {
-    GameSave selectedItem = (saveGameDialog.getSelectedGameSave());
-    GameSave newGameSave = new GameSave(getCurrentGameSave().getUnit(), getCurrentGameSave().getStory(), getCurrentGameSave().getGoals(),
+    GameSave selectedItem = saveGameDialog.getSelectedGameSave();
+
+    // Create a new unit instance for the game save
+    Unit savedUnit = new CustomUnitBuilder()
+        .withUnitHealth(getCurrentGameSave().getGame().getUnit().getUnitHealth())
+        .withUnitHealthMax(getCurrentGameSave().getGame().getUnit().getUnitHealthMax())
+        .withUnitMana(getCurrentGameSave().getGame().getUnit().getUnitMana())
+        .withGold(getCurrentGameSave().getGame().getUnit().getGold())
+        .withUnitScore(getCurrentGameSave().getGame().getUnit().getUnitScore())
+        .withUnitName(getCurrentGameSave().getGame().getUnit().getUnitName())
+        .withUnitInventory(new ArrayList<>(getCurrentGameSave().getGame().getUnit().getUnitInventory()))
+        .build();
+
+    GameSave newGameSave = new GameSave(savedUnit, getCurrentGameSave().getStory(), getCurrentGameSave().getGoals(),
         getCurrentGameSave().getPlayerName());
     newGameSave.savePassage(getCurrentPassage());
+
     if (selectedItem != null) {
-      selectedItem.setGame(newGameSave.getGame());
+      // Overwrite the entire unit of the selected game
+      selectedItem.getGame().setUnit(savedUnit);
       selectedItem.setLastSavedPassage(newGameSave.getLastSavedPassage());
       selectedItem.setTimeOfSave(LocalDateTime.now());
       GameSaveDAO.getInstance().update(selectedItem);
@@ -187,6 +215,9 @@ public class GameController extends Controller<GameView> {
 
     onCloseSource(event);
   }
+
+
+
 
   @Override
   public void onLoadGameButtonPressed(ActionEvent event) {
@@ -203,6 +234,7 @@ public class GameController extends Controller<GameView> {
     GameSave selectedGameSave = loadGameDialog.getSelectedGameSave();
     loadGameSave(selectedGameSave);
     pauseMenuDialog.close();
+    updatePlayerStats();
     onCloseSource(event);
   }
 
@@ -250,23 +282,6 @@ public class GameController extends Controller<GameView> {
     saveGameDialog.getPlayerColumn().setCellValueFactory(new PropertyValueFactory<>("playerName"));
   }
 
-  public Object getCurrentAmount(Goal goal) {
-    if (goal instanceof HealthGoal) {
-      return getCurrentGameSave().getGame().getUnit().getUnitHealth();
-    } else if (goal instanceof ScoreGoal) {
-      return getCurrentGameSave().getGame().getUnit().getUnitScore();
-    } else if (goal instanceof GoldGoal){
-      return getCurrentGameSave().getGame().getUnit().getGold();
-    } else if (goal instanceof InventoryGoal) {
-      if (getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue())) {
-        return getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue());
-      } else {
-        return goalsDialog.getResourceBundle().getString("dialog.no")+ ": " + goal.getGoalValue() + " " +goalsDialog.getResourceBundle().getString("dialog.inInventory");
-      }
-    }
-    return "";
-  }
-
   public boolean isGoalReached(Goal goal) {
     if (goal instanceof HealthGoal) {
       // Replace this with your logic to check if the health goal is reached
@@ -295,8 +310,15 @@ public class GameController extends Controller<GameView> {
   }
 
   public Passage getCurrentPassage() {
+    if (currentPassage == null) {
+      currentPassage = currentGameSave.getGame().getStory().getOpeningPassage();
+    } else {
     return this.currentPassage;
+    }
+    return currentPassage;
   }
+
+
 
   public void restartGame() {
       // Reset unit to default based on its type
@@ -304,11 +326,12 @@ public class GameController extends Controller<GameView> {
       currentGameSave.getGame().getUnit().setUnitScore(0);
       currentGameSave.getGame().getUnit().setUnitHealth(currentGameSave.getGame().getUnit().getUnitHealthMax());
       currentGameSave.getGame().getUnit().setUnitMana(currentGameSave.getGame().getUnit().getUnitManaMax());
-      currentGameSave.getGame().getStory().getOpeningPassage();
+      currentGameSave.getGame().getUnit().clearInventory();
+      currentGameSave.getStory().getOpeningPassage();
       currentPassage = currentGameSave.getGame().getStory().getOpeningPassage();
       view.addLinksToButtons(currentPassage);
       // Get a reference to the opening passage
-      updateStats();
+      updatePlayerStats();
       GameSaveDAO.getInstance().update(getCurrentGameSave());
   }
 

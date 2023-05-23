@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Test;
 
 class MageTest {
   Mage mage;
+  Mage mageEmpty;
   @BeforeEach
   public void setUp() {
     mage = new Mage("Test Mage");
+    mageEmpty = new Mage();
   }
 
   @Test
@@ -33,4 +35,19 @@ class MageTest {
     assertEquals(PlayerClass.MAGE, mage.getPlayerClass());
   }
 
+  @Test
+  void testEmptyMage(){
+    assertEquals("default", mageEmpty.getUnitName());
+    assertEquals(100, mageEmpty.getUnitHealth());
+    assertEquals(0, mageEmpty.getGold());
+    assertEquals(100, mageEmpty.getUnitMana());
+    assertEquals(0, mageEmpty.getUnitManaMax());
+    assertEquals(0, mageEmpty.getDamage());
+    assertEquals(0, mageEmpty.getCriticalChance());
+    assertEquals(0, mageEmpty.getArmour());
+    assertFalse(mageEmpty.getUnitInventory().contains("Staff"));
+    assertFalse(mageEmpty.getUnitInventory().contains("Mana Potion"));
+    assertFalse(mageEmpty.getUnitInventory().contains("Mage Robe"));
+    assertNotEquals(PlayerClass.MAGE, mageEmpty.getPlayerClass());
+  }
 }

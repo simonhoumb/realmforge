@@ -11,7 +11,8 @@ import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 
 
 /**
- * Provides access to game save data stored in the database. Each GameSave object in the database acts as
+ * Provides access to game save data stored in the database. Each GameSave
+ * object in the database acts as
  * a save file. This class implements the DAO interface for the GameSave class.
  * It is a singleton class with instance methods for performing create, read,
  * update and delete operations.
@@ -23,11 +24,12 @@ public class GameSaveDAO implements DAO<GameSave> {
 
   //TODO Make mock/test database for testing the database instead of using the business database.
   private final EntityManagerFactory emf;
-  private EntityManager em;
+  private final EntityManager em;
 
   private static final GameSaveDAO instance = new GameSaveDAO();
 
-  /** Constructs an GameSaveDAO instance, initializing the EntityManagerFactory and EntityManager. */
+  /** Constructs an GameSaveDAO instance, initializing the
+   * EntityManagerFactory and EntityManager. */
   private GameSaveDAO() {
     this.emf = Persistence.createEntityManagerFactory("gamedb");
     this.em = this.emf.createEntityManager();
@@ -54,7 +56,8 @@ public class GameSaveDAO implements DAO<GameSave> {
   public void add(GameSave gameSave) {
     if (no.ntnu.idatg2001.dao.GameDAO.getInstance().getAll().contains(gameSave)) {
       throw new IllegalArgumentException("Instance of gameSave already exists in the database.");
-    } else if (no.ntnu.idatg2001.dao.GameDAO.getInstance().getAllGameIds().contains(gameSave.getId())) {
+    } else if (no.ntnu.idatg2001.dao.GameDAO.getInstance()
+        .getAllGameIds().contains(gameSave.getId())) {
       throw new IllegalArgumentException(
           "GameSave with the same id already exists in the database.");
     } else {

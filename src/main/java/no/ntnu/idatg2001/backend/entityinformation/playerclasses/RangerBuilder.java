@@ -1,18 +1,15 @@
 package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
-import no.ntnu.idatg2001.backend.entityinformation.PlayerClass;
-import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
 
+/**
+ * The Ranger class represents a Ranger.
+ */
 public class RangerBuilder extends UnitBuilder<Ranger, RangerBuilder> {
 
-  private int specificField;
-
-  public RangerBuilder withSpecificField(int specificField) {
-    this.specificField = specificField;
-    return this;
-  }
-
+  /**
+   * Builds a Ranger.
+   */
   @Override
   public Ranger build() {
     Ranger ranger = new Ranger(unitName);
@@ -22,10 +19,14 @@ public class RangerBuilder extends UnitBuilder<Ranger, RangerBuilder> {
     ranger.setUnitMana(unitMana);
     ranger.setPlayerClass(playerClass);
     ranger.addToInventory(unitInventory);
-    ranger.setDamage(specificField);
     return ranger;
   }
 
+  /**
+   * Returns the RangerBuilder itself.
+   *
+   * @return the RangerBuilder itself
+   */
   @Override
   protected RangerBuilder self() {
     return this;

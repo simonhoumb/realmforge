@@ -17,6 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.backend.goals.GoldGoal;
+import no.ntnu.idatg2001.backend.goals.HealthGoal;
+import no.ntnu.idatg2001.backend.goals.InventoryGoal;
+import no.ntnu.idatg2001.backend.goals.ScoreGoal;
 import no.ntnu.idatg2001.frontend.controller.GameController;
 
 public class GoalsDialog extends Dialog {
@@ -84,7 +88,7 @@ public class GoalsDialog extends Dialog {
 
 
     // Create a label for current progress
-    Label progressLabel = new Label(controller.getCurrentAmount(goal) + " / " + goal.getGoalValue().toString());
+    Label progressLabel = new Label(getCurrentAmount(goal) + " / " + goal.getGoalValue().toString());
     progressLabel.getStyleClass().add("progress-label");
 
     // Create a disabled checkbox for goal completion
@@ -136,6 +140,24 @@ public class GoalsDialog extends Dialog {
     getDialogPane().setHeader(headerPane);
     titleLabel.setPadding(new Insets(10, 0, 0, 10));
   }
+
+  public Object getCurrentAmount(Goal goal) {
+    if (goal instanceof HealthGoal) {
+      return controller.getCurrentGameSave().getGame().getUnit().getUnitHealth();
+    } else if (goal instanceof ScoreGoal) {
+      return controller.getCurrentGameSave().getGame().getUnit().getUnitScore();
+    } else if (goal instanceof GoldGoal){
+      return controller.getCurrentGameSave().getGame().getUnit().getGold();
+    } else if (goal instanceof InventoryGoal) {
+      if (controller.getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue())) {
+        return controller.getCurrentGameSave().getGame().getUnit().getUnitInventory().equals(goal.getGoalValue());
+      } else {
+        return getResourceBundle().getString("dialog.no")+ ": " + goal.getGoalValue() + " " +getResourceBundle().getString("dialog.inInventory");
+      }
+    }
+    return "";
+  }
+
 
   private void createEndGameButton() {
     confirmButton = new JFXButton(resourceBundle.getString("dialog.endGame"));

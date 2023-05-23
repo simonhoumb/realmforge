@@ -9,13 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.goals.Goal;
-import no.ntnu.idatg2001.dao.GameDAO;
 
+/**
+ * The Game class represents a game.
+ */
 @Entity
 @Table(name = "game")
 public class Game {
@@ -24,7 +26,7 @@ public class Game {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "unit_id")
   private Unit unit;
   @ManyToOne
@@ -33,6 +35,9 @@ public class Game {
   @JoinColumn(name = "game_id")
   private List<Goal> goals;
 
+  /**
+   * Constructor for Game.
+   */
   public Game() {
 
   }
@@ -52,7 +57,8 @@ public class Game {
 
   /**
    * getId returns the id of the game.
-   * @return
+   *
+   * @return id
    */
   public Long getId() {
     return id;
@@ -60,31 +66,31 @@ public class Game {
 
   /**
    * setId sets the id of the game.
-   * @param id
+   *
+   * @param id the id of the game.
    */
   public void setId(Long id) {
     this.id = id;
   }
 
-  /**
-   * getUnit returns the unit that is playing the game.
-   * @return unit
-   */
   public Unit getUnit() {
     return unit;
   }
 
   /**
    * setUnit sets the unit that is playing the game.
-   * @param unit
+   *
+   * @param unit the unit that is playing the game.
    */
   public void setUnit(Unit unit) {
     this.unit = unit;
   }
 
+
   /**
    * getStory returns the story that the unit is playing.
-   * @return story
+   *
+   * @return story the story that the unit is playing.
    */
   public Story getStory() {
     return story;
@@ -92,7 +98,8 @@ public class Game {
 
   /**
    * setStory sets the story that the unit is playing.
-   * @param story
+   *
+   * @param story the story that the unit is playing.
    */
   public void setStory(Story story) {
     this.story = story;
@@ -100,6 +107,7 @@ public class Game {
 
   /**
    * getGoals returns the goals that the unit has to complete.
+   *
    * @return goals
    */
   public List<Goal> getGoals() {
@@ -108,7 +116,8 @@ public class Game {
 
   /**
    * setGoals sets the goals that the unit has to complete.
-   * @param goals
+   *
+   * @param goals the goals that the unit has to complete.
    */
   public void setGoals(List<Goal> goals) {
     this.goals = goals;
@@ -116,6 +125,7 @@ public class Game {
 
   /**
    * gets the opening passage of the story.
+   *
    * @return opening passage
    */
   public Passage begin() {
@@ -124,6 +134,7 @@ public class Game {
 
   /**
    * goes to the passage you get with link.
+   *
    * @return story.getPassages().get(link)
    */
   public Passage go(Link link) {

@@ -1,17 +1,15 @@
-package no.ntnu.idatg2001.backend.entityinformation.playerclasses;// Import statements...
+package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
-import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Mage;
 
+/**
+ * The MageBuilder class represents a builder for the Mage class.
+ */
 public class MageBuilder extends UnitBuilder<Mage, MageBuilder> {
 
-  private int specificField;
-
-  public MageBuilder withSpecificField(int specificField) {
-    this.specificField = specificField;
-    return self();
-  }
-
+  /**
+   * Creates a MageBuilder with the default unit name of "Mage".
+   */
   protected Mage createUnit() {
     Mage mage = new Mage(unitName);
     mage.setUnitHealthMax(unitHealthMax);
@@ -20,15 +18,22 @@ public class MageBuilder extends UnitBuilder<Mage, MageBuilder> {
     mage.setUnitMana(unitMana);
     mage.setPlayerClass(playerClass);
     mage.addToInventory(unitInventory);
-    mage.setDamage(specificField);
     return mage;
   }
 
+  /**
+   * Builds the Mage.
+   */
   @Override
   public Mage build() {
     return createUnit();
   }
 
+  /**
+   * Returns the MageBuilder itself.
+   *
+   * @return the MageBuilder itself
+   */
   @Override
   protected MageBuilder self() {
     return this;

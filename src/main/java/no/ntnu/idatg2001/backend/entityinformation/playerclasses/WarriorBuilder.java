@@ -1,18 +1,15 @@
 package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
-import no.ntnu.idatg2001.backend.entityinformation.PlayerClass;
-import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
 
+/**
+ * The RogueBuilder class represents a builder for the Warrior class.
+ */
 public class WarriorBuilder extends UnitBuilder<Warrior, WarriorBuilder> {
 
-  private int specificField;
-
-  public WarriorBuilder withSpecificField(int specificField) {
-    this.specificField = specificField;
-    return this;
-  }
-
+  /**
+   * Builds a Warrior.
+   */
   @Override
   public Warrior build() {
     Warrior warrior = new Warrior(unitName);
@@ -22,10 +19,14 @@ public class WarriorBuilder extends UnitBuilder<Warrior, WarriorBuilder> {
     warrior.setUnitMana(unitMana);
     warrior.setPlayerClass(playerClass);
     warrior.addToInventory(unitInventory);
-    warrior.setArmour(specificField);
     return warrior;
   }
 
+  /**
+   * Returns the WarriorBuilder itself.
+   *
+   * @return the WarriorBuilder itself
+   */
   @Override
   protected WarriorBuilder self() {
     return this;

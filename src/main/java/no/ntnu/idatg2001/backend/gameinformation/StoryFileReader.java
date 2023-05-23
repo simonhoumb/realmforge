@@ -19,12 +19,18 @@ import no.ntnu.idatg2001.backend.actions.WeaponAction;
 import no.ntnu.idatg2001.backend.actions.WinAction;
 import no.ntnu.idatg2001.backend.utility.CheckIfValid;
 
-public class StoryFileReader{
+/**
+ * The StoryFileReader class reads a story file and creates a Story object.
+ */
+public class StoryFileReader {
 
   private final CheckIfValid checkIfValid = new CheckIfValid();
 
   private String currentLine;
 
+  /**
+   * Constructor for StoryFileReader.
+   */
   public Story readFile(String fileName) {
     Story story = null;
     String storyTitle = null;
@@ -57,6 +63,12 @@ public class StoryFileReader{
     return story;
   }
 
+  /**
+   * Create a new Passage from the file.
+   *
+   * @param scanner The scanner to read the file.
+   * @return a new Passage.
+   */
   private Passage createPassage(Scanner scanner) {
     String passageTitle = currentLine.replace(":", "");
     Passage passageToAdd;
@@ -82,12 +94,24 @@ public class StoryFileReader{
     return passageToAdd;
   }
 
+  /**
+   * Create a new Link.
+   *
+   * @param linkToAdd The link to add.
+   * @param linksToAdd The list of links to add to.
+   */
   private void addLinkToList(Link linkToAdd, ArrayList<Link> linksToAdd) {
     if (linkToAdd != null) {
       linksToAdd.add(linkToAdd);
     }
   }
 
+  /**
+   * Create a new Link.
+   *
+   * @param linkToAdd The link to add.
+   * @param currentLine The current line to read.
+   */
   private void addActionToLink(Link linkToAdd, String currentLine) {
     Action actionToAdd = createNewAction(findActionTypeFromLine(currentLine),
         findActionValueFromLine(currentLine));
@@ -96,6 +120,12 @@ public class StoryFileReader{
     }
   }
 
+  /**
+   * Append the current line to the passage content.
+   *
+   * @param passageContent The passage content to append to.
+   * @param currentLine The current line to append.
+   */
   private void appendToPassageContent(StringBuilder passageContent, String currentLine) {
     if (passageContent.length() > 0) {
       passageContent.append("\n");
@@ -103,13 +133,25 @@ public class StoryFileReader{
     passageContent.append(currentLine);
   }
 
+  /**
+   * Adds Links to the Passage.
+   *
+   * @param linksToAdd The links to add.
+   * @param passageToAdd The passage to add the links to.
+   */
   private void addLinksToPassage(ArrayList<Link> linksToAdd, Passage passageToAdd) {
     for (Link link : linksToAdd) {
       passageToAdd.addLink(link);
     }
   }
 
-  //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
+
+  /**
+   * Finds link text from the current line.
+   *
+   * @param currentLine The current line to read.
+   * @return the link text.
+   */
   private String findLinkTextFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String linkText = "";
@@ -121,7 +163,12 @@ public class StoryFileReader{
   }
 
 
-  //Kilde: https://stackoverflow.com/questions/16383898/find-words-in-string-surrounded-by-and
+  /**
+   * Finds link reference from the current line.
+   *
+   * @param currentLine The current line to read.
+   * @return the link reference.
+   */
   private String findLinkReferenceFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String linkReference = "";
@@ -132,6 +179,12 @@ public class StoryFileReader{
     return linkReference.trim();
   }
 
+  /**
+   * Finds action type from the current line.
+   *
+   * @param currentLine The current line to read.
+   * @return the action type.
+   */
   private String findActionTypeFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String actionType = "";
@@ -142,6 +195,12 @@ public class StoryFileReader{
     return actionType.trim();
   }
 
+  /**
+   * Finds action value from the current line.
+   *
+   * @param currentLine The current line to read.
+   * @return the action value.
+   */
   private String findActionValueFromLine(String currentLine) {
     Scanner scanner = new Scanner(currentLine);
     String actionValue = "";
@@ -152,6 +211,13 @@ public class StoryFileReader{
     return actionValue.trim();
   }
 
+  /**
+   * Create a new Link.
+   *
+   * @param linkText The link text.
+   * @param linkReference The link reference.
+   * @return a new Link.
+   */
   private Link createNewLink(String linkText, String linkReference) {
     if (linkText.isBlank() || linkReference.isBlank()) {
       return null;
@@ -160,6 +226,13 @@ public class StoryFileReader{
     }
   }
 
+  /**
+   * Create a new Action.
+   *
+   * @param actionType The action type.
+   * @param actionValue The action value.
+   * @return a new Action.
+   */
   private Action createNewAction(String actionType, String actionValue) {
     ActionType type = ActionType.valueOfLabel(actionType);
     if (type == null) {
@@ -188,11 +261,21 @@ public class StoryFileReader{
       case NONE -> {
         return new NoneAction();
       }
+      default -> {
+        return null;
+      }
     }
 
     return null;
   }
 
+  /**
+   * Create a new Action.
+   *
+   * @param type The action type.
+   * @param value The action value.
+   * @return a new Action.
+   */
   private Action createActionByType(ActionType type, int value) {
     return switch (type) {
       case GOLD -> new GoldAction(value);
@@ -204,6 +287,13 @@ public class StoryFileReader{
     };
   }
 
+  /**
+   * Create a new Action.
+   *
+   * @param type The action type.
+   * @param value The action value.
+   * @return a new Action.
+   */
   private Action createActionByType(ActionType type, String value) {
     return switch (type) {
       case WEAPON -> new WeaponAction(value);
