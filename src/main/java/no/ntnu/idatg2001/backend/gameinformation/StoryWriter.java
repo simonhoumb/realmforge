@@ -40,7 +40,6 @@ public class StoryWriter {
 
       writer.println();
 
-      // Write the remaining passages and their links
       selectedStory.getPassages().values().stream().filter(p -> !p.equals(openingPassage))
           .forEach(p -> {
             writer.println("::" + p.getTitle());

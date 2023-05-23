@@ -39,15 +39,11 @@ public class EndGameView extends BorderPane {
     container.setAlignment(Pos.CENTER);
     container.setSpacing(20);
 
-
     // Create the end game message
     Label messageLabel = new Label(resourceBundle.getString("endGameMessage"));
-
     // Create the return to main menu button
-
     // Add the components to the container
     container.getChildren().addAll(messageLabel, returnButton);
-
     // Set the container as the center of the BorderPane
     setCenter(container);
   }

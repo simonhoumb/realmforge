@@ -119,7 +119,6 @@ public class AddActionDialog extends Dialog<Void> {
     return switch (actionType) {
       case GOLD, HEALTH, DAMAGE, SCORE, ARMOR -> createTextField("-?\\d*");
       case WEAPON, ITEM, PASSAGE -> createTextField("[a-zA-Z0-9]*");
-      //add here for comboBoxes -> createNewComboBox();
       case GAME_OVER, WIN, LOSE, NONE -> null;
     };
   }

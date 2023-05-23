@@ -53,6 +53,15 @@ public class SettingsModel {
   }
 
   /**
+   * Gets instance of the singleton SettingsModel.
+   *
+   * @return the instance
+   */
+  public static SettingsModel getInstance() {
+    return instance;
+  }
+
+  /**
    * Loads the settings from the file called settings.properties.
    */
   public void loadSettings() {
@@ -160,12 +169,4 @@ public class SettingsModel {
     return new Locale(languageCode, countryCode);
   }
 
-  /**
-   * Gets instance of the singleton SettingsModel.
-   *
-   * @return the instance
-   */
-  public static SettingsModel getInstance() {
-    return instance;
-  }
 }
