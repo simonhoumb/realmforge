@@ -7,13 +7,19 @@ import jakarta.persistence.TypedQuery;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import no.ntnu.idatg2001.backend.gameinformation.Game;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 
+/**
+ * Provides access to passage data stored in the database. This class implements the DAO interface
+ * for the Passage class. It is a singleton class with instance methods for performing create, read,
+ * update and delete operations.
+ *
+ * @version 1.0
+ */
 public class PassageDAO implements DAO<Passage> {
 
   private final EntityManagerFactory emf;
-  private EntityManager em;
+  private final EntityManager em;
 
   private static final PassageDAO instance = new PassageDAO();
 
@@ -34,6 +40,14 @@ public class PassageDAO implements DAO<Passage> {
     return instance;
   }
 
+  /**
+   * Adds a new passage to the database if it does not already exist.
+   *
+   * @param passage the passage to be added.
+   * @throws IllegalArgumentException if the passage already exists.
+   * @throws IllegalArgumentException if a passage with the same passage number exists.
+   * @throws IllegalArgumentException if a passage with the same email exists.
+   */
   @Override
   public void add(Passage passage) {
     if (PassageDAO.getInstance().getAll().contains(passage)) {
@@ -51,6 +65,11 @@ public class PassageDAO implements DAO<Passage> {
     }
   }
 
+  /**
+   * Removes a passage from the database.
+   *
+   * @param passage the passage to be removed.
+   */
   @Override
   public void remove(Passage passage) {
     Passage foundPassage = em.find(Passage.class, passage.getId());
@@ -62,6 +81,11 @@ public class PassageDAO implements DAO<Passage> {
     em.getTransaction().commit();
   }
 
+  /**
+   * Updates all fields of a passage in the database.
+   *
+   * @param passage the passage to be updated.
+   */
   @Override
   public void update(Passage passage) {
     em.getTransaction().begin();
@@ -70,12 +94,23 @@ public class PassageDAO implements DAO<Passage> {
 
   }
 
+  /**
+   * Returns an iterator of all passages in the database.
+   *
+   * @return an iterator of all passages in the database.
+   */
   @Override
   public Iterator<Passage> iterator() {
     TypedQuery<Passage> query = em.createQuery("SELECT p FROM Passage p", Passage.class);
     return query.getResultList().iterator();
   }
 
+  /**
+   * Returns an optional of a passage with the given id.
+   *
+   * @param id the id of the passage to be returned.
+   * @return an optional of a passage with the given id.
+   */
   @Override
   public Optional<Passage> find(Long id) {
     TypedQuery<Passage> query = em.createQuery("SELECT p FROM Passage p WHERE p.id = :id",
@@ -84,17 +119,30 @@ public class PassageDAO implements DAO<Passage> {
     return Optional.ofNullable(query.getSingleResult());
   }
 
+  /**
+   * Gets all passages in the database.
+   *
+   * @return a list of all passages in the database.
+   */
   @Override
   public List<Passage> getAll() {
     TypedQuery<Passage> query = em.createQuery("SELECT p FROM Passage p", Passage.class);
     return query.getResultList();
   }
 
+  /**
+   * Gets all passages ids in the database.
+   *
+   * @return a list of all passages ids in the database.
+   */
   public List<Long> getAllPassagesIds() {
     TypedQuery<Long> query = em.createQuery("SELECT p.id FROM Passage p", Long.class);
     return query.getResultList();
   }
 
+  /**
+   * Prints all passages in the database.
+   */
   @Override
   public void printAllDetails() {
     for (Passage passage : this.getAll()) {
@@ -102,6 +150,9 @@ public class PassageDAO implements DAO<Passage> {
     }
   }
 
+  /**
+   * Closes the EntityManager and EntityManagerFactory.
+   */
   @Override
   public void close() {
     if (em.isOpen()) {

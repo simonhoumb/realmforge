@@ -1,6 +1,10 @@
 package no.ntnu.idatg2001.backend;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -8,13 +12,16 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 
+/**
+ * The SettingsModel class is a singleton class that handles the settings of the game.
+ */
 public class SettingsModel {
 
   private final String filepath;
   private double volumeSliderValue;
   private boolean isMuted;
   private String languageSelection;
-  private Properties properties;
+  private final Properties properties;
   private final DoubleProperty volume = new SimpleDoubleProperty();
 
   private static final SettingsModel instance = new SettingsModel();
@@ -32,7 +39,7 @@ public class SettingsModel {
    * Saves the settings and write it to a file called settings.properties.
    */
   public void saveSettings() {
-    try (OutputStream outputStream = new FileOutputStream(filepath)){
+    try (OutputStream outputStream = new FileOutputStream(filepath)) {
       // Update the properties with new settings data
       properties.setProperty("languageSelection", getLanguageSelection());
       properties.setProperty("volumeSliderValue", String.valueOf(getVolumeSliderValue()));
@@ -43,7 +50,6 @@ public class SettingsModel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println("Saved");
   }
 
   /**
@@ -58,7 +64,6 @@ public class SettingsModel {
     volumeSliderValue = Double.parseDouble(properties.getProperty("volumeSliderValue", "50"));
     isMuted = Boolean.parseBoolean(properties.getProperty("isMuted", "false"));
     languageSelection = properties.getProperty("languageSelection", "English");
-    System.out.println("Loaded");
   }
 
   /**

@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import no.ntnu.idatg2001.backend.actions.Action;
 
+/**
+ * The Passage class represents a passage in a story.
+ */
 @Entity
 @Table(name = "story")
 public class Story {
@@ -35,6 +37,12 @@ public class Story {
 
   private String title;
 
+  /**
+   * Constructor for Story.
+   *
+   * @param title   The title of the Story.
+   * @param openingPassage The content of the passage.
+   */
   public Story(String title, Passage openingPassage) {
     this.title = title;
     this.passages = new HashMap<>();
@@ -42,12 +50,25 @@ public class Story {
     this.addPassage(this.openingPassage);
   }
 
+  /**
+   * Constructor for Story.
+   */
   public Story() {}
 
+  /**
+   * getPassage id.
+   *
+   * @return id
+   */
   public Long getId() {
     return id;
   }
 
+  /**
+   * Sets the id of the passage.
+   *
+   * @param id The id of the passage.
+   */
   public void setId(Long id) {
     this.id = id;
   }
@@ -70,6 +91,12 @@ public class Story {
     return openingPassage;
   }
 
+  /**
+   * addPassage adds a passage to the story.
+   *
+   * @param passage The passage to add.
+   * @return true if the passage was added, false if it already exists.
+   */
   public boolean addPassage(Passage passage) {
     if (getPassages().containsValue(passage)) {
       return false;
@@ -79,6 +106,11 @@ public class Story {
     }
   }
 
+  /**
+   * Removes a passage from the story.
+   *
+   * @param link The link to the passage to remove.
+   */
   public void removePassage(Link link) {
     Passage passageToRemove = getPassage(link);
     boolean hasOtherReferences = passages.values().stream()
@@ -86,7 +118,7 @@ public class Story {
         .flatMap(passage -> passage.getLinks().stream())
         .anyMatch(l -> l.getReference().equals(passageToRemove.getTitle()));
     if (!hasOtherReferences) {
-      if(getPassage(link).equals(getOpeningPassage())) {
+      if (getPassage(link).equals(getOpeningPassage())) {
         setOpeningPassage(null);
       }
       passages.remove(link);
@@ -96,6 +128,11 @@ public class Story {
   }
 
 
+  /**
+   * Removes passage and all links that reference it.
+   *
+   * @param passage The passage to remove.
+   */
   public void removePassageAndConnectedLinks(Passage passage) {
     List<Link> linksToRemove = passages.values().stream()
         .flatMap(p -> p.getLinks().stream())
@@ -105,13 +142,17 @@ public class Story {
       passages.remove(link);
     }
     // Remove the passage from the passages map
-    if(passage.equals(getOpeningPassage())) {
+    if (passage.equals(getOpeningPassage())) {
       setOpeningPassage(null);
     }
     passages.values().remove(passage);
   }
 
-  //TODO må sjekke om detter rett.
+  /**
+   * This method checks if the story contains any broken links.
+   *
+   * @return  if the story contains broken links.
+   */
   public List<Link> getBrokenLinks() {
     ArrayList<Link> brokenLinks = new ArrayList<>();
     this.passages.values().stream()
@@ -135,11 +176,12 @@ public class Story {
 
   /**
    * This method counts the amount of passages in Story.
-   * @return the amount of passages in the story as a int.
+   *
+   * @return the amount of passages in the story as an int.
    */
   public int getTotalAmountOfPassages() {
     List<Passage> passageList = new ArrayList<>();
-    for (Passage storyPassage: passages.values()) {
+    for (Passage storyPassage : passages.values()) {
       if (!passageList.contains(storyPassage)) {
         passageList.add(storyPassage);
       }
@@ -153,6 +195,7 @@ public class Story {
 
   /**
    * This method counts the amount of links in passages in Story.
+   *
    * @return the amount of links in passages in the story as an int.
    */
   public int getTotalAmountOfLinks() {
@@ -169,8 +212,9 @@ public class Story {
   }
 
   /**
-   * This method returns a string representation of the Story object.
-   * @return a string representation of the Story object.
+   * This method toStrings the Passage.
+   *
+   * @return the passage as a string.
    */
   @Override
   public String toString() {

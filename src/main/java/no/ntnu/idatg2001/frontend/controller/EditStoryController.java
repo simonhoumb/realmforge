@@ -293,9 +293,9 @@ public class EditStoryController extends Controller<EditStoryView> {
   public void onExportPress() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Export Story");
-    fileChooser.setInitialFileName(selectedStory.getTitle() + ".Paths");
+    fileChooser.setInitialFileName(selectedStory.getTitle() + ".paths");
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter("Paths Files (*.Paths)", "*.Paths"));
+        new FileChooser.ExtensionFilter("Paths Files (*.paths)", "*.paths"));
     File file = fileChooser.showSaveDialog(view.getScene().getWindow());
     if (file != null) {
       StoryWriter.writeStoryToFile(selectedStory, file.getAbsoluteFile());

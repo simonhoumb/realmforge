@@ -3,11 +3,9 @@ package no.ntnu.idatg2001.backend.entityinformation;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public abstract class Unit {
   private int unitScore; //The Level of the Unit.
   private int unitMana; //The Mana of the unit.
   private int unitManaMax; //The max Mana points of the unit.
-  private int gold; //Gold for the Unit.
+  private int unitGold; //Gold for the Unit.
   private int damage = 0; //Damage the Unit starts with.
   private int criticalChance = 0; //Unit CriticalChance.
   private int armour; //Armor stat to the Unit.
@@ -58,6 +56,7 @@ public abstract class Unit {
       int unitMana) {
     this.unitHealthMax = unitHealthMax;
     this.unitHealth = unitHealth;
+    this.unitGold = gold;
     this.unitName = unitName;
     this.unitMana = unitMana;
     this.unitInventory = new ArrayList<>();
@@ -102,6 +101,7 @@ public abstract class Unit {
       this.unitHealth = Math.max(unitHealth, 0);
     }
   }
+
 
   /**
    * Gets unit health max.
@@ -152,7 +152,7 @@ public abstract class Unit {
    * @return the gold
    */
   public int getGold() {
-    return gold;
+    return unitGold;
   }
 
   /**
@@ -161,7 +161,7 @@ public abstract class Unit {
    * @param gold the gold
    */
   public void setGold(int gold) {
-    this.gold = gold;
+    this.unitGold = gold;
   }
 
   /**
@@ -342,6 +342,11 @@ public abstract class Unit {
     }
   }
 
+  public void clearInventory() {
+    unitInventory.clear();
+  }
+
+
   /**
    * Returns the unit's inventory.
    *
@@ -361,6 +366,11 @@ public abstract class Unit {
   }
 
 
+  /**
+   * Returns a string representation of the unit.
+   *
+   * @return a string representation of the unit.
+   */
   @Override
   public String toString() {
     return "Unit{"
@@ -368,7 +378,7 @@ public abstract class Unit {
         + ", unitHealthPoints= " + unitHealth
         + ", unitMana= " + unitMana
         + ", unitScore= " + unitScore
-        + ", unitGold= " + gold
+        + ", unitGold= " + unitGold
         + ", playerClass= " + playerClass
         + ", unitInventory= " + unitInventory
         + '}';

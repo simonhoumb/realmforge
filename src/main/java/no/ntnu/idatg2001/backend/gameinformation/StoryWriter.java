@@ -4,14 +4,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Scanner;
 import no.ntnu.idatg2001.backend.actions.Action;
-import no.ntnu.idatg2001.backend.actions.ActionType;
-import no.ntnu.idatg2001.backend.entityinformation.Unit;
 
+/**
+ * The StoryWriter class writes a story to a file.
+ */
 public class StoryWriter {
 
-  private StoryWriter() {}
+  /**
+   * Constructor for StoryWriter.
+   */
+  private StoryWriter() {
+
+  }
+
+  /**
+   * This method writes a story to a file.
+   *
+   * @param selectedStory the story to write.
+   * @param file the file to write to.
+   */
   public static void writeStoryToFile(Story selectedStory, File file) {
     try (PrintWriter writer = new PrintWriter(file)) {
       // Write the story title
@@ -49,10 +61,16 @@ public class StoryWriter {
         }
       }
     } catch (FileNotFoundException e) {
-      System.out.println("Error writing the story to file: " + e.getMessage());
+      e.printStackTrace();
     }
   }
 
+  /**
+   * This method writes a Links to a file.
+   *
+   * @param writer the unit to write to file.
+   * @param links the links to write.
+   */
   private static void writeLinks(PrintWriter writer, List<Link> links) {
     for (Link link : links) {
       writer.println("[" + link.getText() + "](" + link.getReference() + ")");
@@ -63,6 +81,12 @@ public class StoryWriter {
     }
   }
 
+  /**
+   * This meth to get Actions and write them to file.
+   *
+   * @param actionTypes the action types to write.
+   * @return the action string.
+   */
   private static String getActionString(List<Action> actionTypes) {
     if (actionTypes == null || actionTypes.isEmpty()) {
       return "";

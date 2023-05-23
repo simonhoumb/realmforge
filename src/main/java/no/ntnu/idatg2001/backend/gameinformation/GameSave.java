@@ -6,18 +6,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
-import no.ntnu.idatg2001.backend.gameinformation.Game;
-import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.goals.Goal;
-import no.ntnu.idatg2001.dao.GameSaveDAO;
 
+/**
+ * The GameSave class represents a game save.
+ */
 @Entity
 @Table(name = "game_save")
 public class GameSave {
@@ -35,6 +34,14 @@ public class GameSave {
   private Passage lastSavedPassage;
 
 
+  /**
+   * Constructor for GameSave.
+   *
+   * @param unit The unit to be saved.
+   * @param story The story to be saved.
+   * @param goals The goals to be saved.
+   * @param playerName The player name to be saved.
+   */
   public GameSave(Unit unit, Story story, List<Goal> goals, String playerName) {
     this.game = new Game(unit, story, goals);
     this.saveName = story.getTitle();
@@ -42,94 +49,160 @@ public class GameSave {
     this.timeOfSave = LocalDateTime.now();
   }
 
+  /**
+   * Sets the unit health.
+   *
+   * @param health The health to be set.
+   */
+  public void setUnitHealth(int health) {
+    this.game.getUnit().setUnitHealth(health);
+  }
+
+
   public GameSave() {}
 
+  /**
+   * Gets the id.
+   *
+   * @return The id.
+   */
   public Long getId() {
     return id;
   }
-  public Long setId(Long id) {
-    return this.id = id;
+
+  /**
+   * Sets the id.
+   *
+   * @param id The id to be set.
+   */
+  public void setId(Long id) {
+    this.id = id;
   }
 
+
+  /**
+   * gets the save name.
+   *
+   * @return The save name.
+   */
   public String getSaveName() {
     return saveName;
   }
 
-  public void setSaveName(String saveName) {
-    this.saveName = saveName;
-  }
-
-  public GameSave setLastSavedPassage(
+  /**
+   * Sets the save name.
+   *
+   * @param lastSavedPassage The save name to be set.
+   */
+  public void setLastSavedPassage(
       Passage lastSavedPassage) {
     this.lastSavedPassage = lastSavedPassage;
-    return this;
   }
 
-  public GameSave setTimeOfSave(LocalDateTime timeOfSave) {
+  /**
+   * Sets the Time of Save.
+   *
+   * @param timeOfSave The time of save to be set.
+   */
+  public void setTimeOfSave(LocalDateTime timeOfSave) {
     this.timeOfSave = timeOfSave;
-    return this;
   }
 
-  public GameSave setPlayerName(String playerName) {
+  /**
+   * Sets the Player Name.
+   *
+   * @param playerName The player name to be set.
+   */
+  public void setPlayerName(String playerName) {
     this.playerName = playerName;
-    return this;
   }
 
-  public GameSave setGame(Game game) {
+  /**
+   * Sets the Game.
+   *
+   * @param game The game to be set.
+   */
+  public void setGame(Game game) {
     this.game = game;
-    return this;
   }
 
-
+  /**
+   * gets the time of save.
+   *
+   * @return The time of save.
+   */
   public LocalDateTime getTimeOfSave() {
     return timeOfSave;
   }
 
+  /**
+   * gets the time of save formatted.
+   *
+   * @return The time of save formatted.
+   */
   public String getTimeOfSaveFormatted() {
     return timeOfSave.format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy"));
   }
 
+  /**
+   * gets the player name.
+   *
+   * @return The player name.
+   */
   public String getPlayerName() {
     return playerName;
   }
 
+  /**
+   * gets the game.
+   *
+   * @return The game.
+   */
   public Game getGame() {
     return game;
   }
 
+  /**
+   * gets the last saved passage.
+   *
+   * @return The last saved passage.
+   */
   public Passage getLastSavedPassage() {
     return lastSavedPassage;
   }
 
+  /**
+   * sets the last saved passage.
+   *
+   * @param lastSavedPassage The last saved passage to be set.
+   */
   public void savePassage(Passage lastSavedPassage) {
     this.lastSavedPassage = lastSavedPassage;
   }
 
-  public Unit getUnit() {
-     return this.game.getUnit();
-  }
-
-  public Story getStory() {
-     return this.game.getStory();
-  }
-
+  /**
+   * gets the goals.
+   *
+   * @return The goals.
+   */
   public List<Goal> getGoals() {
-     return this.game.getGoals();
+    return this.game.getGoals();
   }
 
-  public void setUnit(Unit unit) {
-     this.game.setUnit(unit);
+  /**
+   * gets the story.
+   *
+   * @return The story.
+   */
+  public Story getStory() {
+    return this.game.getStory();
   }
 
-  public void setStory(Story story) {
-     this.game.setStory(story);
-  }
-
-  public void setGoals(List<Goal> goals) {
-     this.game.setGoals(goals);
-  }
-
-
+  /**
+   * gets the Story and last passage.
+   *
+   * @return The story and last passage.
+   */
   public String getStoryAndLastPassage() {
     StringBuilder location = new StringBuilder(this.saveName + " - ");
     if (this.lastSavedPassage == null) {

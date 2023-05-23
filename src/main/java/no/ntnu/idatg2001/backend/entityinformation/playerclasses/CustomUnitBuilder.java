@@ -1,17 +1,15 @@
 package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
-import no.ntnu.idatg2001.backend.entityinformation.playerclasses.CustomUnit;
 
+/**
+ * The CustomUnitBuilder class represents a builder for the CustomUnit class.
+ */
 public class CustomUnitBuilder extends UnitBuilder<CustomUnit, CustomUnitBuilder> {
 
-  private int customField;
-
-  public CustomUnitBuilder withCustomField(int customField) {
-    this.customField = customField;
-    return self();
-  }
-
+  /**
+   * Creates a CustomUnitBuilder with the default unit name of "CustomUnit".
+   */
   protected CustomUnit createUnit() {
     CustomUnit customUnit = new CustomUnit(unitName);
     // Set other properties as needed
@@ -27,11 +25,19 @@ public class CustomUnitBuilder extends UnitBuilder<CustomUnit, CustomUnitBuilder
     return customUnit;
   }
 
+  /**
+   * Builds the CustomUnit.
+   */
   @Override
   public CustomUnit build() {
     return createUnit();
   }
 
+  /**
+   * Returns the CustomUnitBuilder itself.
+   *
+   * @return the CustomUnitBuilder itself
+   */
   @Override
   protected CustomUnitBuilder self() {
     return this;

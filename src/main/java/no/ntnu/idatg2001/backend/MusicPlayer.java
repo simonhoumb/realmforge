@@ -5,8 +5,11 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+/**
+ * The MusicPlayer class is a singleton class that plays music.
+ */
 public class MusicPlayer {
-  private MediaPlayer mediaPlayer;
+  private final MediaPlayer mediaPlayer;
   private static final MusicPlayer instance = new MusicPlayer();
 
   /**
@@ -14,7 +17,8 @@ public class MusicPlayer {
    */
   private MusicPlayer() {
     String musicFile = "/music/One-Bard-Band.mp3";
-    Media music = new Media(Objects.requireNonNull(getClass().getResource(musicFile)).toExternalForm());
+    Media music = new Media(Objects.requireNonNull(getClass()
+        .getResource(musicFile)).toExternalForm());
     mediaPlayer = new MediaPlayer(music);
   }
 
@@ -24,7 +28,7 @@ public class MusicPlayer {
   public void playMusic() {
     mediaPlayer.setVolume(SettingsModel.getInstance().getVolumeSliderValue() / 100);
     mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-    mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+    mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     if (!SettingsModel.getInstance().isMuted()) {
       mediaPlayer.play();
     }

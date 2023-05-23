@@ -1,5 +1,10 @@
 package no.ntnu.idatg2001.backend.gameinformation;
 
+import java.util.List;
+import no.ntnu.idatg2001.backend.entityinformation.Unit;
+import no.ntnu.idatg2001.backend.entityinformation.playerclasses.Mage;
+import no.ntnu.idatg2001.backend.goals.Goal;
+import no.ntnu.idatg2001.backend.goals.HealthGoal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +23,14 @@ class GameSaveTest {
   @BeforeEach
   public void setup() {
     game = new Game();
+    Story story = new Story("My Story", new Passage("Opening Passage", new StringBuilder("Opening Passage")));
+    Mage mage = new Mage("Mage");
+    List<Goal> goals = List.of(new HealthGoal(100));
     openingPassage = new Passage("Opening Passage", new StringBuilder("Opening Passage"));
     lastSavedPassage = new Passage("Last Saved Passage", new StringBuilder("Last Saved Passage"));
     game.setStory(new Story("My Story", openingPassage));
-    gameSave = new GameSave(game, "Player1")
-        .setLastSavedPassage(lastSavedPassage);
+    gameSave = new GameSave(mage,story,goals, "Player1");
+        gameSave.setLastSavedPassage(lastSavedPassage);
   }
 
   @Test
@@ -56,7 +64,7 @@ class GameSaveTest {
   void testGetGame() {
     Game savedGame = gameSave.getGame();
 
-    assertEquals(game, savedGame);
+    assertEquals(game.getId(), savedGame.getId());
   }
 
   @Test

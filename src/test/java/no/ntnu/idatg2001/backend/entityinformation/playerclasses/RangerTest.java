@@ -1,6 +1,8 @@
 package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import no.ntnu.idatg2001.backend.entityinformation.PlayerClass;
@@ -11,11 +13,15 @@ import org.junit.jupiter.api.Test;
 class RangerTest {
 
   private Ranger ranger;
+  private Ranger rangerEmpty;
 
   @BeforeEach
   void setUp() {
     ranger = new Ranger("Test Ranger");
+    rangerEmpty = new Ranger();
+
   }
+
 
   @Test
   void testConstructor() {
@@ -33,5 +39,21 @@ class RangerTest {
     assertTrue(ranger.getUnitInventory().contains("Trap"));
     assertTrue(ranger.getUnitInventory().contains("Boots"));
     assertEquals(PlayerClass.RANGER, ranger.getPlayerClass());
+  }
+
+  @Test
+  void testEmptyMage(){
+    assertEquals("default", rangerEmpty.getUnitName());
+    assertEquals(100, rangerEmpty.getUnitHealth());
+    assertEquals(0, rangerEmpty.getGold());
+    assertEquals(100, rangerEmpty.getUnitMana());
+    assertEquals(0, rangerEmpty.getUnitManaMax());
+    assertEquals(0, rangerEmpty.getDamage());
+    assertEquals(0, rangerEmpty.getCriticalChance());
+    assertEquals(0, rangerEmpty.getArmour());
+    assertFalse(rangerEmpty.getUnitInventory().contains("Staff"));
+    assertFalse(rangerEmpty.getUnitInventory().contains("Mana Potion"));
+    assertFalse(rangerEmpty.getUnitInventory().contains("Mage Robe"));
+    assertNotEquals(PlayerClass.RANGER, rangerEmpty.getPlayerClass());
   }
 }

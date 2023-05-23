@@ -95,7 +95,7 @@ public class CreateStoryController extends Controller<CreateStoryView> {
     StoryFileReader storyReader = new StoryFileReader();
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Import Story");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Paths Files", "*.Paths"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Paths Files", "*.paths"));
     File selectedFile = fileChooser.showOpenDialog(view.getScene().getWindow());
     if (selectedFile != null) {
       try {

@@ -2,15 +2,15 @@ package no.ntnu.idatg2001.backend.entityinformation.playerclasses;
 
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
 
+/**
+ * The RogueBuilder class represents a builder for the Rogue class.
+ */
 public class RogueBuilder extends UnitBuilder<Rogue, RogueBuilder> {
 
-  private int specificField;
 
-  public RogueBuilder withSpecificField(int specificField) {
-    this.specificField = specificField;
-    return this;
-  }
-
+  /**
+   * Builds a Rogue.
+   */
   @Override
   public Rogue build() {
     Rogue rogue = new Rogue(unitName);
@@ -20,10 +20,14 @@ public class RogueBuilder extends UnitBuilder<Rogue, RogueBuilder> {
     rogue.setUnitMana(unitMana);
     rogue.setPlayerClass(playerClass);
     rogue.addToInventory(unitInventory);
-    rogue.setDamage(specificField);
     return rogue;
   }
 
+  /**
+   * Returns the RogueBuilder itself.
+   *
+   * @return the RogueBuilder itself
+   */
   @Override
   protected RogueBuilder self() {
     return this;

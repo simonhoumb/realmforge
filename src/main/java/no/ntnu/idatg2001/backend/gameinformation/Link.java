@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 import no.ntnu.idatg2001.backend.actions.Action;
 
+/**
+ * The Link class represents a link in a passage.
+ */
 @Entity
 public class Link {
 
@@ -36,13 +39,14 @@ public class Link {
   public Link(String text, String reference) {
     setText(text);
     setReference(reference);
-    actions = new ArrayList<>(); //vet ikke om denne skal være her
+    actions = new ArrayList<>();
   }
 
   public Link() {}
 
   /**
    * getId returns the id of the link.
+   *
    * @return id
    */
   public Long getId() {
@@ -51,7 +55,8 @@ public class Link {
 
   /**
    * setId sets the id of the link.
-   * @param id
+   *
+   * @param id of the link.
    */
   public void setId(Long id) {
     this.id = id;
@@ -59,6 +64,7 @@ public class Link {
 
   /**
    * getText returns the text of the link.
+   *
    * @return text in link.
    */
   public String getText() {
@@ -67,7 +73,8 @@ public class Link {
 
   /**
    * setText sets the text of the link.
-   * @param text
+   *
+   * @param text in link.
    */
   public void setText(String text) {
     this.text = text;
@@ -84,7 +91,8 @@ public class Link {
 
   /**
    * setReference sets the reference of the link.
-   * @param reference
+   *
+   * @param reference of the link.
    */
   public void setReference(String reference) {
     this.reference = reference;
@@ -92,13 +100,14 @@ public class Link {
 
   /**
    * addAction adds an action to the link.
-   * @param action
+   *
+   * @param action to be added.
    * @return added action.
    */
   public Boolean addAction(Action action) {
     boolean actionAdded = true;
     try {
-      if(action == null) {
+      if (action == null) {
         throw new IllegalArgumentException();
       } else {
         getActions().add(action);
@@ -109,11 +118,16 @@ public class Link {
     return actionAdded;
   }
 
+  /**
+   * removeAction removes an action from the link.
+   *
+   * @param action to be removed.
+   */
   public void removeAction(Action action) {
     if (action == null) {
       throw new IllegalArgumentException("Action given is null");
     }
-      getActions().remove(action);
+    getActions().remove(action);
   }
 
 
@@ -145,6 +159,7 @@ public class Link {
 
   /**
    * toString returns the Link as a string.
+   *
    * @return the Link as a String
    */
   @Override

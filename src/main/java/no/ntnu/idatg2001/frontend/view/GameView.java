@@ -31,7 +31,10 @@ import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.SettingsModel;
 import no.ntnu.idatg2001.backend.gameinformation.Link;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
+import no.ntnu.idatg2001.dao.GameSaveDAO;
+import no.ntnu.idatg2001.dao.StoryDAO;
 import no.ntnu.idatg2001.frontend.controller.GameController;
+import no.ntnu.idatg2001.frontend.view.dialogs.SaveGameDialog;
 
 public class GameView extends BorderPane {
   private ResourceBundle resourceBundle;
@@ -163,11 +166,11 @@ public class GameView extends BorderPane {
       button.setWrapText(true);
       button.setOnAction(event -> {
         controller.onLinkPressed(event, link);
-        controller.updateStats();
       });
       buttonHbox.getChildren().add(button);
     }
   }
+
 
   public void setController(GameController controller) {
     this.controller = controller;

@@ -22,6 +22,7 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
 import no.ntnu.idatg2001.backend.goals.Goal;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.dao.UnitDAO;
 import no.ntnu.idatg2001.frontend.view.GameView;
 import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.StartNewGameView;
@@ -90,8 +91,6 @@ public class StartNewGameController extends Controller<StartNewGameView> {
     critChance = Integer.parseInt(view.getCriticalChanceTextField().getText());
   }
 
-
-
   private Unit createUnitBySelectedClass() {
     String mageString = this.view.getResourceBundle().getString("startNewGame.classType.mage");
     String rogueString = this.view.getResourceBundle().getString("startNewGame.classType.rogue");
@@ -128,7 +127,7 @@ public class StartNewGameController extends Controller<StartNewGameView> {
         }
       }
     }
-    return null;
+return null;
   }
 
   public void onRemoveGoalPressed(ActionEvent event) {
@@ -145,8 +144,8 @@ public class StartNewGameController extends Controller<StartNewGameView> {
       GameView gameView = new GameView();
       GameController gameController = new GameController(gameView, newGameSave);
       gameView.setController(gameController);
-      gameController.updateStats();
       gameController.populatePlayerInventoryListView();
+      gameController.loadGameSave(newGameSave);
       Scene newScene = view.getScene();
       newScene.setRoot(gameView);
     } else {

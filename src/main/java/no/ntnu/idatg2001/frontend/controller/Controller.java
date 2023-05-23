@@ -8,6 +8,7 @@ import no.ntnu.idatg2001.dao.GameDAO;
 import no.ntnu.idatg2001.dao.GameSaveDAO;
 import no.ntnu.idatg2001.dao.PassageDAO;
 import no.ntnu.idatg2001.dao.StoryDAO;
+import no.ntnu.idatg2001.dao.UnitDAO;
 
 /**
  *Abstract class for all controllers.
@@ -42,6 +43,7 @@ public abstract class   Controller<T> {
     GameSaveDAO.getInstance().close();
     StoryDAO.getInstance().close();
     PassageDAO.getInstance().close();
+    UnitDAO.getInstance().close();
     Platform.exit();
     System.exit(0);
   }

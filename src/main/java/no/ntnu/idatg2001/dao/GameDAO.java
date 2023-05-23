@@ -1,4 +1,5 @@
 package no.ntnu.idatg2001.dao;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -7,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.idatg2001.backend.gameinformation.Game;
-import no.ntnu.idatg2001.backend.gameinformation.GameSave;
 import no.ntnu.idatg2001.backend.gameinformation.Passage;
 import no.ntnu.idatg2001.backend.gameinformation.Story;
 
@@ -21,7 +21,6 @@ import no.ntnu.idatg2001.backend.gameinformation.Story;
  * @version 1.0
  */
 public class GameDAO implements DAO<Game> {
-  //TODO Make mock/test database for testing the database instead of using the business database.
   private final EntityManagerFactory emf;
   private EntityManager em;
 
@@ -158,7 +157,6 @@ public class GameDAO implements DAO<Game> {
               + " :: "
               + game.getId()
               + " :: "
-              + game.getUnit().getUnitName()
               + " :: "
               + game.getStory().getTitle()
               + " :: "

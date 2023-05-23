@@ -58,7 +58,7 @@ public class AddActionDialog extends Dialog<Void> {
     gridPane.addRow(0, actionLabel, actionTypeComboBox);
 
     HBox buttonBox = new HBox();
-    buttonBox.setAlignment(Pos.CENTER);
+    buttonBox.setAlignment(Pos.CENTER_RIGHT);
     buttonBox.setSpacing(10);
     buttonBox.getChildren().addAll(createAddButton(), createCancelButton());
 

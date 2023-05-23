@@ -20,6 +20,12 @@ public class CheckIfValid {
     return intToCheck >= 0;
   }
 
+  /**
+   * checks if its a valid string.
+   *
+   * @param value the value to check
+   * @return true if it's a valid string, false if not.
+   */
   public boolean isInteger(String value) {
     return value.matches("-?\\d*") && !value.isEmpty() && !value.isBlank();
   }
