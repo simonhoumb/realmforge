@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.StageStyle;
 import no.ntnu.idatg2001.backend.actions.ActionType;
 import no.ntnu.idatg2001.backend.entityinformation.Unit;
 import no.ntnu.idatg2001.backend.entityinformation.UnitBuilder;
@@ -37,6 +38,7 @@ import no.ntnu.idatg2001.frontend.view.MainMenuView;
 import no.ntnu.idatg2001.frontend.view.dialogs.PauseMenuDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.SaveGameDialog;
 import no.ntnu.idatg2001.frontend.view.dialogs.SettingsDialog;
+import no.ntnu.idatg2001.frontend.view.dialogs.YouDiedDialog;
 
 public class GameController extends Controller<GameView> {
 
@@ -44,6 +46,7 @@ public class GameController extends Controller<GameView> {
   private SettingsDialog settingsDialog;
   private LoadGameDialog loadGameDialog;
   private SaveGameDialog saveGameDialog;
+  private YouDiedDialog youDiedDialog;
   private GoalsDialog goalsDialog;
   private GameSave currentGameSave;
   private Passage currentPassage;
@@ -148,10 +151,14 @@ public class GameController extends Controller<GameView> {
     currentPassage = getCurrentGameSave().getGame().go(link);
     view.addLinksToButtons(currentPassage);
     link.getActions().forEach(action -> action.execute(getCurrentGameSave().getGame().getUnit()));
+    if (getCurrentGameSave().getGame().getUnit().getUnitHealth() <= 0) {
+      onDeath();
+    }
     populatePlayerInventoryListView();
     updatePlayerStats();
     event.consume();
   }
+
 
   public void onEndGameButtonPressed() {
     EndGameView endGameView = new EndGameView();
@@ -159,6 +166,14 @@ public class GameController extends Controller<GameView> {
     EndViewController endViewController = new EndViewController(endGameView);
     endGameView.setController(endViewController);
     newScene.setRoot(endGameView);
+  }
+
+  public void onDeath() {
+    youDiedDialog = new YouDiedDialog();
+    youDiedDialog.setController(this);
+    youDiedDialog.initOwner(view.getScene().getWindow());
+    youDiedDialog.initStyle(StageStyle.UNDECORATED);
+    youDiedDialog.showAndWait();
   }
 
   public void onRestartGameButtonPressed() {

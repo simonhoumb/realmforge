@@ -185,7 +185,7 @@ return null;
         setCostumeStats();
         CustomUnit unit = new CustomUnitBuilder()
             .withUnitHealthMax(unitHealthMax)
-            .withUnitHealth(unitHealth)  // Remove this line if it's a duplicate
+            .withUnitHealth(unitHealth)
             .withUnitMana(unitMana)
             .withArmour(armour)
             .withGold(gold)
